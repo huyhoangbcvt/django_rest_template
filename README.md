@@ -84,3 +84,4 @@ http://localhost:8083/catalog/api/product/add/?role=Guess&username=it.hoanghh
 
 # All display on swagger
 http://localhost:8083/django/swagger/
+
