@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload file</title>
+</head>
+<body>
+    <form action="{% url 'upload:view_upload_modelform_page' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ UF.as_p }}
+        <input type="submit" value="Tải tệp lên">
+    </form>
+</body>
+</html>

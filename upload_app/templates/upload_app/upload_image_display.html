@@ -1,0 +1,12 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<body>
+    <h1>{{UF.title}}</h1>
+    <img src="{{UF.image.url}}" alt="Smiley face" width="250" height="250">
+    <br />
+    <a href="{% url 'upload:upload_template' %}">Go Back</a>
+</body>
+
+</html>
