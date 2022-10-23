@@ -15,10 +15,8 @@ from pathlib import Path
 import os
 from os.path import join
 from datetime import timedelta
-
-# from Tools.scripts.win_add2path import DEFAULT
-# from django.core.wsgi import get_wsgi_application
-
+from Tools.scripts.win_add2path import DEFAULT
+from django.core.wsgi import get_wsgi_application
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -58,7 +56,7 @@ INSTALLED_APPS = [
     # Format number: 4500000 becomes 4,500,000 | 4500.2 becomes 4,500.2 | 450000 becomes '450.000'
     'user_app',  # modules 1
     'catalog_app',  # modules 2
-    # 'upload_app',
+    'upload_app',
     'debug_toolbar',
     'ckeditor',
     'ckeditor_uploader',
@@ -191,20 +189,28 @@ USE_I18N = True
 
 USE_TZ = True
 
+# =================| Handling Static files |======================
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-
-STATIC_URL = '/static/'  # static/
+STATIC_URL = '/static/' #static/
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# =================| Root media Configuration |======================
-MEDIA_URL = "/media/"  # Kết hợp vs django.template.context_processors.media
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# MEDIA_ROOT = os.path.join(STATIC_ROOT, 'static/media')
+# WHITENOISE_USE_FINDERS = True  #important mapping, cài đặt pip install whitenoise
+# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
+# =================| Root media Configuration |======================
+MEDIA_URL = "/media/"  # django.template.context_processors.media
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_ROOT = '/ftp/django_rest_template/media/'
+
+# Upload Handlers
+FILE_UPLOAD_HANDLERS = [
+    "django.core.files.uploadhandler.MemoryFileUploadHandler",
+    "django.core.files.uploadhandler.TemporaryFileUploadHandler"
+]
 # =======| CKEditor settings |=========
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
@@ -221,12 +227,6 @@ CKEDITOR_CONFIGS = {
 # CKEDITOR_UPLOAD_PREFIX = "http://fortezzeimperiali/media/uploads/"
 # CKEDITOR_RESTRICT_BY_USER = True
 # CKEDITOR_IMAGE_BACKEND = "pillow"
-
-# Upload Handlers
-FILE_UPLOAD_HANDLERS = [
-    "django.core.files.uploadhandler.MemoryFileUploadHandler",
-    "django.core.files.uploadhandler.TemporaryFileUploadHandler"
-]
 
 # =================| Email Configuration |=======================
 # SECRET_KEY = os.environ.get('', '')
@@ -288,6 +288,6 @@ LOGGING = {
 }
 
 try:
-    from django_template_practice1.local_settings import *
+    from django_rest_template.local_settings import *
 except ImportError:
     pass

@@ -1,0 +1,27 @@
+
+{% load static %}
+{% if user.is_authenticated %}
+	<!-- nav-sidebar: starts-here -->
+	<div class="sidebar">
+		<ul class="">
+			<li><a href="https://docs.djangoproject.com/en/4.1/"><span
+					class="icon_cog"></span>Documentation</a></li>
+		</ul>
+		<ul class="">
+			<li><a href="../table/tablepage"><span class="icon_cog"></span>Table</a></li>
+		</ul>
+		<ul class="">
+			<li><a href="https://www.djangoproject.com/download/"><span
+					class="icon_star_alt"></span>Download</a></li>
+		</ul>
+		<ul class="">
+			<li><a href="https://www.djangoproject.com/community/"><span
+					class="icon_cog"></span>Community</a></li>
+		</ul>
+		<ul class="">
+			<li><a href="../affiliate"><span
+					class="icon_cog"></span>Affiliate</a></li>
+		</ul>
+	</div>
+	<!-- sidebar-ends-here -->
+{% endif %}

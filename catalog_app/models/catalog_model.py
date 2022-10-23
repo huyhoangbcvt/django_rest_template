@@ -59,7 +59,7 @@ class Category(BaseProductCategoryModel):
     # Allow None null=True
     content = models.TextField(max_length=1000, null=True, default=None)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, related_name='Category')
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True, default=0, related_name='Category')
     # product_map = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, default=0, related_name='Middleship')
     # product = models.ManyToManyField(Product, help_text='Select a Product for this Catalog')
     # product_map = models.PositiveSmallIntegerField(null=True, default=0, blank=True)
