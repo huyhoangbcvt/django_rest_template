@@ -26,11 +26,6 @@ class Product(BaseProductCategoryModel):
     country = models.CharField(max_length=50, null=True, default=None, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey('Category', on_delete=models.PROTECT, related_name='Product')  # Not delete Category
-    # category = models.ForeignKey('Category', on_delete=models.PROTECT, related_name='Product')
-    # category = models.ManyToManyField(Category, related_name='catalog_products')
-    # middles = models.ManyToManyField('Category', related_name='catalog_products', through='catalog_product_category')
-    # category = models.ManyToManyField(Category, help_text='Select a Category for this Product')
-    # middles = models.ManyToManyField('Category', related_name='Product', through='Middleship')
     active = models.BooleanField(
         _("post status"),
         default=True,
@@ -38,8 +33,8 @@ class Product(BaseProductCategoryModel):
     )
 
     def __str__(self):
-        return self.p_title
-        # return f"{self.p_title}, {self.p_name}, {self.p_code}, {self.p_date}, {self.p_country}"
+        return self.name
+        # return f"{self.name}, {self.code}, {self.date}, {self.country}"
 
     # def __unicode__(self):
     #     return u"%s" % self.user
@@ -60,9 +55,6 @@ class Category(BaseProductCategoryModel):
     content = models.TextField(max_length=1000, null=True, default=None)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True, default=0, related_name='Category')
-    # product_map = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, default=0, related_name='Middleship')
-    # product = models.ManyToManyField(Product, help_text='Select a Product for this Catalog')
-    # product_map = models.PositiveSmallIntegerField(null=True, default=0, blank=True)
     active = models.BooleanField(
         _("post status"),
         default=True,
@@ -78,8 +70,8 @@ class Category(BaseProductCategoryModel):
         # verbose_name_plural = 'catalog_categories'
 
     def __str__(self):
-        return self.title
-        # return f"{self.title}, {self.image}, {self.body}, {self.user}"
+        return self.name
+        # return f"{self.name}, {self.image}, {self.body}, {self.user}"
 
 
 # class Middleship(models.Model):

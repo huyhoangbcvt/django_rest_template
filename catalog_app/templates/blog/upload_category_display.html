@@ -1,0 +1,20 @@
+{% extends "layout/layout.html" %}
+
+{% load static %}
+{% block title %}{{ title }} {% endblock %}
+
+{% block nav_top %}{% include 'layout/nav-bar_top.html' %}{% endblock %}
+
+{% block nav_sidebar %}{% include 'layout/nav-sidebar.html' %}{% endblock %}
+
+{% block content %}
+    <a href="{% url 'catalog:view-category' %}">Go Back</a>
+    <hr/>
+    <h1>{{UF.title}}</h1>
+    {% if UF.image %}
+        <img src="{{UF.image.url}}" alt="Smiley face" width="250" height="250">
+    {% endif %}
+
+    {% include 'layout/nav-bar.html' %}
+
+{% endblock %}

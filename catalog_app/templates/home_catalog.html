@@ -1,0 +1,35 @@
+{% extends "layout/layout.html" %}
+
+{% block title %}{{ title }} {% endblock %}
+
+{% block nav_top %}{% include 'layout/nav-bar_top.html' %}{% endblock %}
+
+{% block nav_sidebar %}{% include 'layout/nav-sidebar.html' %}{% endblock %}
+
+{% block content %}
+	<div class="home-page">
+		<ul id="tree">
+			<li class="open"><a href="{% url 'catalog:view-category' %}"><strong>Xem Category</strong></a>
+				<ul>
+					<h1>Category</h1>
+				</ul>
+			</li>
+			<li class="open"><a href="{% url 'catalog:view-product' %}"><strong>Xem Product</strong></a>
+				<ul>
+					<h1>Product</h1>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<hr/>
+	<div class="home-page">
+		{% for field in '1' %}
+		Collapsible Sidebar Using Bootstrap 4
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+			<br/><br/><br/>
+		{% endfor %}
+	</div>
+    <!--Add this-->
+    {% include 'layout/nav-bar.html' %}
+
+{% endblock %}

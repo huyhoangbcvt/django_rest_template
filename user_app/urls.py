@@ -52,6 +52,7 @@ router.register(r'groups', views_auth.GroupViewSet, basename="user_group_list")
 
 # If not register ViewSet, it only to see urls detail
 urlpatterns = [
+    # APIs
     path(r'api/', include(router.urls)),
     path(r'api/get-token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # Để cấp mới access token với refresh token, ta thực hiện POST request
@@ -59,6 +60,9 @@ urlpatterns = [
     path(r'api/sign-up/', views_auth.register, name='sign_up'),
     path(r"api/login/", views_auth.CustomAuthToken.as_view(), name="login_api"),
 
+    # Web
+    path('', views_auth_ctrl.index, name='index'),
+    path('home/', views_auth_ctrl.Homepage.as_view(), name='home'),
     path('accounts/login/', views_auth_ctrl.LoginView.as_view(), name="login"),
     path('accounts/login-social', views_auth_ctrl.LoginSocialView.as_view(), name="login_social"),
 

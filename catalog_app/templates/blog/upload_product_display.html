@@ -1,0 +1,23 @@
+{% extends "layout/layout.html" %}
+
+{% load static %}
+{% block title %}{{ title }} {% endblock %}
+
+{% block nav_top %}{% include 'layout/nav-bar_top.html' %}{% endblock %}
+
+{% block nav_sidebar %}{% include 'layout/nav-sidebar.html' %}{% endblock %}
+
+{% block content %}
+    <a href="{% url 'catalog:upload_p_template' %}">Go Back</a>
+    <hr/>
+    <h6>Tên sản phẩm: {{UF.name}}</h6>
+    <h5>Mã sản phẩm: {{UF.code}}</h5>
+    <h6>Xuất xứ: {{UF.country}}</h6>
+    <h6>Người tạo: {{UF.user.first_name}}</h6>
+    {% if UF.image %}
+        <p><img src="{{UF.image.url}}" alt="Smiley face" width="250" height="250"></p>
+    {% endif %}
+    <h6>Mô tả: {{UF.p_description}}</h6>
+
+    {% include 'layout/nav-bar.html' %}
+{% endblock %}

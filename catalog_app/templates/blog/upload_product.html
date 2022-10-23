@@ -1,0 +1,19 @@
+{% extends "layout/layout.html" %}
+
+{% block title %}{{ title }} {% endblock %}
+
+{% block nav_top %}{% include 'layout/nav-bar_top.html' %}{% endblock %}
+
+{% block nav_sidebar %}{% include 'layout/nav-sidebar.html' %}{% endblock %}
+
+{% block content %}
+    <a href="{% url 'catalog:view-product' %}">Go Back</a>
+    <hr/>
+    <form method = "post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload</button>
+    </form>
+    {% include 'layout/nav-bar.html' %}
+
+{% endblock %}
