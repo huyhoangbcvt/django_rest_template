@@ -47,7 +47,7 @@ urlpatterns = [
     # path('', views_auth.index_userapp, name='index'),
     path(r'user/', include("user_app.urls")),
     path(r'catalog/', include("catalog_app.urls")),
-
+    #
     re_path('^django/ckeditor/', include('ckeditor_uploader.urls')),
     re_path('^django/swagger(?P<format>\.json\.yaml)$', schema_view.with_ui(cache_timeout=0), name='schema-json'),
     re_path('^django/swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger'),

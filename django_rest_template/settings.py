@@ -53,12 +53,12 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',  # JWT authentication backend library
     # 'storages',  #S3-AWS
     'rest_framework.authtoken',  # TokenAuthentication
-    # 'oauth2_provider',
 
     'django.contrib.humanize',
     # Format number: 4500000 becomes 4,500,000 | 4500.2 becomes 4,500.2 | 450000 becomes '450.000'
     'user_app',  # modules 1
     'catalog_app',  # modules 2
+    # 'upload_app',
     'debug_toolbar',
     'ckeditor',
     'ckeditor_uploader',
@@ -75,6 +75,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'corsheaders.middleware.CorsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # load file in static
     'debug_toolbar.middleware.DebugToolbarMiddleware',  # Only using when debug=True
 ]
 
