@@ -7,18 +7,10 @@
 {% block nav_sidebar %}{% include 'layout/nav-sidebar.html' %}{% endblock %}
 
 {% block content %}
-	<div class="home-page">
-		<ul id="tree">
-			<li class="open"><a href="{% url 'catalog:view-category' %}"><strong>Xem Category</strong></a>
-				<ul>
-					<h1>Category</h1>
-				</ul>
-			</li>
-			<li class="open"><a href="{% url 'catalog:view-product' %}"><strong>Xem Product</strong></a>
-				<ul>
-					<h1>Product</h1>
-				</ul>
-			</li>
+	<div class="form-group clearfix">
+		<ul>
+			<li style="text-align: center;list-style: none;"><a href="{% url 'catalog:view-category' %}">Xem Category</a></li><br/>
+			<li style="text-align: center;list-style: none;"><a href="{% url 'catalog:view-product' %}">Xem Product</a></li>
 		</ul>
 	</div>
 	<hr/>

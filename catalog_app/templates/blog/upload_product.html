@@ -7,7 +7,7 @@
 {% block nav_sidebar %}{% include 'layout/nav-sidebar.html' %}{% endblock %}
 
 {% block content %}
-    <a href="{% url 'catalog:view-product' %}">Go Back</a>
+    <a href="{% url 'catalog:view-product' %}">Go Back Products</a>
     <hr/>
     <form method = "post" enctype="multipart/form-data">
         {% csrf_token %}

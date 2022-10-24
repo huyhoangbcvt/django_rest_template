@@ -20,14 +20,13 @@
     </style>
 </head>
 <body>-->
-    <div class="home-page">
-		<ul id="tree">
-			<li class="open"><a href="{% url 'catalog:upload_template' %}"><strong>Thêm vào CATALOG_CATEGORY</strong></a>
-			</li>
+    <div class="form-group clearfix">
+		<ul>
+			<li style="text-align: center;list-style: none;"><a href="{% url 'catalog:upload_template' %}">Thêm vào CATEGORY</a></li>
 		</ul>
 	</div>
 
-    <a href="{% url 'catalog:catalog' %}">Go Back</a>
+    <a href="{% url 'catalog:catalog' %}">Go Back Catalog</a>
     <hr/>
     {% for item in page_obj %}
         <h2>Tiêu đề: {{item.name}}</h2>

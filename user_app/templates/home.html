@@ -7,16 +7,14 @@
 {% block nav_sidebar %}{% include 'layout/nav-sidebar.html' %}{% endblock %}
 
 {% block content %}
-	<div class="home-page">
-		<ul id="tree">
-			<li class="open"><a href="{% url 'catalog:catalog' %}"><strong>Xem Catalog</strong></a>
-				<ul>
-					<h1>Home Product | Category</h1>
-				</ul>
-			</li>
+	<div class="form-group clearfix">
+		<ul>
+			<!-- <li><a href="{% url 'user:profile' %}{{ user.id }}/edit/">Chỉnh sửa thông tin cá nhân</a></li> -->
+			<li style="text-align: center;list-style: none;"><a href="{% url 'catalog:catalog' %}">Xem Catalog</a></li>
 		</ul>
 	</div>
 	<hr/>
+
 	<div class="home-page">
 		{% for field in '123456789' %}
 		Collapsible Sidebar Using Bootstrap 4
