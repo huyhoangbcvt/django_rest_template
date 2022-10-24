@@ -76,7 +76,7 @@ urlpatterns = [
                 template_name = "registration/password_reset_done_new.html",
                 extra_context = {'next':'/accounts/login/', 'crumbs': [('Trang chủ', reverse_lazy('index')), ('Đăng nhập', reverse_lazy('login')), ('Gửi yêu cầu thành công. Vào email để lấy lại mật khẩu', reverse_lazy('password_reset_done'))],'year':datetime.now().year},
         ), name="password_reset_done"),
-    #path('user/accounts/reset/<uidb64>/<token>/', ctrl_auth.PassResetView.as_view(), name="password_reset_confirm"),
+    #path('user/reset/<uidb64>/<token>/', ctrl_auth.PassResetView.as_view(), name="password_reset_confirm"),
     #Link được send vào mail
     path('user/reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(
                 title = 'Đặt lại mật khẩu mới',

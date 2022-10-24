@@ -34,7 +34,6 @@ class Product(BaseProductCategoryModel):
 
     def __str__(self):
         return self.name
-        # return f"{self.name}, {self.code}, {self.date}, {self.country}"
 
     # def __unicode__(self):
     #     return u"%s" % self.user

@@ -62,14 +62,14 @@ urlpatterns = [
     # Web
     path('', views_auth_ctrl.index, name='index'),
     path('home/', views_auth_ctrl.Homepage.as_view(), name='home'),
-    path('accounts/login/', views_auth_ctrl.LoginView.as_view(), name="login"),
-    path('accounts/login-social', views_auth_ctrl.LoginSocialView.as_view(), name="login_social"),
+    path('login/', views_auth_ctrl.LoginView.as_view(), name="login"),
+    path('login-social', views_auth_ctrl.LoginSocialView.as_view(), name="login_social"),
 
-    path('accounts/logout/', auth_views.LogoutView.as_view(
+    path('logout/', auth_views.LogoutView.as_view(
             #template_name="registration/logged_out.html",
             next_page=reverse_lazy('user:login'), #next_page='/',
         ), name='logout'),
-    path('accounts/sign-up/', views_auth_ctrl.RegistrationUser.as_view(), name='sign_up'), #path('sign_up/', MySignUpView.as_view(), name='sign_up'),
+    path('sign-up/', views_auth_ctrl.RegistrationUser.as_view(), name='sign_up'), #path('sign_up/', MySignUpView.as_view(), name='sign_up'),
 
     # =============| Profile |============
     path('profile/', views_auth_ctrl.ProfileView.as_view(), name='profile'),
@@ -77,13 +77,13 @@ urlpatterns = [
     path('profile/<int:gu_id>/edit/', views_auth_ctrl.edit_profile_pk, name='profile_edit_pk'),
 
     # =============| Inside: password-reset for user |============
-    path('accounts/password-change/', PasswordChangeView.as_view(
+    path('password-change/', PasswordChangeView.as_view(
                 title = 'Thay đổi mật khẩu',
                 form_class = form_auth_ctrl.PassChangeForm, template_name = 'registration/password_change_form_accounts.html',
                 extra_context = {'next': reverse_lazy('user:password_change_done'), 'crumbs': [('Trang chủ', reverse_lazy('user:home')), ('Thông tin cá nhân', reverse_lazy('user:profile')), ('Thay đổi mật khẩu', reverse_lazy('user:password_change'))],'year':datetime.now().year},
                 success_url='done/',
         ), name="password_change"),
-    path('accounts/password-change/done/', PasswordChangeDoneView.as_view(
+    path('password-change/done/', PasswordChangeDoneView.as_view(
                 title = 'Thay đổi mật khẩu thành công',
                 extra_context = {'next': reverse_lazy('user:profile'), 'crumbs': [('Trang chủ', reverse_lazy('home')), ('Thông tin cá nhân', reverse_lazy('user:profile')), ('Thay đổi mật khẩu', reverse_lazy('user:password_change')), ('Thay đổi mật khẩu thành công', reverse_lazy('user:password_change_done'))],'year':datetime.now().year},
         ), name="password_change_done"),

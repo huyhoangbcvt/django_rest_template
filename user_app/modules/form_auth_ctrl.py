@@ -67,10 +67,10 @@ class SignUpForm(UserCreationForm):  # UserCreationForm  or forms.Form
                                 widget=forms.PasswordInput({
                                     'class': 'form-control',
                                     'placeholder': 'Gõ lại mật khẩu'}))
-    role = forms.CharField(label="Quyền tài khoản", max_length=20, required=False,
-                            widget=forms.TextInput({
-                                'class': 'form-control',
-                                'placeholder': 'Role'}))
+    # role = forms.CharField(label="Quyền tài khoản", max_length=20, required=False,
+    #                         widget=forms.TextInput({
+    #                             'class': 'form-control',
+    #                             'placeholder': 'Role'}))
 
     # role = forms.CharField(max_length=20)
     # class Meta:

@@ -190,6 +190,7 @@ class AuthView(FormView):
 class LoginSocialView(FormView):
     pass
 
+
 # class LoginView(DetailBreadcrumbMixin, FormView):
 class LoginView(FormView):
     success_url_allowed_hosts = set()
@@ -207,6 +208,7 @@ class LoginView(FormView):
     crumbs = [('Đăng nhập', 'login')]  # OR reverse_lazy
     extra_context = {
         'title': "Đăng nhập",
+        'title_social': "Đăng nhập mạng xã hội:",
         # 'next': 'home/',
         'site_header': 'Đăng nhập',
         'GOOGLE_CLIENT_ID': GOOGLE_CLIENT_ID,
