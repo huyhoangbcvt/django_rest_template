@@ -39,7 +39,7 @@ class Profile(models.Model):
 # sender=User: chỉ nhận signal từ User Model
 # instance: instance được lưu
 @receiver(post_save, sender=User)
-def update_profile(sender, instance, created, **kwargs):
+def create_or_update_user_profile(sender, instance, created, **kwargs):
     # If the user is created successfully
     if created:
         # Create user profile

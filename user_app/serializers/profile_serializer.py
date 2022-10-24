@@ -12,6 +12,12 @@ class ProfileSerializer(serializers.ModelSerializer):
         # fields = '__all__'
         fields = ['images', 'birthday', 'social_network', 'phone_number', 'address', 'role', 'description', 'user']
 
+    # def create(self, validated_data):  # override
+    #     profile = Profile(**validated_data)
+    #     profile.set_password(validated_data['password'])
+    #     profile.save()
+    #     return profile
+
     # def create(self, validated_data):
     #     """
     #     Overriding the default create method of the Model serializer.

@@ -18,8 +18,9 @@ from rest_framework.renderers import JSONRenderer
 # from django_filter import FilterSet
 from ..apis import category_ws
 from ..serializers.category_serializer import CategorySerializer
+from ..serializers.contact_serializer import ContactSerializer
 # from ..models.category_model import Category
-from ..models.catalog_model import (Product, Category)
+from ..models.catalog_model import (Product, Category, Contact)
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -85,6 +86,23 @@ class CreateCategory(CreateModelMixin, GenericAPIView):
     #    _id = self.request.data.get('id')
     #    comment = get_object_or_404(Profile, pk=_id)
     #    print(comment)
+
+
+class CreateContactViewSet(viewsets.ModelViewSet):
+    # authentication_classes = TokenAuthentication  # Token access
+    permission_classes = [IsAuthenticated]  # Basic Auth
+    queryset = Contact.objects.all().order_by('-date_joined')
+    serializer_class = ContactSerializer
+    charset = 'UTF-8'
+
+    def get_permissions(self):
+        if self.action == 'list':
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
+
+    def post(self, request, *args, **kwargs):
+        print(self.request.data)
+        return self.create(request, *args, **kwargs)
 
 
 # Get all

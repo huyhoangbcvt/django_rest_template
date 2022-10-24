@@ -71,10 +71,15 @@ class Category(BaseProductCategoryModel):
 
 class Contact(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    phone_number = models.CharField(max_length=20, null=True, default=None, blank=True)
     date_joined = models.DateField(auto_now_add=True, null=True)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        managed = True
+        ordering = ['-date_joined', 'name']
 
 
 # class Middleship(models.Model):

@@ -5,11 +5,15 @@ from .modules import (
 )
 app_name = 'catalog'
 
+contact_list = views_category.CreateContactViewSet.as_view({
+    'get': 'list',
+})
 # determine the name from the viewset, as it does not have a `.queryset` attribute.
 from rest_framework import routers
 router = routers.DefaultRouter()
-router.register(r'category', views_category.CategoryInfoViewSet, basename="category_list")
-router.register(r'product', views_product.ProductInfoViewSet, basename="product_list")
+router.register(r'categories', views_category.CategoryInfoViewSet, basename="category_list")
+router.register(r'products', views_product.ProductInfoViewSet, basename="product_list")
+router.register(r'contacts', views_category.CreateContactViewSet, basename="contact_list")
 
 urlpatterns = [
     # APIs

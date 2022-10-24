@@ -70,7 +70,7 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated] # Basic Auth
     serializer_class = UserSerializer
     queryset = User.objects.all().order_by('-date_joined')
-    swagger_schema = None
+    # swagger_schema = None
 
     def get_permissions(self):
         if self.action == 'list':

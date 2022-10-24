@@ -74,9 +74,12 @@ def QuerySet_GetCategoryInfo(request):
 def AddCategory(request):
     # Get data from post request
     data = request.data
-    user = request.user
+    # user = request.user
     # print(data['product_map'])
     # use Serializer to deserialize data
+    _id = self.request.user.id
+    if _id:
+        queryset = self.queryset.filter(user_id=_id)
     serializer = CategoryAddSerializer(data=data)
     # print(serializer)
     # Check if validation is successful
