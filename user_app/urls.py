@@ -79,12 +79,15 @@ urlpatterns = [
     # =============| Inside: password-reset for user |============
     path('password-change/', PasswordChangeView.as_view(
                 title='Thay đổi mật khẩu',
-                form_class=form_auth_ctrl.PassChangeForm, template_name = 'registration/password_change_form_accounts.html',
+                form_class=form_auth_ctrl.PassChangeForm,
+                template_name='registration/password_change_form_accounts.html',
                 extra_context={'next': reverse_lazy('user:password_change_done'), 'crumbs': [('Trang chủ', reverse_lazy('user:home')), ('Thông tin cá nhân', reverse_lazy('user:profile')), ('Thay đổi mật khẩu', reverse_lazy('user:password_change'))],'year':datetime.now().year},
                 success_url='done/',
         ), name="password_change"),
     path('password-change/done/', PasswordChangeDoneView.as_view(
                 title='Thay đổi mật khẩu thành công',
+                template_name='registration/password_change_done_accounts.html',
                 extra_context={'next': reverse_lazy('user:profile'), 'crumbs': [('Trang chủ', reverse_lazy('home')), ('Thông tin cá nhân', reverse_lazy('user:profile')), ('Thay đổi mật khẩu', reverse_lazy('user:password_change')), ('Thay đổi mật khẩu thành công', reverse_lazy('user:password_change_done'))],'year':datetime.now().year},
         ), name="password_change_done"),
+
 ]

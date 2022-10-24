@@ -10,10 +10,13 @@
 {% block content %}
     <a href="{% url 'catalog:view-category' %}">Go Back</a>
     <hr/>
-    <h1>{{UF.title}}</h1>
+    <h2>Tiêu đề: {{UF.name}}</h2>
+    <h6>Người tạo: {{UF.user.first_name}} {{UF.user.last_name}}</h6>
     {% if UF.image %}
-        <img src="{{UF.image.url}}" alt="Smiley face" width="250" height="250">
+        <p><img src="{{UF.image.url}}" alt="Hình ảnh Category" width="250" height="250"></p>
     {% endif %}
+    <p>Nội dung: {{UF.content}}</p>
+    <hr/>
 
     {% include 'layout/nav-bar.html' %}
 

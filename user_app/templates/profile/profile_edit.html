@@ -27,18 +27,46 @@
 	<form method="post" enctype="multipart/form-data">
 		{% csrf_token %} 
 		{% for field in user_form %}
-	    <div class="form-group clearfix">
-	    	<label for="id_username" class="col-md-4 control-label">{{ field.label }}</label>
-	    	<div class="col-md-4" style="display: inline-block;">{{ field }}</div>
-	    </div>
+			<div class="form-group clearfix">
+				<label for="id_username" class="col-md-4 control-label">{{ field.label }}</label>
+				<div class="col-md-4" style="display: inline-block;">{{ field }}</div>
+			</div>
 	    {% endfor %}
+
 	    <div class="clearfix"></div><!-- {{ profile_form.as_p }} -->
-	    {% for field in profile_form %}
-	    <div class="form-group clearfix">
-	    	<label for="id_username" class="col-md-4 control-label">{{ field.label }}</label>
-	    	<div class="col-md-4" style="display: inline-block;">{{ field }}</div>
-	    </div>
+		{% if not profile_form.profile.social_network %}
+			<div class="form-group clearfix">
+				<label for="id_username" class="col-md-4 control-label">Loại tài khoản</label>
+				<div class="col-md-4" style="display: inline-block;">Local</div>
+			</div>
+		{% else %}
+			{% if profile_form.profile.social_network == 1 %}
+				<div class="form-group clearfix">
+					<label for="id_username" class="col-md-4 control-label">Loại tài khoản</label>
+					<div class="col-md-4" style="display: inline-block;">Google</div>
+				</div>
+			{% endif %}
+			{% if profile_form.profile.social_network == 2 %}
+				<div class="form-group clearfix">
+					<label for="id_username" class="col-md-4 control-label">Loại tài khoản</label>
+					<div class="col-md-4" style="display: inline-block;">Facebook</div>
+				</div>
+			{% endif %}
+			{% if profile_form.profile.social_network == 3 %}
+				<div class="form-group clearfix">
+					<label for="id_username" class="col-md-4 control-label">Loại tài khoản</label>
+					<div class="col-md-4" style="display: inline-block;">Linkedin</div>
+				</div>
+			{% endif %}
+		{% endif %}
+
+		{% for field in profile_form %}
+			<div class="form-group clearfix">
+				<label for="id_username" class="col-md-4 control-label">{{ field.label }}</label>
+				<div class="col-md-4" style="display: inline-block;">{{ field }}</div>
+			</div>
 	    {% endfor %}
+
 	    <div class="form-group clearfix">
 			<input type="hidden" name="next" value="{{ next }}" />
 			<div class="col-md-12" style="text-align: center;"><input type="submit" value="Lưu lại" class="btn-info"/></div>

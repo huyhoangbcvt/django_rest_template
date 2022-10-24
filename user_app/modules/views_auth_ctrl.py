@@ -34,6 +34,7 @@ from django.urls import reverse, reverse_lazy
 from ..models.account_model import Profile
 # from .form_auth_ctrl import *
 from .form_auth_ctrl import (
+    UserForm,
     SignUpForm,
     LoginForm,
     ProfileForm,
@@ -764,7 +765,8 @@ class EditUserProfileView(UpdateView):  # Note that we are using UpdateView and 
     # https://django.cowhite.com/blog/adding-and-editing-model-objects-using-django-class-based-views-and-forms/
     # model = Profile #form_class = form_auth.ProfileForm
     # user_form_class = UserForm
-    # profile_form_class = ProfileForm
+    profile_form_class = ProfileForm
+    success_url = reverse_lazy('user:profile')
     template_name = "profile/profile_edit.html"
     add_home = False
     extra_context = {
@@ -772,7 +774,6 @@ class EditUserProfileView(UpdateView):  # Note that we are using UpdateView and 
         'year': datetime.now().year
     }
 
-    #     crumbs = [('Trang chá»§', reverse_lazy('user:home')), ('ThÃ´ng tin cÃ¡ nhÃ¢n', reverse_lazy('user:profile')), ('Thay Ä‘á»•i thÃ´ng tin cÃ¡ nhÃ¢n', reverse_lazy('profile_edit'))]
     @cached_property
     def crumbs(self):
         return [('Trang chá»§', reverse_lazy('user:home')), ('ThÃ´ng tin cÃ¡ nhÃ¢n', reverse_lazy('user:profile')),
@@ -790,16 +791,12 @@ class EditUserProfileView(UpdateView):  # Note that we are using UpdateView and 
             print(price_lte)
         if request.user.is_authenticated is None:
             return render(request, 'registration/login.html')
-        # Here I make instances of my form classes and pass them None
-        # which tells them that there is no additional data to display (errors, for example)
-        self.extra_context['user_form'] = UserForm(
-            instance=request.user)  # user_form = self.user_form_class(None)
-        self.extra_context['profile_form'] = ProfileForm(
-            instance=request.user.profile)  # profile_form = self.profile_form_class(None)
+        # Here I make instances of my form classes and pass them None. # which tells them that there is no additional data to display (errors, for example)
+        self.extra_context['user_form'] = UserForm(instance=request.user)  # user_form = self.user_form_class(None)
+        self.extra_context['profile_form'] = ProfileForm(instance=request.user.profile)  # profile_form = self.profile_form_class(None)
         self.extra_context['crumbs'] = self.crumbs
         # and then just pass them to my template
-        return render(request, self.template_name,
-                      self.extra_context)  # {'user_form': user_form, 'profile_form': profile_form}
+        return render(request, self.template_name, self.extra_context)  # {'user_form': user_form, 'profile_form': profile_form}
 
     #     def get_object(self, *args, **kwargs):
     #         #user = get_object_or_404(User, pk=self.kwargs['pk'])
@@ -816,15 +813,14 @@ class EditUserProfileView(UpdateView):  # Note that we are using UpdateView and 
         # user_form = self.user_form_class(request.POST)
         # profile_form = self.profile_form_class(request.POST)
         user_form = UserForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, request.FILES,
-                                   instance=request.user.profile)  # request.FILES is show the selected image or file
+        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)  # request.FILES is show the selected image or file
 
         if user_form.is_valid() and profile_form.is_valid():
             user_save = user_form.save()
             custom_save = profile_form.save(False)
             custom_save.user = user_save
             custom_save.save()
-            return redirect('profile')
+            return redirect('user:profile')
         # else: # form not valid - each form will contain errors in form.errors
         return render(request, self.template_name, {
             'user_form': user_form,

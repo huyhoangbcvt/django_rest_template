@@ -157,20 +157,21 @@ class UserForm(ModelForm):  # UserCreationForm
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email', 'is_staff', 'is_active',)
-        labels = {'username': _('Tên đăng nhập'), 'email': _('Mail điện tử')}
+        fields = ('first_name', 'last_name', 'email', )
+        labels = {'first_name': _('Tên (*)'), 'last_name': _('Họ đệm (*)')}
 
 
 class ProfileForm(ModelForm):
-    GOOGLE = 1
-    FACEBOOK = 2
-    LINKEDIN = 3
-    SOCIAL_CHOICES = (
-        (GOOGLE, 'Google'),
-        (FACEBOOK, 'Facebook'),
-        (LINKEDIN, 'Linkedin'),
-    )
-    social_network = forms.ChoiceField(label="Mạng xã hội", choices=SOCIAL_CHOICES)
+    # GOOGLE = 1
+    # FACEBOOK = 2
+    # LINKEDIN = 3
+    # SOCIAL_CHOICES = (
+    #     (GOOGLE, 'Google'),
+    #     (FACEBOOK, 'Facebook'),
+    #     (LINKEDIN, 'Linkedin'),
+    # )
+    # social_network = forms.ChoiceField(label="Mạng xã hội", choices=SOCIAL_CHOICES)
+    # social_network = forms.TypedChoiceField(null=True, default=0, blank=True)
     phone_number = forms.CharField(label="Số điện thoại", max_length=20, required=False,
                                   widget=forms.TextInput({
                                       'class': 'form-control',
@@ -202,9 +203,8 @@ class ProfileForm(ModelForm):
     # logo = forms.FileField(label='Logo')
     class Meta:
         model = Profile
-        fields = ('social_network', 'birthday', 'phone_number', 'address', 'description', 'website',
-                  'images')  # Note that we didn't mention user field here.
-        labels = {'social_network': _('Mạng xã hội'), 'birthday': _('Ngày sinh'), 'images': _('Hình ảnh Avatar')}
+        fields = ('birthday', 'phone_number', 'address', 'description', 'website', 'images')
+        labels = {'birthday': _('Ngày sinh'), 'images': _('Hình ảnh Avatar')}
         help_texts = {'birthday': _('Nhập vào một ngày sinh định dạng mm/dd/yyyy (mặc định 01/01/2020).'),
                       'images': _('Chọn một file từ thiết bị làm Avatar.')}
 

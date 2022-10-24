@@ -13,11 +13,11 @@
     <h6>Tên sản phẩm: {{UF.name}}</h6>
     <h5>Mã sản phẩm: {{UF.code}}</h5>
     <h6>Xuất xứ: {{UF.country}}</h6>
-    <h6>Người tạo: {{UF.user.first_name}}</h6>
+    <h6>Người tạo: {{UF.user.first_name}} {{UF.user.last_name}}</h6>
     {% if UF.image %}
-        <p><img src="{{UF.image.url}}" alt="Smiley face" width="250" height="250"></p>
+        <p><img src="{{UF.image.url}}" alt="Hình ảnh Product" width="250" height="250"></p>
     {% endif %}
-    <h6>Mô tả: {{UF.p_description}}</h6>
-
+    <h6>Mô tả: {{UF.description}}</h6>
+    <hr>
     {% include 'layout/nav-bar.html' %}
 {% endblock %}

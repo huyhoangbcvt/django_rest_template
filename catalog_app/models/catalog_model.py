@@ -30,7 +30,7 @@ class Product(BaseProductCategoryModel):
     description = models.TextField(max_length=1000, null=True, default=None, blank=True)
     country = models.CharField(max_length=50, null=True, default=None, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ForeignKey('Category', on_delete=models.PROTECT, related_name='Product')  # Not delete Category
+    category = models.ForeignKey('Category', on_delete=models.PROTECT, related_name='products')  # Not delete Category
 
     def __str__(self):
         return self.name
@@ -53,7 +53,8 @@ class Category(BaseProductCategoryModel):
     # Allow None null=True
     content = models.TextField(max_length=1000, null=True, default=None)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True, default=0, related_name='Category')
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True, default=0, related_name='categories')
+    contact = models.ManyToManyField('Contact', null=True, blank=True)
 
     # No Meta then table will create default via appname_classmodel
     class Meta:
@@ -66,6 +67,14 @@ class Category(BaseProductCategoryModel):
     def __str__(self):
         return self.name
         # return f"{self.name}, {self.image}, {self.body}, {self.user}"
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    date_joined = models.DateField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        return self.name
 
 
 # class Middleship(models.Model):
