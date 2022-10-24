@@ -12,6 +12,8 @@ django-admin startapp user_app
 
 django-admin startapp catalog_app
 
+django-admin startapp upload_app
+
 pip install -r requirements.txt
 
 # Create db_name django_rest_template in PostreSQL & config DATABASES in settings.py file
@@ -83,5 +85,8 @@ http://localhost:8083/catalog/api/product/
 http://localhost:8083/catalog/api/product/add/?role=Guess&username=it.hoanghh
 
 # All display on swagger
-http://localhost:8083/django/swagger/
+http://localhost:8083/api/swagger/
+
+# Or
+http://localhost:8083/api/redoc/
 
