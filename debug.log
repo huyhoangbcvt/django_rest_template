@@ -190,3 +190,403 @@ Traceback (most recent call last):
     raise NoReverseMatch(msg)
 django.urls.exceptions.NoReverseMatch: Reverse for 'password_reset' not found. 'password_reset' is not a valid view function or pattern name.
 ERROR 2022-10-23 19:50:18,331 basehttp 4424 4796 "GET /user/accounts/login/ HTTP/1.1" 500 180854
+ERROR 2022-10-23 21:55:14,147 log 21472 24308 Internal Server Error: /user/accounts/login/
+Traceback (most recent call last):
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Server\Python3.10.7\lib\contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\utils\decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\views\decorators\debug.py", line 92, in sensitive_post_parameters_wrapper
+    return view(request, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\utils\decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\utils\decorators.py", line 133, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\utils\decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\user_app\modules\views_auth_ctrl.py", line 231, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\views\generic\edit.py", line 153, in post
+    return self.form_valid(form)
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\user_app\modules\views_auth_ctrl.py", line 269, in form_valid
+    return HttpResponseRedirect(self.get_success_url())
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\user_app\modules\views_auth_ctrl.py", line 243, in get_success_url
+    return url or resolve_url('user:home')  # settings.LOGIN_REDIRECT_URL
+  File "C:\Server\Python3.10.7\lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'home' not found. 'home' is not a valid view function or pattern name.
+ERROR 2022-10-23 21:55:14,471 basehttp 21472 24308 "POST /user/accounts/login/ HTTP/1.1" 500 145905
+ERROR 2022-10-23 21:55:22,135 log 21472 24308 Internal Server Error: /user/accounts/login/
+Traceback (most recent call last):
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Server\Python3.10.7\lib\contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\views\generic\base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\utils\decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\views\decorators\debug.py", line 92, in sensitive_post_parameters_wrapper
+    return view(request, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\utils\decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\utils\decorators.py", line 133, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\utils\decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\user_app\modules\views_auth_ctrl.py", line 231, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\views\generic\edit.py", line 153, in post
+    return self.form_valid(form)
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\user_app\modules\views_auth_ctrl.py", line 269, in form_valid
+    return HttpResponseRedirect(self.get_success_url())
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\user_app\modules\views_auth_ctrl.py", line 243, in get_success_url
+    return url or resolve_url('user:home')  # settings.LOGIN_REDIRECT_URL
+  File "C:\Server\Python3.10.7\lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'home' not found. 'home' is not a valid view function or pattern name.
+ERROR 2022-10-23 21:55:22,368 basehttp 21472 24308 "POST /user/accounts/login/ HTTP/1.1" 500 145905
+ERROR 2022-10-23 21:58:03,145 log 19964 14312 Internal Server Error: /user/home/
+Traceback (most recent call last):
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\backends\django.py", line 62, in render
+    return self.template.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\defaulttags.py", line 472, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'catalog' not found. 'catalog' is not a valid view function or pattern name.
+ERROR 2022-10-23 21:58:03,417 basehttp 19964 14312 "GET /user/home/ HTTP/1.1" 500 166448
+ERROR 2022-10-23 21:59:06,742 log 19964 14312 Internal Server Error: /user/home/
+Traceback (most recent call last):
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\backends\django.py", line 62, in render
+    return self.template.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\defaulttags.py", line 472, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'catalog' not found. 'catalog' is not a valid view function or pattern name.
+ERROR 2022-10-23 21:59:06,852 basehttp 19964 14312 "GET /user/home/ HTTP/1.1" 500 166448
+ERROR 2022-10-23 22:14:31,372 log 12028 22984 Internal Server Error: /admin/catalog_app/product/
+Traceback (most recent call last):
+  File "C:\Server\Python3.10.7\lib\site-packages\django\db\models\options.py", line 668, in get_field
+    return self.fields_map[field_name]
+KeyError: '__str__'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Server\Python3.10.7\lib\site-packages\django\contrib\admin\utils.py", line 271, in lookup_field
+    f = _get_non_gfk_field(opts, name)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\contrib\admin\utils.py", line 302, in _get_non_gfk_field
+    field = opts.get_field(name)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\db\models\options.py", line 670, in get_field
+    raise FieldDoesNotExist(
+django.core.exceptions.FieldDoesNotExist: Product has no field named '__str__'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\backends\django.py", line 62, in render
+    return self.template.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\contrib\admin\templatetags\base.py", line 45, in render
+    return super().render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\library.py", line 258, in render
+    _dict = self.func(*resolved_args, **resolved_kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\contrib\admin\templatetags\admin_list.py", line 336, in result_list
+    "results": list(results(cl)),
+  File "C:\Server\Python3.10.7\lib\site-packages\django\contrib\admin\templatetags\admin_list.py", line 312, in results
+    yield ResultList(None, items_for_result(cl, res, None))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\contrib\admin\templatetags\admin_list.py", line 303, in __init__
+    super().__init__(*items)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\contrib\admin\templatetags\admin_list.py", line 213, in items_for_result
+    f, attr, value = lookup_field(field_name, result, cl.model_admin)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\contrib\admin\utils.py", line 284, in lookup_field
+    value = attr()
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\catalog_app\models\catalog_model.py", line 41, in __str__
+    return self.p_title
+AttributeError: 'Product' object has no attribute 'p_title'
+ERROR 2022-10-23 22:14:31,761 basehttp 12028 22984 "GET /admin/catalog_app/product/ HTTP/1.1" 500 423100
+ERROR 2022-10-23 22:20:54,850 log 3860 21828 Internal Server Error: /admin/catalog_app/product/1/change/
+Traceback (most recent call last):
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\backends\django.py", line 62, in render
+    return self.template.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\loader_tags.py", line 208, in render
+    return template.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 177, in render
+    return self._render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\test\utils.py", line 111, in instrumented_test_render
+    return self.nodelist.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\defaulttags.py", line 238, in render
+    nodelist.append(node.render_annotated(context))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\defaulttags.py", line 322, in render
+    return nodelist.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\defaulttags.py", line 322, in render
+    return nodelist.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1070, in render
+    return render_value_in_context(output, context)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\template\base.py", line 1047, in render_value_in_context
+    value = str(value)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\utils\html.py", line 419, in <lambda>
+    klass.__str__ = lambda self: mark_safe(klass_str(self))
+  File "C:\Server\Python3.10.7\lib\site-packages\django\forms\boundfield.py", line 34, in __str__
+    return self.as_widget()
+  File "C:\Server\Python3.10.7\lib\site-packages\django\forms\boundfield.py", line 99, in as_widget
+    return widget.render(
+  File "C:\Server\Python3.10.7\lib\site-packages\django\forms\widgets.py", line 280, in render
+    context = self.get_context(name, value, attrs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\contrib\admin\widgets.py", line 312, in get_context
+    "rendered_widget": self.widget.render(name, value, attrs),
+  File "C:\Server\Python3.10.7\lib\site-packages\django\forms\widgets.py", line 280, in render
+    context = self.get_context(name, value, attrs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\forms\widgets.py", line 734, in get_context
+    context = super().get_context(name, value, attrs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\forms\widgets.py", line 693, in get_context
+    context["widget"]["optgroups"] = self.optgroups(
+  File "C:\Server\Python3.10.7\lib\site-packages\django\forms\widgets.py", line 633, in optgroups
+    for index, (option_value, option_label) in enumerate(self.choices):
+  File "C:\Server\Python3.10.7\lib\site-packages\django\forms\models.py", line 1410, in __iter__
+    yield self.choice(obj)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\forms\models.py", line 1424, in choice
+    self.field.label_from_instance(obj),
+  File "C:\Server\Python3.10.7\lib\site-packages\django\forms\models.py", line 1510, in label_from_instance
+    return str(obj)
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\catalog_app\models\catalog_model.py", line 73, in __str__
+    return self.title
+AttributeError: 'Category' object has no attribute 'title'
+ERROR 2022-10-23 22:20:55,022 basehttp 3860 21828 "GET /admin/catalog_app/product/1/change/ HTTP/1.1" 500 669491
