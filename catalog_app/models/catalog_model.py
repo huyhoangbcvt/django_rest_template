@@ -13,9 +13,14 @@ class BaseProductCategoryModel(models.Model):
     name = models.CharField(max_length=100, default=None)
     code = models.CharField(max_length=50, unique=True)
     # Allow None null=True
-    image = models.ImageField(upload_to='catalogs/%Y/%m/', null=True, default=None, blank=True)
-    created_at = models.DateTimeField(null=True, auto_now_add=True, blank=True)
-    updated_at = models.DateTimeField(null=True, auto_now=True, blank=True)  # default=datetime.now
+    image = models.ImageField(upload_to='catalogs/%Y/%m/', null=True, blank=True, default=None)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  # default=datetime.now
+    active = models.BooleanField(
+        _("post status"),
+        default=True,
+        help_text=_("Open - close status post with user"),
+    )
 
 
 # @python_2_unicode_compatible
@@ -26,11 +31,6 @@ class Product(BaseProductCategoryModel):
     country = models.CharField(max_length=50, null=True, default=None, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey('Category', on_delete=models.PROTECT, related_name='Product')  # Not delete Category
-    active = models.BooleanField(
-        _("post status"),
-        default=True,
-        help_text=_("Open - close status post with user"),
-    )
 
     def __str__(self):
         return self.name
@@ -55,13 +55,8 @@ class Category(BaseProductCategoryModel):
     content = models.TextField(max_length=1000, null=True, default=None)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True, default=0, related_name='Category')
-    active = models.BooleanField(
-        _("post status"),
-        default=True,
-        help_text=_("Open - close status post with user"),
-    )
 
-    # Ko có cái này thì table tạo ra theo appname_classmodel
+    # No Meta then table will create default via appname_classmodel
     class Meta:
         managed = True
         ordering = ['-created_at', 'name']
