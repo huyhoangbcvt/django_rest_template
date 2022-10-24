@@ -23,6 +23,8 @@
 {% endblock %}
 
 {% block content %}
+	<a href="{% url 'user:profile' %}">Go Back Profile</a>
+    <hr/>
 <div class="">
 	<form method="post" enctype="multipart/form-data">
 		{% csrf_token %} 

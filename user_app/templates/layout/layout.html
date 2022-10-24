@@ -36,8 +36,8 @@
 				<div class="sidebar-header">
 				<ul class="sidebar__toggled">
 					<li><a href="javascript:void(0)" id="main-toggle" class="sidebar-toggle">{{ user.first_name }}
-						{% if user.account.images %}
-						<img src="{{ user.account.images.url }}" alt="" style="height:56px;width:56px;border-radius:50%;overflow:hidden;" />
+						{% if user.profile.images %}
+						<img src="{{ user.profile.images.url }}" alt="" style="height:56px;width:56px;border-radius:50%;overflow:hidden;" />
 						<!-- <img src="{{ MEDIA_URL }}{{ profile_record.images }}" alt="{{ profile_record.images }}" /> -->
 						{% else %}
 						<img src="{% static 'images/avatar.png' %}" alt="Default" style="height:56px;width:56px;border-radius:50%;overflow:hidden;"/>

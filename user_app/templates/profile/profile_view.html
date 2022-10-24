@@ -3,6 +3,13 @@
 {% block title %}{{ title }} {% endblock %}
 
 {% block content %}
+	<div class="form-group clearfix">
+		<ul>
+			<!-- <li><a href="{% url 'user:profile' %}{{ user.id }}/edit/">Chỉnh sửa thông tin cá nhân</a></li> -->
+			<li style="text-align: center;list-style: none;"><a href="{% url 'user:profile' %}edit/">Chỉnh sửa thông tin cá nhân</a></li>
+		</ul>
+	</div>
+	<hr/>
 	<div class="">
 	 	{% load static %}
 		<div class="form-group clearfix">
@@ -19,7 +26,7 @@
 			<!-- <input type="text" value="{{ user.email }}" name="username" visibility="hidden" /> -->
 		</div>
 		<div class="form-group clearfix">
-			<label for="id_is_staff" class="col-md-4 control-label">Tình trạng hân viên</label>
+			<label for="id_is_staff" class="col-md-4 control-label">Tình trạng nhân viên</label>
 			<label for="id_is_staff" class="col-md-7 required-color">{{ user.is_staff }}</label>
 		</div>
 		<div class="form-group clearfix">
@@ -88,12 +95,6 @@
 			<label for="id_images" class="col-md-4 required-color">Hình ảnh avatar mặc định</label>
 			{% endif %}
 		</div>
-		<div class="form-group clearfix">
-		<ul>
-			<!-- <li><a href="{% url 'user:profile' %}{{ user.id }}/edit/">Chỉnh sửa thông tin cá nhân</a></li> -->
-			<li style="text-align: center;list-style: none;"><a href="{% url 'user:profile' %}edit/">Chỉnh sửa thông tin cá nhân</a></li>
-			<li style="text-align: center;list-style: none;"><a href="{% url 'user:password_change' %}">Thay đổi mật khẩu</a></li>
-		</ul>
-		</div>
+
 	</div>
 {% endblock %}
