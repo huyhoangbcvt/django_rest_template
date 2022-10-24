@@ -1,6 +1,5 @@
 from django.urls import path, re_path, include, reverse
 from .modules import views_auth, views_auth_ctrl, form_auth_ctrl
-from .modules import form_auth_ctrl
 from rest_framework import viewsets
 from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView

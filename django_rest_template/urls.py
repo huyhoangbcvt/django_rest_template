@@ -28,7 +28,7 @@ from django.contrib.auth.views import (LoginView, LogoutView,
 )
 from django.urls import path, reverse_lazy
 from datetime import datetime, date
-from user_app.modules import form_auth_ctrl
+from user_app.modules import form_auth_ctrl, views_auth_ctrl
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -52,7 +52,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('', include(router.urls)),
     # =============| app endpoints |============
-    path('', views_auth.index, name='index_admin'),
+    path('', views_auth_ctrl.index, name='index_admin'),
     # path('', views_auth.index_userapp, name='index'),
     path(r'user/', include("user_app.urls")),
     path(r'catalog/', include("catalog_app.urls")),
@@ -64,28 +64,28 @@ urlpatterns = [
     re_path('^api/redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
     # =============| password-reset for user |============
-    path('user/accounts/password-reset/', PasswordResetView.as_view(
+    path('user/password-reset/', PasswordResetView.as_view(
                 title = 'Lấy lại mật khẩu',
                 form_class = form_auth_ctrl.ResetPassToEmailForm,
                 template_name = 'registration/password_reset_form_new.html',
                 extra_context = {'next':'/accounts/login/', 'crumbs': [('Trang chủ', reverse_lazy('index')), ('Đăng nhập', reverse_lazy('login')), ('Lấy lại mật khẩu', reverse_lazy('password_reset'))],'year':datetime.now().year},
                 success_url='done/',
         ), name="password_reset"),
-    path('user/accounts/password-reset/done/', PasswordResetDoneView.as_view(
+    path('user/password-reset/done/', PasswordResetDoneView.as_view(
                 title = 'Gửi yêu cầu thành công. Vào email để lấy lại mật khẩu',
                 template_name = "registration/password_reset_done_new.html",
                 extra_context = {'next':'/accounts/login/', 'crumbs': [('Trang chủ', reverse_lazy('index')), ('Đăng nhập', reverse_lazy('login')), ('Gửi yêu cầu thành công. Vào email để lấy lại mật khẩu', reverse_lazy('password_reset_done'))],'year':datetime.now().year},
         ), name="password_reset_done"),
     #path('user/accounts/reset/<uidb64>/<token>/', ctrl_auth.PassResetView.as_view(), name="password_reset_confirm"),
     #Link được send vào mail
-    path('user/accounts/reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(
+    path('user/reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(
                 title = 'Đặt lại mật khẩu mới',
                 form_class = form_auth_ctrl.ResetPassForm,
                 template_name = 'registration/password_reset_confirm_new.html',
                 extra_context = {'next':'/accounts/login/', 'crumbs': [('Trang chủ', reverse_lazy('index')), ('Đăng nhập', reverse_lazy('login')), ('Đặt lại mật khẩu mới', reverse_lazy('password_reset_confirm'))],'year':datetime.now().year},
                 success_url='/user/accounts/reset/done/',
         ), name="password_reset_confirm"),
-    path('user/accounts/reset/done/', PasswordResetCompleteView.as_view(
+    path('user/reset/done/', PasswordResetCompleteView.as_view(
                 title = 'Đổi mật khẩu thành công',
                 template_name = "registration/password_reset_complete_new.html",
                 extra_context = {'next':'/accounts/login/', 'crumbs': [('Trang chủ', reverse_lazy('index')), ('Đăng nhập', reverse_lazy('login')), ('Đổi mật khẩu thành công', reverse_lazy('password_reset_complete'))],'year':datetime.now().year},
