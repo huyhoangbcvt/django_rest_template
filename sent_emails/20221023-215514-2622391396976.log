@@ -1,25 +1,25 @@
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Subject: [Django] ERROR (internal IP): Internal Server Error:
- /catalog/api/product/
+ /user/accounts/login/
 From: no_reply@
 To: no_reply@
-Date: Sun, 23 Oct 2022 07:57:55 -0000
-Message-ID: <166651187555.20640.1596791211189734294@LAPTOP-P66G2708>
+Date: Sun, 23 Oct 2022 14:55:14 -0000
+Message-ID: <166653691423.21472.8867539203147368303@LAPTOP-P66G2708>
 
-ERROR Internal Server Error: /catalog/api/product/
+ERROR Internal Server Error: /user/accounts/login/
 
-NameError at /catalog/api/product/
-name 'permissions' is not defined
+NoReverseMatch at /user/accounts/login/
+Reverse for 'home' not found. 'home' is not a valid view function or pattern name.
 
-Request Method: GET
-Request URL: http://localhost:8083/catalog/api/product/
+Request Method: POST
+Request URL: http://localhost:8083/user/accounts/login/
 Django Version: 4.1.2
 Python Executable: C:\Server\Python3.10.7\python.exe
 Python Version: 3.10.7
-Python Path: ['D:\\Projects\\HDWebsoft\\workspace\\Python\\python_django\\django_rest', 'C:\\Server\\Python3.10.7\\python310.zip', 'C:\\Server\\Python3.10.7\\DLLs', 'C:\\Server\\Python3.10.7\\lib', 'C:\\Server\\Python3.10.7', 'C:\\Users\\hp\\AppData\\Roaming\\Python\\Python310\\site-packages', 'C:\\Users\\hp\\AppData\\Roaming\\Python\\Python310\\site-packages\\win32', 'C:\\Users\\hp\\AppData\\Roaming\\Python\\Python310\\site-packages\\win32\\lib', 'C:\\Users\\hp\\AppData\\Roaming\\Python\\Python310\\site-packages\\Pythonwin', 'C:\\Server\\Python3.10.7\\lib\\site-packages']
-Server time: Sun, 23 Oct 2022 07:57:55 +0000
+Python Path: ['D:\\Projects\\HDWebsoft\\workspace\\Python\\python_django\\django_rest_template', 'C:\\Server\\Python3.10.7\\python310.zip', 'C:\\Server\\Python3.10.7\\DLLs', 'C:\\Server\\Python3.10.7\\lib', 'C:\\Server\\Python3.10.7', 'C:\\Users\\hp\\AppData\\Roaming\\Python\\Python310\\site-packages', 'C:\\Users\\hp\\AppData\\Roaming\\Python\\Python310\\site-packages\\win32', 'C:\\Users\\hp\\AppData\\Roaming\\Python\\Python310\\site-packages\\win32\\lib', 'C:\\Users\\hp\\AppData\\Roaming\\Python\\Python310\\site-packages\\Pythonwin', 'C:\\Server\\Python3.10.7\\lib\\site-packages']
+Server time: Sun, 23 Oct 2022 14:55:14 +0000
 Installed Applications:
 ['django.contrib.admin',
  'django.contrib.auth',
@@ -34,6 +34,7 @@ Installed Applications:
  'django.contrib.humanize',
  'user_app',
  'catalog_app',
+ 'upload_app',
  'debug_toolbar',
  'ckeditor',
  'ckeditor_uploader',
@@ -47,6 +48,7 @@ Installed Middleware:
  'django.contrib.messages.middleware.MessageMiddleware',
  'django.middleware.clickjacking.XFrameOptionsMiddleware',
  'corsheaders.middleware.CorsMiddleware',
+ 'whitenoise.middleware.WhiteNoiseMiddleware',
  'debug_toolbar.middleware.DebugToolbarMiddleware']
 
 
@@ -57,40 +59,57 @@ Traceback (most recent call last):
     response = wrapped_callback(request, *callback_args, **callback_kwargs)
   File "C:\Server\Python3.10.7\lib\contextlib.py", line 79, in inner
     return func(*args, **kwds)
-  File "C:\Server\Python3.10.7\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
-    return view_func(*args, **kwargs)
-  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+  File "C:\Server\Python3.10.7\lib\site-packages\django\views\generic\base.py", line 103, in view
     return self.dispatch(request, *args, **kwargs)
-  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 509, in dispatch
-    response = self.handle_exception(exc)
-  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
-    self.raise_uncaught_exception(exc)
-  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
-    raise exc
-  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 497, in dispatch
-    self.initial(request, *args, **kwargs)
-  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 415, in initial
-    self.check_permissions(request)
-  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 331, in check_permissions
-    for permission in self.get_permissions():
-  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest\catalog_app\modules\views_product.py", line 50, in get_permissions
-    return [permissions.AllowAny()]
+  File "C:\Server\Python3.10.7\lib\site-packages\django\utils\decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\views\decorators\debug.py", line 92, in sensitive_post_parameters_wrapper
+    return view(request, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\utils\decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\utils\decorators.py", line 133, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\utils\decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\user_app\modules\views_auth_ctrl.py", line 231, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\views\generic\base.py", line 142, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\views\generic\edit.py", line 153, in post
+    return self.form_valid(form)
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\user_app\modules\views_auth_ctrl.py", line 269, in form_valid
+    return HttpResponseRedirect(self.get_success_url())
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\user_app\modules\views_auth_ctrl.py", line 243, in get_success_url
+    return url or resolve_url('user:home')  # settings.LOGIN_REDIRECT_URL
+  File "C:\Server\Python3.10.7\lib\site-packages\django\shortcuts.py", line 145, in resolve_url
+    return reverse(to, args=args, kwargs=kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
 
-Exception Type: NameError at /catalog/api/product/
-Exception Value: name 'permissions' is not defined
-Raised during: catalog_app.modules.views_product.ProductInfoViewSet
+Exception Type: NoReverseMatch at /user/accounts/login/
+Exception Value: Reverse for 'home' not found. 'home' is not a valid view function or pattern name.
+Raised during: user_app.modules.views_auth_ctrl.LoginView
 Request information:
-USER: AnonymousUser
+USER: it.hoanghh
 
 GET: No GET data
 
-POST: No POST data
+POST:
+csrfmiddlewaretoken = 'xhyOxTACcxlVJLWvSQuomTIMBIYua0KwaSbEhYaB8Ug9yFMcAk0j2V07f8XeMfTM'
+username = 'it.hoanghh'
+password = 'hoangdunga@'
+next = ''
 
 FILES: No FILES data
 
 COOKIES:
-_ga = 'GA1.1.1523915114.1665917103'
-csrftoken = 'tWdw9L63ZArGnD0k6ObrgyAkXitduQF8'
+csrftoken = 'NLN0UfK96x5oZ40RSEG5QcsvOA9UMpjq'
+G_ENABLED_IDPS = 'google'
+tabstyle = 'html-tab'
 
 META:
 ALLUSERSPROFILE = 'C:\\ProgramData'
@@ -100,31 +119,31 @@ COMMONPROGRAMFILES(X86) = 'C:\\Program Files (x86)\\Common Files'
 COMMONPROGRAMW6432 = 'C:\\Program Files\\Common Files'
 COMPUTERNAME = 'LAPTOP-P66G2708'
 COMSPEC = 'C:\\WINDOWS\\system32\\cmd.exe'
-CONTENT_LENGTH = ''
-CONTENT_TYPE = 'text/plain'
-CSRF_COOKIE = 'tWdw9L63ZArGnD0k6ObrgyAkXitduQF8'
-DJANGO_SETTINGS_MODULE = 'django_rest.settings'
+CONTENT_LENGTH = '133'
+CONTENT_TYPE = 'application/x-www-form-urlencoded'
+CSRF_COOKIE = '7AXgXU39LJk67sKzXkYzdujGJn4SRIn6'
+CSRF_COOKIE_NEEDS_UPDATE = True
+DJANGO_SETTINGS_MODULE = 'django_rest_template.settings'
 DRIVERDATA = 'C:\\Windows\\System32\\Drivers\\DriverData'
 FPS_BROWSER_APP_PROFILE_STRING = 'Internet Explorer'
 FPS_BROWSER_USER_PROFILE_STRING = 'Default'
 GATEWAY_INTERFACE = 'CGI/1.1'
 HOMEDRIVE = 'C:'
 HOMEPATH = '\\Users\\hp'
-HTTP_ACCEPT = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'
+HTTP_ACCEPT = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8'
 HTTP_ACCEPT_ENCODING = 'gzip, deflate, br'
-HTTP_ACCEPT_LANGUAGE = 'en-US,en;q=0.9'
+HTTP_ACCEPT_LANGUAGE = 'en-US,en;q=0.5'
 HTTP_CONNECTION = 'keep-alive'
-HTTP_COOKIE = '_ga=GA1.1.1523915114.1665917103; csrftoken=tWdw9L63ZArGnD0k6ObrgyAkXitduQF8'
+HTTP_COOKIE = 'csrftoken=NLN0UfK96x5oZ40RSEG5QcsvOA9UMpjq; G_ENABLED_IDPS=google; tabstyle=html-tab'
 HTTP_HOST = 'localhost:8083'
-HTTP_SEC_CH_UA = '"Chromium";v="106", "Google Chrome";v="106", "Not;A=Brand";v="99"'
-HTTP_SEC_CH_UA_MOBILE = '?0'
-HTTP_SEC_CH_UA_PLATFORM = '"Windows"'
+HTTP_ORIGIN = 'http://localhost:8083'
+HTTP_REFERER = 'http://localhost:8083/user/accounts/login/'
 HTTP_SEC_FETCH_DEST = 'document'
 HTTP_SEC_FETCH_MODE = 'navigate'
-HTTP_SEC_FETCH_SITE = 'cross-site'
+HTTP_SEC_FETCH_SITE = 'same-origin'
 HTTP_SEC_FETCH_USER = '?1'
 HTTP_UPGRADE_INSECURE_REQUESTS = '1'
-HTTP_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36'
+HTTP_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:106.0) Gecko/20100101 Firefox/106.0'
 IDEA_INITIAL_DIRECTORY = 'C:\\Program Files\\JetBrains\\PyCharm Community Edition 2022.2.3\\bin'
 JAVA_HOME = 'C:\\Server\\Java\\jdk7'
 LOCALAPPDATA = 'C:\\Users\\hp\\AppData\\Local'
@@ -135,9 +154,9 @@ NUMBER_OF_PROCESSORS = '8'
 ONEDRIVE = 'C:\\Users\\hp\\OneDrive'
 ONLINESERVICES = 'Online Services'
 OS = 'Windows_NT'
-PATH = 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Server\\Java\\jdk7\\bin;C:\\Server\\Java\\jdk8\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Server\\apache-maven-3.8.1\\bin;C:\\Program Files\\TortoiseGit\\bin;C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\ProgramData\\DockerDesktop\\version-bin;C:\\Server\\Python3.10.7;C:\\Server\\Python3.10.7\\Scripts;C:\\Program Files\\Git\\cmd;C:\\Server\\Python3.10.7\\Scripts\\;C:\\Server\\Python3.10.7\\;C:\\Users\\hp\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\hp\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Program Files\\JetBrains\\PyCharm Community Edition 2022.2.3\\bin;;'
+PATH = 'C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Server\\Java\\jdk7\\bin;C:\\Server\\Java\\jdk8\\bin;C:\\Program Files\\TortoiseSVN\\bin;C:\\Server\\apache-maven-3.8.1\\bin;C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\ProgramData\\DockerDesktop\\version-bin;C:\\Server\\Python3.10.7;C:\\Server\\Python3.10.7\\Scripts;C:\\Program Files\\Git\\cmd;C:\\Program Files\\TortoiseGit\\bin;C:\\Server\\Python3.10.7\\Scripts\\;C:\\Server\\Python3.10.7\\;C:\\Users\\hp\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\hp\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Program Files\\JetBrains\\PyCharm Community Edition 2022.2.3\\bin;;'
 PATHEXT = '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL'
-PATH_INFO = '/catalog/api/product/'
+PATH_INFO = '/user/accounts/login/'
 PLATFORMCODE = 'KV'
 PROCESSOR_ARCHITECTURE = 'AMD64'
 PROCESSOR_IDENTIFIER = 'Intel64 Family 6 Model 140 Stepping 1, GenuineIntel'
@@ -154,7 +173,7 @@ QUERY_STRING = ''
 REGIONCODE = 'APJ'
 REMOTE_ADDR = '127.0.0.1'
 REMOTE_HOST = ''
-REQUEST_METHOD = 'GET'
+REQUEST_METHOD = 'POST'
 RUN_MAIN = 'true'
 SCRIPT_NAME = ''
 SERVER_NAME = 'dev.hd.com.vn'
@@ -166,7 +185,7 @@ SYSTEMDRIVE = 'C:'
 SYSTEMROOT = 'C:\\WINDOWS'
 TEMP = 'C:\\Users\\hp\\AppData\\Local\\Temp'
 TERMINAL_EMULATOR = 'JetBrains-JediTerm'
-TERM_SESSION_ID = 'e22532be-92d9-4402-bd3b-6bd1a248e79c'
+TERM_SESSION_ID = '139da41c-9625-4a61-8c75-5a2118d08eba'
 TMP = 'C:\\Users\\hp\\AppData\\Local\\Temp'
 USERDOMAIN = 'LAPTOP-P66G2708'
 USERDOMAIN_ROAMINGPROFILE = 'LAPTOP-P66G2708'
@@ -175,9 +194,9 @@ USERPROFILE = 'C:\\Users\\hp'
 WINDIR = 'C:\\WINDOWS'
 ZES_ENABLE_SYSMAN = '1'
 __INTELLIJ_COMMAND_HISTFILE__ = 'C:\\Users\\hp\\AppData\\Local\\JetBrains\\PyCharmCE2022.2\\terminal\\history\\python_django-history'
-wsgi.errors = <colorama.ansitowin32.StreamWrapper object at 0x000001A053865660>
+wsgi.errors = <colorama.ansitowin32.StreamWrapper object at 0x0000026292305660>
 wsgi.file_wrapper = <class 'wsgiref.util.FileWrapper'>
-wsgi.input = <django.core.handlers.wsgi.LimitedStream object at 0x000001A05637BBB0>
+wsgi.input = <django.core.handlers.wsgi.LimitedStream object at 0x0000026292BD7E20>
 wsgi.multiprocess = False
 wsgi.multithread = True
 wsgi.run_once = False
@@ -185,7 +204,7 @@ wsgi.url_scheme = 'http'
 wsgi.version = '(1, 0)'
 
 Settings:
-Using settings module django_rest.settings
+Using settings module django_rest_template.settings
 ABSOLUTE_URL_OVERRIDES = {}
 ADMINS = [('', 'no_reply@')]
 ALLOWED_HOSTS = ['*']
@@ -193,7 +212,8 @@ APPEND_SLASH = True
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 AUTH_PASSWORD_VALIDATORS = '********************'
 AUTH_USER_MODEL = 'auth.User'
-BASE_DIR = WindowsPath('D:/Projects/HDWebsoft/workspace/Python/python_django/django_rest')
+BASE_DIR = WindowsPath('D:/Projects/HDWebsoft/workspace/Python/python_django/django_rest_template')
+BREADCRUMBS_HOME_LABEL = 'Trang chủ'
 CACHES = {'default': {'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'}}
 CACHE_MIDDLEWARE_ALIAS = 'default'
 CACHE_MIDDLEWARE_KEY_PREFIX = '********************'
@@ -225,6 +245,7 @@ DATE_INPUT_FORMATS = "('%d/%m/%Y', '%d-%m-%Y', '%Y-%m-%d')"
 DEBUG = True
 DEBUG_PROPAGATE_EXCEPTIONS = False
 DECIMAL_SEPARATOR = '.'
+DEFAULT = '%PATH%'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DEFAULT_CHARSET = 'utf-8'
 DEFAULT_EXCEPTION_REPORTER = 'django.views.debug.ExceptionReporter'
@@ -235,7 +256,7 @@ DEFAULT_INDEX_TABLESPACE = ''
 DEFAULT_TABLESPACE = ''
 DISALLOWED_USER_AGENTS = []
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = 'D:\\Projects\\HDWebsoft\\workspace\\Python\\python_django\\django_rest\\sent_emails'
+EMAIL_FILE_PATH = 'D:\\Projects\\HDWebsoft\\workspace\\Python\\python_django\\django_rest_template\\sent_emails'
 EMAIL_HOST = ''
 EMAIL_HOST_PASSWORD = '********************'
 EMAIL_HOST_USER = 'no_reply@'
@@ -257,8 +278,11 @@ FIXTURE_DIRS = []
 FORCE_SCRIPT_NAME = None
 FORMAT_MODULE_PATH = None
 FORM_RENDERER = 'django.forms.renderers.DjangoTemplates'
+GOOGLE_CLIENT_ID = '226127222416-2c4reo3d755cofltcev8iars4no55nch.apps.googleusercontent.com'
+GOOGLE_CLIENT_SECRET = '********************'
+GOOGLE_REDIRECT_URI = 'http://localhost:8083/user/accounts/login-social'
 IGNORABLE_404_URLS = []
-INSTALLED_APPS = ['django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes', 'django.contrib.sessions', 'django.contrib.messages', 'django.contrib.staticfiles', 'corsheaders', 'rest_framework', 'rest_framework_simplejwt', 'rest_framework.authtoken', 'django.contrib.humanize', 'user_app', 'catalog_app', 'debug_toolbar', 'ckeditor', 'ckeditor_uploader', 'drf_yasg']
+INSTALLED_APPS = ['django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes', 'django.contrib.sessions', 'django.contrib.messages', 'django.contrib.staticfiles', 'corsheaders', 'rest_framework', 'rest_framework_simplejwt', 'rest_framework.authtoken', 'django.contrib.humanize', 'user_app', 'catalog_app', 'upload_app', 'debug_toolbar', 'ckeditor', 'ckeditor_uploader', 'drf_yasg']
 INTERNAL_IPS = ['127.0.0.1', 'dev.hd.com.vn']
 LANGUAGES = "(('vi', 'Vietnamese'), ('en', 'English'), ('fr', 'French'))"
 LANGUAGES_BIDI = ['he', 'ar', 'ar-dz', 'fa', 'ur']
@@ -273,14 +297,14 @@ LANGUAGE_COOKIE_SECURE = False
 LOCALE_PATHS = []
 LOGGING = {'version': 1, 'disable_existing_loggers': False, 'formatters': {'verbose': {'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'}, 'simple': {'format': '%(levelname)s %(message)s'}}, 'handlers': {'file': {'level': 'ERROR', 'class': 'logging.FileHandler', 'filename': 'debug.log', 'formatter': 'verbose'}, 'mail_admins': {'level': 'ERROR', 'class': 'django.utils.log.AdminEmailHandler', 'formatter': 'simple'}}, 'loggers': {'django': {'handlers': ['file'], 'level': 'ERROR', 'propagate': True}, 'django.request': {'handlers': ['mail_admins'], 'level': 'ERROR', 'propagate': True}}}
 LOGGING_CONFIG = 'logging.config.dictConfig'
-LOGIN_REDIRECT_URL = '/accounts/profile/'
-LOGIN_URL = '/accounts/login/'
-LOGOUT_REDIRECT_URL = None
+LOGIN_REDIRECT_URL = '/admin/'
+LOGIN_URL = '/admin/login/'
+LOGOUT_REDIRECT_URL = '/admin/'
 MANAGERS = [('', 'no_reply@')]
-MEDIA_ROOT = 'D:\\Projects\\HDWebsoft\\workspace\\Python\\python_django\\django_rest\\media'
+MEDIA_ROOT = 'D:\\Projects\\HDWebsoft\\workspace\\Python\\python_django\\django_rest_template\\media'
 MEDIA_URL = '/media/'
 MESSAGE_STORAGE = 'django.contrib.messages.storage.fallback.FallbackStorage'
-MIDDLEWARE = ['django.middleware.security.SecurityMiddleware', 'django.contrib.sessions.middleware.SessionMiddleware', 'django.middleware.common.CommonMiddleware', 'django.middleware.csrf.CsrfViewMiddleware', 'django.contrib.auth.middleware.AuthenticationMiddleware', 'django.contrib.messages.middleware.MessageMiddleware', 'django.middleware.clickjacking.XFrameOptionsMiddleware', 'corsheaders.middleware.CorsMiddleware', 'debug_toolbar.middleware.DebugToolbarMiddleware']
+MIDDLEWARE = ['django.middleware.security.SecurityMiddleware', 'django.contrib.sessions.middleware.SessionMiddleware', 'django.middleware.common.CommonMiddleware', 'django.middleware.csrf.CsrfViewMiddleware', 'django.contrib.auth.middleware.AuthenticationMiddleware', 'django.contrib.messages.middleware.MessageMiddleware', 'django.middleware.clickjacking.XFrameOptionsMiddleware', 'corsheaders.middleware.CorsMiddleware', 'whitenoise.middleware.WhiteNoiseMiddleware', 'debug_toolbar.middleware.DebugToolbarMiddleware']
 MIGRATION_MODULES = {}
 MONTH_DAY_FORMAT = 'F j'
 NUMBER_GROUPING = 0
@@ -288,7 +312,7 @@ PASSWORD_HASHERS = '********************'
 PASSWORD_RESET_TIMEOUT = '********************'
 PREPEND_WWW = False
 REST_FRAMEWORK = {'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication', 'rest_framework.authentication.SessionAuthentication', 'rest_framework.authentication.BasicAuthentication'), 'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated'], 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination', 'PAGE_SIZE': 2, 'DEFAULT_RENDERER_CLASSES': ['rest_framework.renderers.JSONRenderer', 'rest_framework.renderers.BrowsableAPIRenderer']}
-ROOT_URLCONF = 'django_rest.urls'
+ROOT_URLCONF = 'django_rest_template.urls'
 SECRET_KEY = '********************'
 SECRET_KEY_FALLBACKS = '********************'
 SECURE_CONTENT_TYPE_NOSNIFF = True
@@ -315,16 +339,16 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_FILE_PATH = None
 SESSION_SAVE_EVERY_REQUEST = False
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
-SETTINGS_MODULE = 'django_rest.settings'
+SETTINGS_MODULE = 'django_rest_template.settings'
 SHORT_DATETIME_FORMAT = 'm/d/Y P'
 SHORT_DATE_FORMAT = 'm/d/Y'
 SIGNING_BACKEND = 'django.core.signing.TimestampSigner'
 SILENCED_SYSTEM_CHECKS = []
 SIMPLE_JWT = {'ACCESS_TOKEN_LIFETIME': '********************', 'SLIDING_TOKEN_REFRESH_LIFETIME': '********************'}
-STATICFILES_DIRS = "('D:\\\\Projects\\\\HDWebsoft\\\\workspace\\\\Python\\\\python_django\\\\django_rest\\\\static',)"
+STATICFILES_DIRS = "('D:\\\\Projects\\\\HDWebsoft\\\\workspace\\\\Python\\\\python_django\\\\django_rest_template\\\\static',)"
 STATICFILES_FINDERS = ['django.contrib.staticfiles.finders.FileSystemFinder', 'django.contrib.staticfiles.finders.AppDirectoriesFinder']
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-STATIC_ROOT = 'D:\\Projects\\HDWebsoft\\workspace\\Python\\python_django\\django_rest\\staticfiles'
+STATIC_ROOT = 'D:\\Projects\\HDWebsoft\\workspace\\Python\\python_django\\django_rest_template\\staticfiles'
 STATIC_URL = '/static/'
 TEMPLATES = [{'BACKEND': 'django.template.backends.django.DjangoTemplates', 'DIRS': [], 'APP_DIRS': True, 'OPTIONS': {'context_processors': ['django.template.context_processors.debug', 'django.template.context_processors.request', 'django.contrib.auth.context_processors.auth', 'django.contrib.messages.context_processors.messages', 'django.template.context_processors.media']}}]
 TEST_NON_SERIALIZED_APPS = []
@@ -340,7 +364,7 @@ USE_THOUSAND_SEPARATOR = False
 USE_TZ = True
 USE_X_FORWARDED_HOST = False
 USE_X_FORWARDED_PORT = False
-WSGI_APPLICATION = 'django_rest.wsgi.application'
+WSGI_APPLICATION = 'django_rest_template.wsgi.application'
 X_FRAME_OPTIONS = 'DENY'
 YEAR_MONTH_FORMAT = 'F Y'
 
