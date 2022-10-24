@@ -12,14 +12,15 @@ class Profile(models.Model):
     social_network = models.PositiveSmallIntegerField(null=True, default=0, blank=True)
     birthday = models.DateField(null=True, default=None, blank=True)
     phone_number = models.CharField(max_length=20, null=True, default=None, blank=True)
+    images = models.ImageField(upload_to='images', null=True, default=None, blank=True)
     address = models.CharField(max_length=150, null=True, default=None, blank=True)
     description = models.CharField(max_length=100, null=True, default=None, blank=True)
     website = models.URLField(max_length=256, null=True, default=None, blank=True)
-    images = models.ImageField(upload_to='images', null=True, default=None, blank=True)
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")  # id table user
     role = models.CharField(max_length=20, default='Guess', blank=True)
-    created_at = models.DateTimeField(null=True, default=datetime.now, blank=True)
-    updated_at = models.DateTimeField(null=True, default=datetime.now, blank=True)  # auto_now_add=True
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True) # default=datetime.now
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  # auto_now_add=True
 
     class Meta:
         ordering = ['created_at', 'birthday']

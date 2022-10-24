@@ -389,7 +389,7 @@ class RegistrationUser(FormView):  # via template
         'year': datetime.now().year
     }
 
-    @transaction.non_atomic_requests
+    @transaction.atomic
     def form_valid(self, form):
         data = form.cleaned_data  # form.save()  # form data will be saved
         auth_user = User.objects.filter(username=data['username'])
@@ -404,12 +404,12 @@ class RegistrationUser(FormView):  # via template
                 first_name=data['first_name'],
                 last_name=data['last_name']
             )
-        instance = Profile(
-            birthday=data['birthday'],
-            phone_number=data['phone_number'],
-            user_id=auth_user.id
-        )
-        instance.save()
+        # instance = Profile(
+        #     birthday=data['birthday'],
+        #     phone_number=data['phone_number'],
+        #     user_id=auth_user.id
+        # )
+        # instance.save()
         return super(RegistrationUser, self).form_valid(form)
 
     # Phần redirect giữa url & process data
