@@ -52,25 +52,30 @@ class ProductInfoViewSet(viewsets.ModelViewSet):
             return [permissions.AllowAny()]
         return [permissions.IsAuthenticated()]
 
-    def filter_queryset(self, queryset):
-        # queryset = self.queryset.filter(username=request.data.username)
-        _id = self.request.user.id
-        if _id:
-            queryset = self.queryset.filter(user_id=_id)
-            return queryset
-        return self.queryset
+    @action(methods=['PATCH'], detail=True, url_path='active', url_name='active')
+    def active_product(self, request, pk):
+        print('Class ViewSet [PATCH]: active_product pk = ', pk)
+        return product_ws.UpdateActiveProduct(request, pk, _active=True)
 
-    @action(methods=['POST'], detail=True)
-    def update_product(self, request, pk):
-        print('Class ViewSet [POST]: UpdateProduct pk = ', pk)
-        return product_ws.UpdateProduct(request, pk)
+    @action(methods=['PATCH'], detail=True, url_path='unactive', url_name='unactive')
+    def un_active_product(self, request, pk):
+        print('Class ViewSet [PATCH]: un_active_product pk = ', pk)
+        return product_ws.UpdateActiveProduct(request, pk, _active=False)
 
-    def get(self, request, pk, *args, **kwargs):
-        # queryset = Product.objects.filter(id=pk, user_id=request.user.id, active=True)
-        print('Class ViewSet [GET] for /catalog/product/' + pk + '/update_product/')
-        from pprint import pprint;
-        pprint(self.serializer_class)
-        return product_ws.GetProductInfoDetail(request, pk)
+    # def filter_queryset(self, queryset):
+    #     # queryset = self.queryset.filter(username=request.data.username)
+    #     _id = self.request.user.id
+    #     if _id:
+    #         queryset = self.queryset.filter(user_id=_id)
+    #         return queryset
+    #     return self.queryset
+
+    # def get(self, request, pk, *args, **kwargs):
+    #     # queryset = Product.objects.filter(id=pk, user_id=request.user.id, active=True)
+    #     print('Class ViewSet [GET] for /catalog/product/' + pk + '/update_product/')
+    #     from pprint import pprint;
+    #     pprint(self.serializer_class)
+    #     return product_ws.GetProductInfoDetail(request, pk)
 
 
 class CreateProduct(CreateModelMixin, GenericAPIView):

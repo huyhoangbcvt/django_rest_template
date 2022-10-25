@@ -44,12 +44,12 @@ def GetProductInfoDetail(request, pk):
 
 
 @permission_classes([IsAuthenticated])
-def UpdateProduct(request, pk):
+def UpdateActiveProduct(request, pk, _active):
     try:
-        user = request.user
+        # user = request.user
         # Get Category info from database # Category.objects.all()
-        product_obj = Product.objects.get(id=pk, user_id=user.id, active=True)
-        product_obj.active = False
+        product_obj = Product.objects.get(id=pk)  # , user_id=user.id, active=True
+        product_obj.active = _active
         product_obj.save()
     except UpdateProduct.DoesNotExists:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

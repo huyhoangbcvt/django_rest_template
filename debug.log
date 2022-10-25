@@ -2878,3 +2878,183 @@ Traceback (most recent call last):
 AssertionError: The `.update()` method does not support writable dotted-source fields by default.
 Write an explicit `.update()` method for serializer `user_app.serializers.profile_serializer.ProfileSerializer`, or set `read_only=True` on dotted-source serializer fields.
 ERROR 2022-10-25 16:35:02,667 basehttp 11820 20656 "PUT /user/api/profiles/6/ HTTP/1.1" 500 135761
+ERROR 2022-10-25 17:32:10,131 log 7520 8356 Internal Server Error: /catalog/api/categories/8/unactive/
+Traceback (most recent call last):
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Server\Python3.10.7\lib\contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\catalog_app\modules\views_category.py", line 75, in un_active_category
+    return category_ws.UpdateActiveCategory(request, pk, active=False)
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\catalog_app\apis\category_ws.py", line 54, in UpdateActiveCategory
+    category_obj = Category.objects.get(id=pk, user_id=user.id, active=True)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\db\models\query.py", line 650, in get
+    raise self.model.DoesNotExist(
+catalog_app.models.catalog_model.Category.DoesNotExist: Category matching query does not exist.
+ERROR 2022-10-25 17:32:10,212 basehttp 7520 8356 "POST /catalog/api/categories/8/unactive/ HTTP/1.1" 500 121229
+ERROR 2022-10-25 17:34:23,863 log 4820 23796 Internal Server Error: /catalog/api/categories/8/unactive/
+Traceback (most recent call last):
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Server\Python3.10.7\lib\contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\catalog_app\modules\views_category.py", line 75, in un_active_category
+    return category_ws.UpdateActiveCategory(request, pk, active=False)
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\catalog_app\apis\category_ws.py", line 54, in UpdateActiveCategory
+    category_obj = Category.objects.get(id=pk, user_id=user.id, active=True)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\db\models\query.py", line 650, in get
+    raise self.model.DoesNotExist(
+catalog_app.models.catalog_model.Category.DoesNotExist: Category matching query does not exist.
+ERROR 2022-10-25 17:34:23,942 basehttp 4820 23796 "PATCH /catalog/api/categories/8/unactive/ HTTP/1.1" 500 119993
+ERROR 2022-10-25 17:34:41,246 log 4820 23796 Internal Server Error: /catalog/api/categories/8/active/
+Traceback (most recent call last):
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Server\Python3.10.7\lib\contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\catalog_app\modules\views_category.py", line 70, in active_category
+    return category_ws.UpdateActiveCategory(request, pk, active=True)
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\catalog_app\apis\category_ws.py", line 54, in UpdateActiveCategory
+    category_obj = Category.objects.get(id=pk, user_id=user.id, active=True)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\db\models\query.py", line 650, in get
+    raise self.model.DoesNotExist(
+catalog_app.models.catalog_model.Category.DoesNotExist: Category matching query does not exist.
+ERROR 2022-10-25 17:34:41,330 basehttp 4820 23796 "PATCH /catalog/api/categories/8/active/ HTTP/1.1" 500 119937
+ERROR 2022-10-25 17:35:05,305 log 15076 21004 Internal Server Error: /catalog/api/categories/8/active/
+Traceback (most recent call last):
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Server\Python3.10.7\lib\contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\catalog_app\modules\views_category.py", line 70, in active_category
+    return category_ws.UpdateActiveCategory(request, pk, active=True)
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\catalog_app\apis\category_ws.py", line 54, in UpdateActiveCategory
+    category_obj = Category.objects.get(id=pk, user_id=user.id, active=True)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\db\models\query.py", line 650, in get
+    raise self.model.DoesNotExist(
+catalog_app.models.catalog_model.Category.DoesNotExist: Category matching query does not exist.
+ERROR 2022-10-25 17:35:05,379 basehttp 15076 21004 "PATCH /catalog/api/categories/8/active/ HTTP/1.1" 500 119938
+ERROR 2022-10-25 17:36:55,834 log 10236 25404 Internal Server Error: /catalog/api/categories/8/active/
+Traceback (most recent call last):
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Server\Python3.10.7\lib\contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\catalog_app\modules\views_category.py", line 70, in active_category
+    return category_ws.UpdateActiveCategory(request, pk, _active=True)
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\catalog_app\apis\category_ws.py", line 54, in UpdateActiveCategory
+    category_obj = Category.objects.get(id=pk, user_id=user.id, active=True)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\db\models\query.py", line 650, in get
+    raise self.model.DoesNotExist(
+catalog_app.models.catalog_model.Category.DoesNotExist: Category matching query does not exist.
+ERROR 2022-10-25 17:36:55,907 basehttp 10236 25404 "PATCH /catalog/api/categories/8/active/ HTTP/1.1" 500 119946
+ERROR 2022-10-25 17:39:46,310 log 21184 26588 Internal Server Error: /catalog/api/categories/8/active/
+Traceback (most recent call last):
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Server\Python3.10.7\lib\contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\views\decorators\csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\viewsets.py", line 125, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Server\Python3.10.7\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\catalog_app\modules\views_category.py", line 70, in active_category
+    return category_ws.UpdateActiveCategory(request, pk, _active=True)
+  File "D:\Projects\HDWebsoft\workspace\Python\python_django\django_rest_template\catalog_app\apis\category_ws.py", line 54, in UpdateActiveCategory
+    category_obj = Category.objects.get(id=pk, active=True)  # , user_id=user.id
+  File "C:\Server\Python3.10.7\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Server\Python3.10.7\lib\site-packages\django\db\models\query.py", line 650, in get
+    raise self.model.DoesNotExist(
+catalog_app.models.catalog_model.Category.DoesNotExist: Category matching query does not exist.
+ERROR 2022-10-25 17:39:46,421 basehttp 21184 26588 "PATCH /catalog/api/categories/8/active/ HTTP/1.1" 500 119704

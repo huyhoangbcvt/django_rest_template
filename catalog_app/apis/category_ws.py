@@ -47,12 +47,12 @@ def GetCategoryInfoDetail(request, pk):
 
 
 @permission_classes([IsAuthenticated])
-def UpdateCategory(request, pk):
+def UpdateActiveCategory(request, pk, _active):
     try:
-        user = request.user
+        # user = request.user
         # Get Category info from database # Category.objects.all()
-        category_obj = Category.objects.get(id=pk, user_id=user.id, active=True)
-        category_obj.active = False
+        category_obj = Category.objects.get(id=pk)  # , user_id=user.id, active=True
+        category_obj.active = _active
         category_obj.save()
     # UpdateCategory.DoesNotExists:
     except ErrorInCode:

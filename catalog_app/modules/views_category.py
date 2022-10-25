@@ -56,6 +56,16 @@ class CategoryInfoViewSet(viewsets.ModelViewSet):
             return [permissions.AllowAny()]
         return [permissions.IsAuthenticated()]
 
+    @action(methods=['PATCH'], detail=True, url_path='active', url_name='active')
+    def active_category(self, request, pk):
+        print('Class ViewSet [PATCH]: active_category pk = ', pk)
+        return category_ws.UpdateActiveCategory(request, pk, _active=True)
+
+    @action(methods=['PATCH'], detail=True, url_path='unactive', url_name='unactive')
+    def un_active_category(self, request, pk):
+        print('Class ViewSet [PATCH]: un_active_category pk = ', pk)
+        return category_ws.UpdateActiveCategory(request, pk, _active=False)
+
     # def filter_queryset(self, queryset):
     #     # queryset = self.queryset.filter(username=request.data.username)
     #     _id = self.request.user.id
@@ -64,14 +74,9 @@ class CategoryInfoViewSet(viewsets.ModelViewSet):
     #         return queryset
     #     return self.queryset
 
-    @action(methods=['POST'], detail=True)
-    def update_category(self, request, pk):
-        print('Class ViewSet [POST]: UpdateCategory pk = ', pk)
-        return category_ws.UpdateCategory(request, pk)
-
-    def get(self, request, pk, *args, **kwargs):
-        print('Class ViewSet [GET] for /catalog/category/'+pk+'/update_category/')
-        return category_ws.GetCategoryInfoDetail(request, pk)
+    # def get(self, request, pk, *args, **kwargs):
+    #     print('Class ViewSet [GET] for /catalog/category/'+pk+'/update_category/')
+    #     return category_ws.GetCategoryInfoDetail(request, pk)
 
 
 class CreateCategory(CreateModelMixin, GenericAPIView):
