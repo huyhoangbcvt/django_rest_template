@@ -21,26 +21,8 @@ app_name = 'user'
 user_list = views_auth.UserViewSet.as_view({
     'get': 'list',
 })
-profile_list = views_auth.ProfileViewSet.as_view({
-    'get': 'list',
-    'post': 'create'
-})
-group_list = views_auth.GroupViewSet.as_view({
-    'get': 'list',
-})
 token_user = TokenObtainPairView.as_view()
 token_refresh = TokenRefreshView.as_view()
-# register = views_auth.register
-
-# urlpatterns = format_suffix_patterns([
-#     path('users/', user_list, name='user_list'),
-#     path('profiles/', profile_list, name='user_list'),
-#     path('groups/', group_list, name='user_list'),
-#     path('get-token/', token_user, name='token_obtain_pair'),
-#     # Để cấp mới access token với refresh token, ta thực hiện POST request
-#     path('refresh-token/', token_refresh, name='token_refresh'),
-#     path('sign-up/', register, name='sign_up'),
-# ])
 
 # If using routers to register ViewSet, it will see Binding ViewSets to urls explicitly
 from rest_framework import routers
@@ -51,7 +33,7 @@ router.register(r'groups', views_auth.GroupViewSet, basename="user_group_list")
 
 # If not register ViewSet, it only to see urls detail
 urlpatterns = [
-    # APIs
+    # =============| APIs |============
     path(r'api/', include(router.urls)),
     path(r'api/get-token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # Để cấp mới access token với refresh token, ta thực hiện POST request
@@ -59,7 +41,7 @@ urlpatterns = [
     path(r'api/sign-up/', views_auth.register, name='sign_up'),
     path(r"api/login/", views_auth.CustomAuthToken.as_view(), name="login_api"),
 
-    # Web
+    # =============| Web |============
     path('', views_auth_ctrl.index, name='index'),
     path('home/', views_auth_ctrl.Homepage.as_view(), name='home'),
     path('login/', views_auth_ctrl.LoginView.as_view(), name="login"),
@@ -71,7 +53,6 @@ urlpatterns = [
         ), name='logout'),
     path('sign-up/', views_auth_ctrl.RegistrationUser.as_view(), name='sign_up'),  # path('sign_up/', MySignUpView.as_view(), name='sign_up'),
 
-    # =============| Profile |============
     path('profile/', views_auth_ctrl.ProfileView.as_view(), name='profile'),
     path('profile/edit/', views_auth_ctrl.EditUserProfileView.as_view(), name='profile_edit'),
     path('profile/<int:gu_id>/edit/', views_auth_ctrl.edit_profile_pk, name='profile_edit_pk'),
