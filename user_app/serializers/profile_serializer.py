@@ -1,17 +1,29 @@
 from rest_framework import serializers
 from ..models.account_model import Profile
-from .user_serializer import UserSerializer
+from django.contrib.auth.models import User
+from .user_serializer import UserSerializer, CustomUserForeignKey
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    # user = serializers.PrimaryKeyRelatedField(many=False, queryset=Profile.objects.select_related('user'))
-    user = UserSerializer(required=True)   # Note required=True
+    # user = serializers.PrimaryKeyRelatedField(many=True, queryset=Profile.objects.select_related('user'))
+    # print('vao', user)
+    # user = UserSerializer(required=True)   # Note required=True
+    # user = CustomUserForeignKey
+    user = serializers.CharField(read_only=True, source="user.username")
+    social_network = serializers.IntegerField(read_only=True, label="Loại tài khoản")
 
     class Meta:
         model = Profile
         # fields = '__all__'
         fields = ['images', 'birthday', 'social_network', 'phone_number', 'address', 'role', 'description', 'user']
 
+    # def get_queryset(self):
+    #     _id = self.request.user.id
+    #     print(_id)
+    #     user = UserSerializer(required=True,  queryset=Profile.objects.filter(id=_id))
+    #     return user
+
+    # Override
     # def create(self, validated_data):  # override
     #     profile = Profile(**validated_data)
     #     profile.set_password(validated_data['password'])

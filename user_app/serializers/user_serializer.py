@@ -1,4 +1,4 @@
-from abc import ABC
+from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -8,10 +8,30 @@ from ..models.account_model import Profile
 
 
 class UserSerializer(serializers.ModelSerializer):  # serializers.HyperlinkedModelSerializer
+    last_login = serializers.DateTimeField(read_only=True, format='%m-%d-%YT%H:%M:%S', label="Lần cuối đăng nhập")  # , style={'input_type':'hidden'}
+    date_joined = serializers.DateTimeField(read_only=True, format='%m-%d-%YT%H:%M:%S', label="Ngày tham gia")
+    is_active = serializers.BooleanField(read_only=True, label="Kích hoạt")
+
+    class Meta:
+        model = User
+        # fields = '__all__'
+        fields = ['username', 'first_name', 'last_name', 'email', 'last_login', 'date_joined', 'is_active', 'groups', 'user_permissions']
+        # labels = {'last_login': _('Lần đăng nhập cuối'), 'date_joined': _('Ngày tham gia')}
+
+
+class CustomUserForeignKey(serializers.PrimaryKeyRelatedField):
+    # def __init__(self, **kwargs):
+    #     self.model = kwargs.pop('model')
+    #     assert hasattr(self.model, 'owner')
+    #     super().__init__(**kwargs)
+
     class Meta:
         model = User
         fields = '__all__'
-        # fields = ['username', 'first_name', 'last_name', 'email']
+
+    # def get_queryset(self):
+    #     return User.objects.filter(username=self.request.user.username)
+    #     # return User.objects.filter(user=self.context['request'].user)
 
 
 class GroupSerializer(serializers.ModelSerializer):

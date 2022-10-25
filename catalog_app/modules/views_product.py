@@ -44,6 +44,8 @@ class ProductInfoViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]  # Basic Auth
     queryset = Product.objects.filter(active=True).order_by('created_at')
     serializer_class = ProductSerializer
+    # http_method_names = ['get', 'post', 'put', 'patch', 'head', 'delete']
+    # swagger_schema = None
 
     def get_permissions(self):
         if self.action == 'list':

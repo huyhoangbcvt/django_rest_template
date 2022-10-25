@@ -49,6 +49,12 @@ except ImportError:
 from django.db import transaction
 
 
+def index_redirect(request):
+    if request.user.is_authenticated:
+        return redirect('user:home')
+    return redirect('user:login')
+
+
 # @crumb('Staff')  # This is the root crumb -- it doesnâ€™t have a parent
 def index(request):
     # return HttpResponse('Hello, welcome to the index page.')

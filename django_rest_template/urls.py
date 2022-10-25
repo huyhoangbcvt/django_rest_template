@@ -48,11 +48,11 @@ from rest_framework import routers, permissions
 # router.register('', views_auth.HomeViewSet)
 
 urlpatterns = [
+    # =============| APIs |============
     path('__debug__/', include(debug_toolbar.urls)),
     path('admin/', admin.site.urls),
     # path('', include(router.urls)),
     # =============| app endpoints |============
-    path('', views_auth_ctrl.index, name='index_admin'),
     # path('', views_auth.index_userapp, name='index'),
     path(r'user/', include("user_app.urls")),
     path(r'catalog/', include("catalog_app.urls")),
@@ -63,7 +63,10 @@ urlpatterns = [
     re_path('^api/swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger'),
     re_path('^api/redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
-    # =============| password-reset for user |============
+    # =============| Web |============
+    path(r'', views_auth_ctrl.index, name='index_admin'),
+    path(r'login/', views_auth_ctrl.index_redirect, name='index_login'),
+
     path('user/password-reset/', PasswordResetView.as_view(
                 title = 'Lấy lại mật khẩu',
                 form_class = form_auth_ctrl.ResetPassToEmailForm,

@@ -2,22 +2,29 @@ from datetime import datetime
 from django.shortcuts import render, resolve_url, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User, Group
-from rest_framework import status, viewsets, permissions, renderers
-from rest_framework.views import APIView
+from django.views.generic import FormView
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
+
+from rest_framework import status, views, viewsets, mixins, generics, permissions, renderers
+# from rest_framework.views import View, APIView
+# from rest_framework.generics import (GenericAPIView,
+#     CreateAPIView, ListAPIView, RetrieveAPIView,
+#     DestroyAPIView, UpdateAPIView, ListCreateAPIView,
+#     RetrieveUpdateAPIView, RetrieveDestroyAPIView, RetrieveUpdateDestroyAPIView
+# )
+# from rest_framework.viewsets import ModelViewSet
+
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
-from rest_framework.generics import ListAPIView, GenericAPIView
-from django.views.generic import FormView, View
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, action, permission_classes
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import login, logout
+
 from ..serializers.user_serializer import UserSerializer, GroupSerializer, LoginSerializer
 from ..serializers.profile_serializer import ProfileSerializer
 from .form_auth import RegistrationUserForm, LoginForm
 from ..models.account_model import Profile
 from ..util import utilities
-from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
 
 
 @api_view(['POST'])
@@ -51,7 +58,7 @@ class CustomAuthToken(ObtainAuthToken):
         }, status=status.HTTP_200_OK)
 
 
-class LoginAPIView(APIView):
+class LoginAPIView(views.APIView):
     def post(self, request, *args, **kwargs):
         serializer = LoginSerializer(data=request.data)
         print(serializer)
@@ -67,9 +74,10 @@ class UserViewSet(viewsets.ModelViewSet):
     API endpoint that allows users to be viewed or edited.
     """
     # authentication_classes = TokenAuthentication  # Token access
-    permission_classes = [permissions.IsAuthenticated] # Basic Auth
+    permission_classes = [permissions.IsAuthenticated]  # Basic Auth
     serializer_class = UserSerializer
     queryset = User.objects.all().order_by('-date_joined')
+    http_method_names = ['get', 'post', 'put', 'patch', 'head', 'delete']
     # swagger_schema = None
 
     def get_permissions(self):
@@ -77,14 +85,13 @@ class UserViewSet(viewsets.ModelViewSet):
             return [permissions.AllowAny()]
         return [permissions.IsAuthenticated()]
 
-    def filter_queryset(self, queryset):
-        # queryset = self.queryset.filter(username=request.data.username)
-        _id = self.request.user.id
-        print('filter_queryset', _id)
-        if _id:
-            queryset = self.queryset.filter(id=_id)
-            return queryset
-        return self.queryset
+    # def filter_queryset(self, queryset):
+    #     # queryset = self.queryset.filter(username=request.data.username)
+    #     _id = self.request.user.id
+    #     if _id:
+    #         queryset = self.queryset.filter(id=_id)
+    #         return queryset
+    #     return self.queryset
 
     # def get_queryset(self):
     #     # username = self.request.query_params.get('username', None)
@@ -108,9 +115,29 @@ class ProfileViewSet(viewsets.ModelViewSet):
     API endpoint that allows users to be viewed or edited.
     """
     # authentication_classes = TokenAuthentication  # Token access
-    permission_classes = [permissions.IsAuthenticated] # Basic Auth
+    permission_classes = [permissions.IsAuthenticated]  # Basic Auth
     queryset = Profile.objects.all().order_by('created_at')
     serializer_class = ProfileSerializer
+    http_method_names = ['get', 'put', 'patch', 'head']
+
+    def get_permissions(self):
+        if self.action == 'list':
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
+
+    # def get_queryset(self):
+    #     _user = self.request.user
+    #     print(_user.id)
+    #     queryset = self.queryset.filter(user_id=_user.id)
+    #     # query_set = Profile.objects.filter(profile__user_id=_user)
+    #     return queryset
+
+    # def filter_queryset(self, queryset):
+    #     _user = self.request.user
+    #     if _user:
+    #         queryset = self.queryset.filter(user_id=_user.id)
+    #         return queryset
+    #     return self.queryset
 
 
 class UserDetail(viewsets.ModelViewSet):
@@ -118,6 +145,7 @@ class UserDetail(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     queryset = User.objects.all().order_by('-date_joined')
     # swagger_schema = None
+
 
 class GroupViewSet(viewsets.ModelViewSet):
     """
@@ -127,6 +155,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = GroupSerializer
     queryset = Group.objects.all()
+    http_method_names = ['get', 'post', 'put', 'patch', 'head', 'delete']
 
     def get_permissions(self):
         if self.action == 'list':
