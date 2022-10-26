@@ -48,6 +48,7 @@ from rest_framework import routers, permissions
 # router.register('', views_auth.HomeViewSet)
 
 urlpatterns = [
+    path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     # =============| APIs |============
     path('__debug__/', include(debug_toolbar.urls)),
     path('admin/', admin.site.urls),

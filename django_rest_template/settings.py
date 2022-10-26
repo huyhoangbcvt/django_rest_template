@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'drf_yasg',
+    'oauth2_provider',
 ]
 
 MIDDLEWARE = [
@@ -85,6 +86,7 @@ INTERNAL_IPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
         # Tạo JWT và xác thực quyền truy cập
         'rest_framework_simplejwt.authentication.JWTAuthentication',  # ACCESS_TOKEN_LIFETIME
         'rest_framework.authentication.SessionAuthentication',

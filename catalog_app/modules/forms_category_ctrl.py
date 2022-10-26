@@ -35,9 +35,9 @@ class CatalogForm(forms.ModelForm):
         # PRODUCT_CHOICES = (fields['product_map'])
         # product_map = forms.ChoiceField(choices='product_map')
         # model['product'] = forms.ChoiceField(label="Chọn sản phẩm", choices=Product.objects.all())
-        fields = ['name', 'code', 'image', 'content', 'product', 'user', 'contact']
+        fields = ['name', 'code', 'image', 'content', 'product', 'user']
         labels = {'name': _('Tên Category (*)'), 'code': _('Mã Category (*)'), 'image': _('Hình ảnh category'), 'content': _('Nội dung'),
-                  'product': _('Chọn sản phẩm (nếu có)'), 'user': _('Tài khoản tạo (*)'), 'contact': _('Gắn liên hệ')}
+                  'product': _('Chọn sản phẩm (nếu có)'), 'user': _('Tài khoản tạo (*)')}
         widgets = {
             # 'product': forms.ChoiceField(attrs={'required': False}),
             # 'image': forms.ImageField(attrs={'required': False}),

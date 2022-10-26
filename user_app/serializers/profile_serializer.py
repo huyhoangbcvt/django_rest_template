@@ -6,7 +6,6 @@ from .user_serializer import UserSerializer, CustomUserForeignKey
 
 class ProfileSerializer(serializers.ModelSerializer):
     # user = serializers.PrimaryKeyRelatedField(many=True, queryset=Profile.objects.select_related('user'))
-    # print('vao', user)
     # user = UserSerializer(required=True)   # Note required=True
     # user = CustomUserForeignKey
     user = serializers.CharField(read_only=True, source="user.username")
@@ -15,7 +14,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         # fields = '__all__'
-        fields = ['images', 'birthday', 'social_network', 'phone_number', 'address', 'role', 'description', 'user']
+        fields = ['image', 'birthday', 'social_network', 'phone_number', 'address', 'role', 'description', 'user']
 
     # def get_queryset(self):
     #     _id = self.request.user.id

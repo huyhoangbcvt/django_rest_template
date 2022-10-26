@@ -9,7 +9,7 @@ from django.contrib.auth.forms import (
     UserCreationForm, UserChangeForm, AuthenticationForm, PasswordResetForm,  # send mail
     SetPasswordForm, PasswordChangeForm, AdminPasswordChangeForm,
 )
-from ..models.account_model import Profile
+from ..models.account_model import Profile, Social
 from django.conf import settings
 from django.template.defaultfilters import default
 # from .widgets
@@ -203,10 +203,30 @@ class ProfileForm(ModelForm):
     # logo = forms.FileField(label='Logo')
     class Meta:
         model = Profile
-        fields = ('birthday', 'phone_number', 'address', 'description', 'website', 'images')
-        labels = {'birthday': _('Ngày sinh'), 'images': _('Hình ảnh Avatar')}
+        fields = ('birthday', 'phone_number', 'address', 'description', 'website', 'image')
+        labels = {'birthday': _('Ngày sinh'), 'image': _('Hình ảnh Avatar')}
         help_texts = {'birthday': _('Nhập vào một ngày sinh định dạng mm/dd/yyyy (mặc định 01/01/2020).'),
-                      'images': _('Chọn một file từ thiết bị làm Avatar.')}
+                      'image': _('Chọn một file từ thiết bị làm Avatar.')}
+
+
+class SocialForm(ModelForm):
+    GOOGLE = 1
+    FACEBOOK = 2
+    LINKEDIN = 3
+    SOCIAL_CHOICES = (
+        (GOOGLE, 'Google'),
+        (FACEBOOK, 'Facebook'),
+        (LINKEDIN, 'Linkedin'),
+    )
+    social_type = forms.ChoiceField(label="Mạng xã hội", choices=SOCIAL_CHOICES)
+
+    class Meta:
+        model = Social
+        fields = ('username_social', 'social_type', 'birthday', 'image', 'phone_number', 'address', 'note', 'website', 'user')
+        labels = {'username_social': _('Tài khoản mạng xã hội (*)'), 'social_type': _('Loại xã hội'),
+                  'birthday': _('Ngày sinh'), 'image': _('Hình ảnh Avatar'), 'user': _('Tài khoản local (nếu có)')}
+        help_texts = {'birthday': _('Nhập vào một ngày sinh định dạng mm/dd/yyyy (mặc định 01/01/2020).'),
+                      'image': _('Chọn một file từ thiết bị làm Avatar.')}
 
 
 class DateForm(forms.Form):

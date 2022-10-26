@@ -15,7 +15,7 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         # fields = '__all__'
-        fields = ['name', 'code', 'image', 'content', 'active', 'product', 'user', 'contact']
+        fields = ['name', 'code', 'image', 'content', 'active', 'product', 'user']
 
 
 class CategoryAddSerializer(serializers.ModelSerializer):
@@ -31,4 +31,4 @@ class CategoryAddSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         # fields = '__all__'
-        fields = ['name', 'code', 'image', 'content', 'user', 'product', 'contact']
+        fields = ['name', 'code', 'image', 'content', 'user', 'product']

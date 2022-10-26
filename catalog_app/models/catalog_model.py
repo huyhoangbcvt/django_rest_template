@@ -24,6 +24,28 @@ class BaseProductCategoryModel(models.Model):
     )
 
 
+# Create your models here.
+class Category(BaseProductCategoryModel):
+    class Meta:
+        unique_together = {'name', 'product'}
+    # Allow None null=True
+    content = RichTextField(max_length=1000, null=True, default=None)  # models.TextField(max_length=1000, null=True, default=None)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True, blank=True, default=0, related_name='categories')
+
+    # No Meta then table will create default via appname_classmodel
+    class Meta:
+        managed = True
+        ordering = ['-created_at', 'name']
+        # db_table = 'catalog_category'
+        # verbose_name = 'catalog_category'
+        # verbose_name_plural = 'catalog_categories'
+
+    def __str__(self):
+        return self.name
+        # return f"{self.name}, {self.image}, {self.body}, {self.user}"
+
+
 # @python_2_unicode_compatible
 class Product(BaseProductCategoryModel):
     class Meta:
@@ -31,7 +53,8 @@ class Product(BaseProductCategoryModel):
     description = RichTextField(max_length=1000, null=True, default=None, blank=True)  # models.TextField(max_length=1000, null=True, default=None, blank=True)
     country = models.CharField(max_length=50, null=True, default=None, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ForeignKey('Category', on_delete=models.PROTECT, related_name='products')  # Not delete Category
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')  # Not delete Category
+    contact = models.ManyToManyField('Contact', null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -45,29 +68,6 @@ class Product(BaseProductCategoryModel):
         # db_table = 'catalog_product'
         # verbose_name = 'catalog_product'
         # verbose_name_plural = 'catalog_products'
-
-
-# Create your models here.
-class Category(BaseProductCategoryModel):
-    class Meta:
-        unique_together = {'name', 'product'}
-    # Allow None null=True
-    content = RichTextField(max_length=1000, null=True, default=None)  # models.TextField(max_length=1000, null=True, default=None)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True, default=0, related_name='categories')
-    contact = models.ManyToManyField('Contact', null=True, blank=True)
-
-    # No Meta then table will create default via appname_classmodel
-    class Meta:
-        managed = True
-        ordering = ['-created_at', 'name']
-        # db_table = 'catalog_category'
-        # verbose_name = 'catalog_category'
-        # verbose_name_plural = 'catalog_categories'
-
-    def __str__(self):
-        return self.name
-        # return f"{self.name}, {self.image}, {self.body}, {self.user}"
 
 
 class Contact(models.Model):

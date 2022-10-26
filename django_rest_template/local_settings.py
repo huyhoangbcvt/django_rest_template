@@ -9,14 +9,16 @@ GOOGLE_CLIENT_SECRET = "EgzjoQoUWB4ax4VIaD4WjDPB"
 GOOGLE_REDIRECT_URI = "http://localhost:8083/user/accounts/login-social"
 
 CKEDITOR_UPLOAD_PATH = 'ckeditor_uploads/'
-CKEDITOR_CONFIGS = {
-    'awesome_ckeditor': {
-        'toolbar': 'Basic',
-    },
-}
+# CKEDITOR_CONFIGS = {
+#     'awesome_ckeditor': {
+#         'toolbar': 'Basic',
+#         'height': 150,
+#         'width': 800,
+#     },
+# }
 CKEDITOR_CONFIGS = {
     'default': {
-        'toolbar': 'full',
+        'toolbar': 'full',  # 'full',
         'height': 150,
         'width': 800,
     },
