@@ -7,3 +7,18 @@ GOOGLE_CLIENT_ID = "226127222416-2c4reo3d755cofltcev8iars4no55nch.apps.googleuse
 GOOGLE_CLIENT_SECRET = "EgzjoQoUWB4ax4VIaD4WjDPB"
 # You need register
 GOOGLE_REDIRECT_URI = "http://localhost:8083/user/accounts/login-social"
+
+CKEDITOR_UPLOAD_PATH = 'ckeditor_uploads/'
+CKEDITOR_CONFIGS = {
+    'awesome_ckeditor': {
+        'toolbar': 'Basic',
+    },
+}
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 150,
+        'width': 800,
+    },
+}
+

@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'corsheaders',  # connect secure header: browser & server allow
-    # 'inspectdb_refactor',
     # Error: swagger drf_yasg duplicate if using djoser
     # 'djoser',                       # third party package for user registration and authentication endpoints
     'rest_framework',  # rest API implementation library for django

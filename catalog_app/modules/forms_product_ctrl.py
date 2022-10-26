@@ -2,6 +2,8 @@ from ..models.catalog_model import Product
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
+from ckeditor.widgets import CKEditorWidget
 
 
 class ProductForm(forms.ModelForm):
@@ -13,7 +15,8 @@ class ProductForm(forms.ModelForm):
     name = forms.CharField(required=True)
     code = forms.CharField(required=True)
     image = forms.ImageField(required=False)
-    description = forms.CharField(required=False, widget=forms.Textarea())
+    description = forms.CharField(required=False, widget=CKEditorUploadingWidget())
+    # description = forms.CharField(required=False, widget=forms.Textarea())
 
     class Meta:
         model = Product

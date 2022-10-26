@@ -58,7 +58,7 @@ urlpatterns = [
     path(r'catalog/', include("catalog_app.urls")),
     path(r'upload/', include("upload_app.urls")),
     #
-    re_path('^api/ckeditor/', include('ckeditor_uploader.urls')),
+    re_path('^ckeditor/', include('ckeditor_uploader.urls')),
     re_path('^api/swagger(?P<format>\.json\.yaml)$', schema_view.with_ui(cache_timeout=0), name='schema-json'),
     re_path('^api/swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger'),
     re_path('^api/redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
@@ -68,30 +68,30 @@ urlpatterns = [
     path(r'login/', views_auth_ctrl.index_redirect, name='index_login'),
 
     path('user/password-reset/', PasswordResetView.as_view(
-                title = 'Lấy lại mật khẩu',
+                title='Lấy lại mật khẩu',
                 form_class = form_auth_ctrl.ResetPassToEmailForm,
-                template_name = 'registration/password_reset_form_new.html',
-                extra_context = {'next':'/accounts/login/', 'crumbs': [('Trang chủ', reverse_lazy('index')), ('Đăng nhập', reverse_lazy('login')), ('Lấy lại mật khẩu', reverse_lazy('password_reset'))],'year':datetime.now().year},
+                template_name='registration/password_reset_form_new.html',
+                extra_context={'next':'/accounts/login/', 'crumbs': [('Trang chủ', reverse_lazy('index')), ('Đăng nhập', reverse_lazy('login')), ('Lấy lại mật khẩu', reverse_lazy('password_reset'))],'year':datetime.now().year},
                 success_url='done/',
         ), name="password_reset"),
     path('user/password-reset/done/', PasswordResetDoneView.as_view(
-                title = 'Gửi yêu cầu thành công. Vào email để lấy lại mật khẩu',
-                template_name = "registration/password_reset_done_new.html",
-                extra_context = {'next':'/accounts/login/', 'crumbs': [('Trang chủ', reverse_lazy('index')), ('Đăng nhập', reverse_lazy('login')), ('Gửi yêu cầu thành công. Vào email để lấy lại mật khẩu', reverse_lazy('password_reset_done'))],'year':datetime.now().year},
+                title='Gửi yêu cầu thành công. Vào email để lấy lại mật khẩu',
+                template_name="registration/password_reset_done_new.html",
+                extra_context={'next':'/accounts/login/', 'crumbs': [('Trang chủ', reverse_lazy('index')), ('Đăng nhập', reverse_lazy('login')), ('Gửi yêu cầu thành công. Vào email để lấy lại mật khẩu', reverse_lazy('password_reset_done'))],'year':datetime.now().year},
         ), name="password_reset_done"),
     #path('user/reset/<uidb64>/<token>/', ctrl_auth.PassResetView.as_view(), name="password_reset_confirm"),
     #Link được send vào mail
     path('user/reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(
-                title = 'Đặt lại mật khẩu mới',
-                form_class = form_auth_ctrl.ResetPassForm,
-                template_name = 'registration/password_reset_confirm_new.html',
-                extra_context = {'next':'/accounts/login/', 'crumbs': [('Trang chủ', reverse_lazy('index')), ('Đăng nhập', reverse_lazy('login')), ('Đặt lại mật khẩu mới', reverse_lazy('password_reset_confirm'))],'year':datetime.now().year},
+                title='Đặt lại mật khẩu mới',
+                form_class=form_auth_ctrl.ResetPassForm,
+                template_name='registration/password_reset_confirm_new.html',
+                extra_context={'next':'/accounts/login/', 'crumbs': [('Trang chủ', reverse_lazy('index')), ('Đăng nhập', reverse_lazy('login')), ('Đặt lại mật khẩu mới', reverse_lazy('password_reset_confirm'))],'year':datetime.now().year},
                 success_url='/user/accounts/reset/done/',
         ), name="password_reset_confirm"),
     path('user/reset/done/', PasswordResetCompleteView.as_view(
-                title = 'Đổi mật khẩu thành công',
-                template_name = "registration/password_reset_complete_new.html",
-                extra_context = {'next':'/accounts/login/', 'crumbs': [('Trang chủ', reverse_lazy('index')), ('Đăng nhập', reverse_lazy('login')), ('Đổi mật khẩu thành công', reverse_lazy('password_reset_complete'))],'year':datetime.now().year},
+                title='Đổi mật khẩu thành công',
+                template_name="registration/password_reset_complete_new.html",
+                extra_context={'next':'/accounts/login/', 'crumbs': [('Trang chủ', reverse_lazy('index')), ('Đăng nhập', reverse_lazy('login')), ('Đổi mật khẩu thành công', reverse_lazy('password_reset_complete'))],'year':datetime.now().year},
         ), name="password_reset_complete"),
 
 ]

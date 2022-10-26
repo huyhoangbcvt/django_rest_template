@@ -5,6 +5,8 @@ from django import forms
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 from django.db.models.utils import create_namedtuple_class
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
+from ckeditor.widgets import CKEditorWidget
 
 
 class CatalogForm(forms.ModelForm):
@@ -12,24 +14,12 @@ class CatalogForm(forms.ModelForm):
         super(CatalogForm, self).__init__(*args, **kwargs)
         if user is not None and not user.is_superuser:
             self.fields['user'].queryset = User.objects.filter(username=user.username)
-            # from pprint import pprint;
-            # pprint(self.fields['user'].queryset)
-        if product is not None and not user.is_superuser:
-        #     # entry_list = list(product)
-        #     # choise = (entry_list)
-        #     # queryset = create_namedtuple_class(product)
-        #     # from pprint import pprint;pprint(choise)
-            self.fields['product'].queryset = Product.objects.filter(user_id=user.id)
-            # from pprint import pprint;
-            # pprint(self.fields['product_map'].queryset)
+        # if product is not None and not user.is_superuser:
 
     # def get_form_class(self):
-    #
     #     # interrogate the DB to get a list of categories, or categories and labels.
-    #
     #     choices = list(enumerate(product))  # [ (0,'cat0'), (1,'cat1'), ...]
     #     choicefield = forms.ChoiceField(choices=choices)
-    #
     #     return type('My_runtime_form',
     #                 (Category,),
     #                 {'product_map': choicefield}
@@ -38,16 +28,7 @@ class CatalogForm(forms.ModelForm):
     name = forms.CharField(required=True)
     code = forms.CharField(required=True)
     image = forms.ImageField(required=False)
-    content = forms.CharField(required=False, widget=forms.Textarea())
-    # SOCIAL_CHOICES = (
-    #     (1, 'Google'),
-    # )
-    # # for i in Middleship.product:
-    # #     category_choices = (
-    # #         (i, Middleship.product)
-    # #     )
-    #
-    # product_map = forms.ChoiceField(choices=choicefield)
+    content = forms.CharField(required=False, widget=CKEditorUploadingWidget())  # forms.CharField(required=False, widget=forms.Textarea())
 
     class Meta:
         model = Category
