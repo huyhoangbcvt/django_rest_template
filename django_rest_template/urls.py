@@ -46,12 +46,13 @@ from user_app.modules import views_auth
 from rest_framework import routers, permissions
 # router = routers.DefaultRouter()
 # router.register('', views_auth.HomeViewSet)
+from user_app.admin import admin_site
 
 urlpatterns = [
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     # =============| APIs |============
     path('__debug__/', include(debug_toolbar.urls)),
-    path('admin/', admin.site.urls),
+    path('admin/', admin_site.urls),  # path('admin/', admin.site.urls),
     # path('', include(router.urls)),
     # =============| app endpoints |============
     # path('', views_auth.index_userapp, name='index'),

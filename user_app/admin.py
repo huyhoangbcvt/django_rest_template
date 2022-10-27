@@ -3,6 +3,23 @@ from django.contrib import admin
 from django.utils.html import mark_safe
 from .models.account_model import Profile, Social
 from .modules import form_auth_ctrl
+from catalog_app.models.catalog_model import Category, Product, Contact
+from catalog_app.admin import CategoryAdmin, ProductAdmin, ContactAdmin
+from upload_app.models import UploadFile
+from django.contrib.auth.models import User, Group
+from django.contrib.auth.forms import UserCreationForm
+
+
+class UserAdmin(admin.ModelAdmin):
+    form = UserCreationForm
+    list_display = ["username", "email", "first_name", "last_name", "is_active", "date_joined"]
+    search_fields = ["username", "email", "first_name", "last_name"]
+    list_filter = ["date_joined", "is_active"]
+    ordering = ("-date_joined", "-id",)
+
+
+# class GroupAdmin(admin.ModelAdmin):
+#     # form = UserCreationForm
 
 
 class ProfileAdmin(admin.ModelAdmin):
@@ -18,6 +35,7 @@ class ProfileAdmin(admin.ModelAdmin):
     search_fields = ["phone_number", "address", "created_at", "user__username"]
     list_filter = ["created_at", "user__is_active"]
     readonly_fields = ["display_avatar"]
+    ordering = ("-created_at", "-id",)
 
     @staticmethod
     def display_avatar(profile):
@@ -39,6 +57,7 @@ class SocialAdmin(admin.ModelAdmin):
     search_fields = ["username_social", "phone_number", "address", "created_at"]
     list_filter = ["created_at", "username_social"]
     readonly_fields = ["display_avatar"]
+    ordering = ("-created_at", "-id",)
 
     @staticmethod
     def display_avatar(social):
@@ -47,6 +66,23 @@ class SocialAdmin(admin.ModelAdmin):
         return None
 
 
+class DjangoAdminSite(admin.AdminSite):
+    site_header = 'HDWEBSOFT QUẢN TRỊ HỆ THỐNG TRAINING DJANGO REST - TEMPLATE'
+    # site_title = 'Danh sách Categories'
+
+
 # Register your models here
-admin.site.register(Profile, ProfileAdmin)
-admin.site.register(Social, SocialAdmin)
+# admin.site.register(Profile, ProfileAdmin)
+# admin.site.register(Social, SocialAdmin)
+
+admin_site = DjangoAdminSite('django_rest_template')
+admin_site.register(User, UserAdmin)
+admin_site.register(Group)
+admin_site.register(Profile, ProfileAdmin)
+admin_site.register(Social, SocialAdmin)
+
+admin_site.register(Category, CategoryAdmin)
+admin_site.register(Product, ProductAdmin)
+admin_site.register(Contact, ContactAdmin)
+admin_site.register(UploadFile)
+

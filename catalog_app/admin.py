@@ -45,6 +45,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ["id", "name", "code", "image", "description", "active", "category", "country", "created_at"]  # , "contact"
     search_fields = ["name", "code", "category__name", "created_at", "contact__name", "contact__phone_number"]
     list_filter = ["created_at", "active"]
+    ordering = ("-created_at", "name", "-id",)
     readonly_fields = ["display_product_demo"]
 
     @staticmethod
@@ -61,6 +62,15 @@ class ProductAdmin(admin.ModelAdmin):
         return qs.filter(author=request.user)
 
 
+class ContactAdmin(admin.ModelAdmin):
+    form = forms_product_ctrl.ContactForm
+
+    list_display = ["name", "phone_number", "date_joined"]  # , "contact"
+    search_fields = ["name", "phone_number"]
+    list_filter = ["date_joined", "name"]
+    ordering = ("-date_joined", "name", "-id",)
+
+
 class ProductInlineAdmin(admin.StackedInline):
     model = Product
     pk_name = 'category'
@@ -71,7 +81,8 @@ class ProductInlineAdmin(admin.StackedInline):
 
 
 # Register your models here.
-admin.site.register(Category, CategoryAdmin)
-# admin.site.register(Category, CategoryInlineAdmin)
-admin.site.register(Contact)
-admin.site.register(Product, ProductAdmin)
+# admin.site.register(Category, CategoryAdmin)
+# # admin.site.register(Category, CategoryInlineAdmin)
+# admin.site.register(Contact)
+# admin.site.register(Product, ProductAdmin)
+

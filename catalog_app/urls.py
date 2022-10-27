@@ -3,6 +3,7 @@ from .modules import (
     views_catalog, views_category, views_product,
     views_catalog_ctrl, views_category_ctrl, views_product_ctrl,
 )
+# from .admin import admin_site
 app_name = 'catalog'
 
 # determine the name from the viewset, as it does not have a `.queryset` attribute.
@@ -13,6 +14,7 @@ router.register(r'products', views_product.ProductInfoViewSet, basename="product
 router.register(r'contacts', views_category.CreateContactViewSet, basename="contact_list")
 
 urlpatterns = [
+    # path('admin/', admin_site.urls),
     # =============| APIs |============
     path(r'api/', include(router.urls)),  # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     # Category
