@@ -9,7 +9,7 @@ from django.utils.translation import gettext_lazy as _
 
 # @python_2_unicode_compatible
 class Profile(models.Model):
-    social_network = models.PositiveSmallIntegerField(null=True, default=0, blank=True)
+    social_type = models.PositiveSmallIntegerField(null=True, default=0, blank=True)
     birthday = models.DateField(null=True, default=None, blank=True)
     phone_number = models.CharField(max_length=20, null=True, default=None, blank=True)
     image = models.ImageField(upload_to='images', null=True, default=None, blank=True)

@@ -6,7 +6,7 @@ from django.views.generic import FormView
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
 
-from rest_framework import status, views, viewsets, mixins, generics, permissions, renderers
+from rest_framework import status, views, viewsets, mixins, serializers, generics, permissions, renderers
 # from rest_framework.views import View, APIView
 # from rest_framework.generics import (GenericAPIView,
 #     CreateAPIView, ListAPIView, RetrieveAPIView,
@@ -19,12 +19,15 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, action, permission_classes
+from rest_framework.parsers import MultiPartParser
 
-from ..serializers.user_serializer import UserSerializer, GroupSerializer, LoginSerializer
-from ..serializers.profile_serializer import ProfileSerializer
+from ..serializers.user_serializer import UserSerializer, GroupSerializer, LoginSerializer, TokenUserSerializer
+from ..serializers.profile_serializer import ProfileSerializer, SignupSerializer
 from .form_auth import RegistrationUserForm, LoginForm
 from ..models.account_model import Profile
 from ..util import utilities
+from rest_framework_simplejwt.views import TokenViewBase, TokenObtainPairView, TokenRefreshView
+from ..util.exceptions import InvalidToken, TokenError
 
 
 @api_view(['POST'])
@@ -170,27 +173,80 @@ class GroupViewSet(viewsets.ModelViewSet):
     #     return None
 
 
-# class HomeViewSet(viewsets.ModelViewSet):
-#     # status_code = 307
-#     # permission_classes = [permissions.IsAuthenticated]
-#     serializer_class = GroupSerializer
-#     queryset = Group.objects.all()
+class GetTokenViewSet(viewsets.ModelViewSet, mixins.CreateModelMixin):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    # authentication_classes = TokenAuthentication  # Token access
+    # permission_classes = [permissions.IsAuthenticated]
+    serializer_class = TokenUserSerializer
+    queryset = User.objects.all()
+    # http_method_names = ['post']
+
+    def get_permissions(self):
+        if self.action == 'create':
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
+
+    def filter_queryset(self, queryset):
+        # return queryset.filter(**self.request.data)
+        if self.request.user:
+            return queryset.filter(id=self.request.user.id)
+        return None
+
+    # def get_queryset(self):
+    #     queryset = super().get_queryset()
+    #     print(queryset)
+    #     return queryset.filter(owner=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except TokenError as e:
+            raise InvalidToken(e.args[0])
+
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 
-# class LoginView(FormView):
-#     """
-#     Provides the ability to login as a user with a username and password
-#     """
-#     form_class = LoginForm  # AuthenticationForm
-#     # redirect_field_name = REDIRECT_FIELD_NAME
-#     template_name = 'login.html'
-#     success_url = '/'  # reverse_lazy('user:index')
-#     extra_context = {
-#         'title': "Đăng nhập",
-#         'year': datetime.now().year
-#     }
-#     authentication_form = None
-#     redirect_authenticated_user = False
+class SignupViewSet(viewsets.ViewSet, generics.CreateAPIView, ):
+    queryset = User.objects.all()
+    parser_classes = [MultiPartParser, ]
+    serializer_class = SignupSerializer
+    # http_method_names = ['get', 'post', 'put', 'patch', 'head', 'delete']
+
+    def get_permissions(self):
+        print(self.action)
+        if self.action == 'create' or self.action == 'retrieve':
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
+
+
+class LoginViewSet(viewsets.ViewSet, generics.CreateAPIView):
+    serializer_class = LoginSerializer
+
+    def get_permissions(self):
+        if self.action == 'create':
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
+
+    # def filter_queryset(self, queryset):
+    #     # return queryset.filter(**self.request.data)
+    #     if self.request.user:
+    #         return queryset.filter(id=self.request.user.id)
+    #     return None
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        login(request, user)
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'user_id': user.pk,
+            'email': user.email
+        }, status=status.HTTP_200_OK)
 
 
 def index_userapp(request):

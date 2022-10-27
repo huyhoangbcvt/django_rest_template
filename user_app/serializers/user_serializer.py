@@ -5,6 +5,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.models import User, Group
 from rest_framework.authentication import authenticate
 from ..models.account_model import Profile
+from django.contrib.auth.hashers import make_password
 
 
 class UserSerializer(serializers.ModelSerializer):  # serializers.HyperlinkedModelSerializer
@@ -17,6 +18,33 @@ class UserSerializer(serializers.ModelSerializer):  # serializers.HyperlinkedMod
         # fields = '__all__'
         fields = ['username', 'first_name', 'last_name', 'email', 'last_login', 'date_joined', 'is_active', 'groups', 'user_permissions']
         # labels = {'last_login': _('Lần đăng nhập cuối'), 'date_joined': _('Ngày tham gia')}
+
+
+class UserRegisterSerializer(serializers.ModelSerializer):  # serializers.HyperlinkedModelSerializer
+    class Meta:
+        model = User
+        # fields = '__all__'
+        fields = ['username', 'password', 'email', 'first_name', 'last_name']
+        # labels = {'last_login': _('Lần đăng nhập cuối'), 'date_joined': _('Ngày tham gia')}
+
+
+class TokenUserSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        refresh = self.get_token(self.user)
+        data['lifetime'] = int(refresh.access_token.lifetime.total_seconds())
+        return data
+
+    # password = serializers.CharField(
+    #     write_only=True,
+    #     required=True,
+    #     help_text='password',
+    #     style={'input_type': 'password', 'placeholder': 'Password'}
+    # )
+    #
+    # class Meta:
+    #     model = User
+    #     fields = ['username', 'password']
 
 
 class CustomUserForeignKey(serializers.PrimaryKeyRelatedField):
@@ -64,6 +92,9 @@ class LoginSerializer(serializers.Serializer):
 
         data['user'] = user
         return data
+
+
+
 
 
 # Custom Serializer for custom jwt

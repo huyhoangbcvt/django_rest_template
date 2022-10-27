@@ -21,6 +21,7 @@ from ..apis import product_ws
 from ..serializers.product_serializer import ProductSerializer
 import json
 from django.views.decorators.csrf import csrf_exempt
+from ..util.pagination import BasePagination
 
 
 @api_view(['GET'])
@@ -44,6 +45,7 @@ class ProductInfoViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]  # Basic Auth
     queryset = Product.objects.filter(active=True).order_by('created_at')
     serializer_class = ProductSerializer
+    pagination_class = BasePagination
     # http_method_names = ['get', 'post', 'put', 'patch', 'head', 'delete']
     # swagger_schema = None
 

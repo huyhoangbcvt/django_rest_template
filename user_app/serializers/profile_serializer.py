@@ -1,7 +1,38 @@
 from rest_framework import serializers
 from ..models.account_model import Profile
 from django.contrib.auth.models import User
-from .user_serializer import UserSerializer, CustomUserForeignKey
+from .user_serializer import UserSerializer, UserRegisterSerializer, CustomUserForeignKey
+from ..modules.form_auth import RegistrationUserForm
+from django.contrib.auth import get_user_model
+from django.contrib.auth.password_validation import validate_password
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['image', 'birthday', 'social_type']
+
+
+class SignupSerializer(serializers.ModelSerializer):
+    # password = serializers.CharField(
+    #     source="user.password",
+    #     required=True,
+    #     help_text='password',
+    #     style={'input_type': 'password', 'placeholder': 'password'}
+    # )
+
+    class Meta:
+        model = get_user_model()
+        fields = ['username', 'first_name', 'last_name', 'email', 'password', ]
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
+
+    def create(self, validated_data):
+        user = get_user_model()(**validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -9,12 +40,12 @@ class ProfileSerializer(serializers.ModelSerializer):
     # user = UserSerializer(required=True)   # Note required=True
     # user = CustomUserForeignKey
     user = serializers.CharField(read_only=True, source="user.username")
-    social_network = serializers.IntegerField(read_only=True, label="Loại tài khoản")
+    social_type = serializers.IntegerField(read_only=True, label="Loại tài khoản")
 
     class Meta:
         model = Profile
         # fields = '__all__'
-        fields = ['image', 'birthday', 'social_network', 'phone_number', 'address', 'role', 'description', 'user']
+        fields = ['image', 'birthday', 'social_type', 'phone_number', 'address', 'role', 'description', 'user']
 
     # def get_queryset(self):
     #     _id = self.request.user.id

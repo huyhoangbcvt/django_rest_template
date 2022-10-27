@@ -49,10 +49,16 @@ except ImportError:
 from django.db import transaction
 
 
-def index_redirect(request):
+def index_redirect_local(request):
     if request.user.is_authenticated:
         return redirect('user:home')
     return redirect('user:login')
+
+
+def index_redirect_social(request):
+    if request.user.is_authenticated:
+        return redirect('user:home')
+    return redirect('user:social')
 
 
 # @crumb('Staff')  # This is the root crumb -- it doesnâ€™t have a parent
@@ -195,7 +201,29 @@ class AuthView(FormView):
 
 
 class LoginSocialView(FormView):
-    pass
+    success_url_allowed_hosts = set()
+
+    def get_success_url_allowed_hosts(self):
+        return {self.request.get_host(), *self.success_url_allowed_hosts}
+
+    """
+    Provides the ability to login as a user with a username and password
+    """
+    form_class = LoginForm  # AuthenticationForm
+    redirect_field_name = REDIRECT_FIELD_NAME
+    template_name = 'registration/login_social.html'
+    success_url = reverse_lazy('user:index')
+    crumbs = [('Đăng nhập mạng xã hội', 'login_social')]  # OR reverse_lazy
+    extra_context = {
+        'title': "Đăng nhập mạng xã hội",
+        # 'next': 'home/',
+        'site_header': 'Đăng nhập',
+        'GOOGLE_CLIENT_ID': settings.GOOGLE_CLIENT_ID,
+        'GOOGLE_REDIRECT_URI': settings.GOOGLE_REDIRECT_URI,
+        'year': datetime.now().year
+    }
+    authentication_form = None
+    redirect_authenticated_user = False
 
 
 # class LoginView(DetailBreadcrumbMixin, FormView):

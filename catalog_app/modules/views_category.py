@@ -23,6 +23,7 @@ from ..serializers.contact_serializer import ContactSerializer
 # from ..models.category_model import Category
 from ..models.catalog_model import (Product, Category, Contact)
 from django.views.decorators.csrf import csrf_exempt
+from ..util.pagination import BasePagination
 
 
 @api_view(['GET'])
@@ -47,6 +48,7 @@ class CategoryInfoViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]  # Basic Auth
     queryset = Category.objects.filter(active=True).order_by('created_at')
     serializer_class = CategorySerializer
+    pagination_class = BasePagination
     # http_method_names = ['get', 'post', 'put', 'patch', 'head', 'delete']
     # swagger_schema = None
     charset = 'UTF-8'

@@ -49,10 +49,9 @@
 					</div>
 					<div class="clearfix"></div>
 					<hr/>
-					{{title_social}}
 					<div class="form-group">
-						<a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8083/bhcn.bh/admincallservices/loginTS24IDGoogle.html&response_type=code&client_id={{ GOOGLE_CLIENT_ID }}&approval_prompt=force">
-							<span class="ced-sociallogin-google-inner">Đăng nhập bằng google</span>
+						<a href="{% url 'user:login_social' %}">
+							<span class="ced-sociallogin-google-inner">{{title_social}}</span>
 						</a>
 					</div>
 

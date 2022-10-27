@@ -26,25 +26,32 @@ token_refresh = TokenRefreshView.as_view()
 
 # If using routers to register ViewSet, it will see Binding ViewSets to urls explicitly
 from rest_framework import routers
+# router = routers.DefaultRouter(trailing_slash=False)
 router = routers.DefaultRouter()
 router.register(r'users', views_auth.UserViewSet, basename="user_list")
 router.register(r'profiles', views_auth.ProfileViewSet, basename="profile_list")
 router.register(r'groups', views_auth.GroupViewSet, basename="user_group_list")
+router.register(r'get-token', views_auth.GetTokenViewSet, basename="get_token_obtain")
+# router.register(r'register', views_auth.SignupViewSet, basename="sign_up_vs")
+# router.register(r'login', views_auth.LoginViewSet, basename="login_api")
 
 # If not register ViewSet, it only to see urls detail
 urlpatterns = [
     # =============| APIs |============
     path(r'api/', include(router.urls)),
-    path(r'api/get-token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+
+    path(r'api/token/get-token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # Để cấp mới access token với refresh token, ta thực hiện POST request
-    path(r'api/refresh-token/', TokenRefreshView.as_view(), name='token_refresh'),
+    path(r'api/token/refresh-token/', TokenRefreshView.as_view(), name='token_refresh'),
     path(r'api/sign-up/', views_auth.register, name='sign_up'),
     path(r"api/login/", views_auth.CustomAuthToken.as_view(), name="login_api"),
 
+    # path('api/', include((router.urls, 'user_app'))),
     # =============| Web |============
     path('', views_auth_ctrl.index, name='index'),
     path('home/', views_auth_ctrl.Homepage.as_view(), name='home'),
     path('login/', views_auth_ctrl.LoginView.as_view(), name="login"),
+    path('social/', views_auth_ctrl.index_redirect_social, name="social"),
     path('login-social', views_auth_ctrl.LoginSocialView.as_view(), name="login_social"),
 
     path('logout/', auth_views.LogoutView.as_view(
@@ -57,7 +64,6 @@ urlpatterns = [
     path('profile/edit/', views_auth_ctrl.EditUserProfileView.as_view(), name='profile_edit'),
     path('profile/<int:gu_id>/edit/', views_auth_ctrl.edit_profile_pk, name='profile_edit_pk'),
 
-    # =============| Inside: password-reset for user |============
     path('password-change/', PasswordChangeView.as_view(
                 title='Thay đổi mật khẩu',
                 form_class=form_auth_ctrl.PassChangeForm,
@@ -72,3 +78,5 @@ urlpatterns = [
         ), name="password_change_done"),
 
 ]
+
+# urlpatterns += router.urls

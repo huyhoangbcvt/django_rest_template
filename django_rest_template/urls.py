@@ -67,7 +67,7 @@ urlpatterns = [
 
     # =============| Web |============
     path(r'', views_auth_ctrl.index, name='index_admin'),
-    path(r'login/', views_auth_ctrl.index_redirect, name='index_login'),
+    path(r'login/', views_auth_ctrl.index_redirect_local, name='index_login'),
 
     path('user/password-reset/', PasswordResetView.as_view(
                 title='Lấy lại mật khẩu',

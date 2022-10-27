@@ -1,0 +1,54 @@
+{% extends "layout/layout_auth.html" %}
+
+{% block title %}{{ title }} {% endblock %}
+
+{% block nav_top %}{% include 'layout/nav-bar_top.html' %}{% endblock %}
+
+{% block content %}
+	<!-- Container -->
+<div class="container">
+<div class="justify-content-center align-items-center" style="max-width: 350px;margin: 0 auto;">
+	<div class="border"><!-- <div class="col-auto border p-3"> -->
+	<!-- <div id="container-login" style="width: 25em;"> -->
+		<!-- Header -->
+		<div id="header">
+			<div id="branding">
+				<h1 id="site-name"><a href="{% url 'user:login' %}">{{ site_header|default:_('Đăng nhập mạng xã hội') }}</a></h1>
+			</div>
+		</div>
+		<div id="content-login" class="colM">
+			<h2>{{ title }}</h2>
+			<div id="content-main">
+			    {% if form.errors %}
+					<p class="errornote">Please enter a correct user name and password.</p>
+				{% endif %}
+
+				<!-- <h2>{{ title }}</h2> -->
+				<form action="{% url 'user:login_social' %}" method="post" class="form-horizontal">
+					{% csrf_token %}
+					<hr />
+					<div class="form-group">
+						<a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri={{ GOOGLE_REDIRECT_URI }}&response_type=code&client_id={{ GOOGLE_CLIENT_ID }}&approval_prompt=force">
+							<span class="ced-sociallogin-google-inner">Đăng nhập bằng Google</span>
+						</a>
+					</div>
+					<div class="form-group">
+						<a href="#">
+							<span class="ced-sociallogin-facebook-inner">Đăng nhập bằng Facebook</span>
+						</a>
+					</div>
+					<div class="form-group">
+						<a href="#">
+							<span class="ced-sociallogin-linkedin-inner">Đăng nhập bằng Linkedin</span>
+						</a>
+					</div>
+
+				</form>
+			</div>
+			<div id="footer"></div>
+
+		</div>
+	</div>
+</div>
+</div>
+{% endblock %}
