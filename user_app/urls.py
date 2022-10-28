@@ -32,7 +32,7 @@ router.register(r'users', views_auth.UserViewSet, basename="user_list")
 router.register(r'profiles', views_auth.ProfileViewSet, basename="profile_list")
 router.register(r'groups', views_auth.GroupViewSet, basename="user_group_list")
 router.register(r'get-token', views_auth.GetTokenViewSet, basename="get_token_obtain")
-# router.register(r'register', views_auth.SignupViewSet, basename="sign_up_vs")
+router.register(r'register', views_auth.SignupViewSet, basename="sign_up_vs")
 # router.register(r'login', views_auth.LoginViewSet, basename="login_api")
 
 # If not register ViewSet, it only to see urls detail
@@ -43,7 +43,7 @@ urlpatterns = [
     path(r'api/token/get-token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # Để cấp mới access token với refresh token, ta thực hiện POST request
     path(r'api/token/refresh-token/', TokenRefreshView.as_view(), name='token_refresh'),
-    path(r'api/sign-up/', views_auth.register, name='sign_up'),
+    # path(r'api/sign-up/', views_auth.register, name='sign_up'),
     path(r"api/login/", views_auth.CustomAuthToken.as_view(), name="login_api"),
 
     # path('api/', include((router.urls, 'user_app'))),

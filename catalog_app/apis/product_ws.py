@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.generics import ListAPIView, GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.mixins import CreateModelMixin
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 # from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
@@ -16,13 +16,13 @@ from rest_framework.permissions import IsAuthenticated
 
 from user_app.models.account_model import Profile
 from ..serializers.product_serializer import ProductSerializer, ProductAddSerializer
-# from ..models.product_model import Product
-from ..models.catalog_model import (Product, Category)
+from ..serializers.comment_serializer import CommentRelatedSerializer
+from ..models.catalog_model import (Product, Category, Contact, Comment)
 
 
 # Create your views here.
 @permission_classes([IsAuthenticated])
-def GetProductInfo(request):
+def getProductInfo(request):
     user = request.user
     # Get Product info from database # Product.objects.all()
     product_info = Product.objects.filter(user_id=user.id, active=True).order_by(F('created_at').desc(nulls_last=True))
@@ -33,7 +33,7 @@ def GetProductInfo(request):
 
 
 @permission_classes([IsAuthenticated])
-def GetProductInfoDetail(request, pk):
+def getProductInfoDetail(request, pk):
     user = request.user
     # Get Product info from database # Product.objects.all()
     product_info = Product.objects.filter(id=pk, user_id=user.id, active=True).order_by(F('created_at').desc(nulls_last=True))
@@ -44,15 +44,15 @@ def GetProductInfoDetail(request, pk):
 
 
 @permission_classes([IsAuthenticated])
-def UpdateActiveProduct(request, pk, _active):
+def updateActiveProduct(request, pk, _active):
     try:
         # user = request.user
         # Get Category info from database # Category.objects.all()
         product_obj = Product.objects.get(id=pk)  # , user_id=user.id, active=True
         product_obj.active = _active
         product_obj.save()
-    except UpdateProduct.DoesNotExists:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except ErrorInCode:
+        return Response(ErrorInCode, status=status.HTTP_400_BAD_REQUEST)
 
     return Response(ProductSerializer(product_obj).data, status=status.HTTP_200_OK)
 
@@ -60,7 +60,7 @@ def UpdateActiveProduct(request, pk, _active):
 # @transaction.non_atomic_requests
 @transaction.atomic
 @permission_classes([IsAuthenticated])
-def AddProduct(request):
+def addProduct(request):
     # Get data from post request
     data = request.data
     user = request.user
@@ -86,3 +86,48 @@ def AddProduct(request):
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+@permission_classes([IsAuthenticated])
+def addCommentProduct(self, request, product):
+    try:
+        product = self.get_object()
+
+        if request.user and product:
+            content = request.data.get('content')
+            if content:
+                cm = Comment.objects.create(
+                    content=request.data.get('content'),
+                    product=product,
+                    user=request.user
+                )
+                return Response(CommentRelatedSerializer(cm).data, status=status.HTTP_201_CREATED)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        else:
+            return Response(status=status.HTTP_226_IM_USED)
+
+    except ErrorInCode:
+        return Response(ErrorInCode, status=status.HTTP_400_BAD_REQUEST)
+
+
+@permission_classes([IsAuthenticated])
+def addContactProduct(self, request):
+    if request.user:
+        try:
+            product = self.get_object()
+
+        except Http404:
+            return Response(Http404, status=status.HTTP_404_NOT_FOUND)
+        else:
+            contacts = request.data.get('contacts')
+            if contacts is not None:
+                for contact in contacts:
+                    c, _ = Contact.objects.get_or_create(name=contact)
+                    product.contacts.add(c)
+                product.save()
+                return Response(ProductSerializer(product).data, status=status.HTTP_201_CREATED)
+
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+    else:
+        return Response(status=status.HTTP_226_IM_USED)

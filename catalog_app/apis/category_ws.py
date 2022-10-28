@@ -23,7 +23,7 @@ from ..models.catalog_model import (Product, Category)
 
 # Create your views here.
 @permission_classes([IsAuthenticated])
-def GetCategoryInfo(request):
+def getCategoryInfo(request):
     user = request.user
     print(user.username)
     # Get Category info from database # Category.objects.all()
@@ -35,7 +35,7 @@ def GetCategoryInfo(request):
 
 
 @permission_classes([IsAuthenticated])
-def GetCategoryInfoDetail(request, pk):
+def getCategoryInfoDetail(request, pk):
     user = request.user
     print(user.username)
     # Get Category info from database # Category.objects.all()
@@ -47,7 +47,7 @@ def GetCategoryInfoDetail(request, pk):
 
 
 @permission_classes([IsAuthenticated])
-def UpdateActiveCategory(request, pk, _active):
+def updateActiveCategory(request, pk, _active):
     try:
         # user = request.user
         # Get Category info from database # Category.objects.all()
@@ -62,7 +62,7 @@ def UpdateActiveCategory(request, pk, _active):
 
 
 @permission_classes([IsAuthenticated])
-def QuerySet_GetCategoryInfo(request):
+def querySet_GetCategoryInfo(request):
     user = request.user
     # Get Category info from database # Category.objects.all()
     category_info = Category.objects.filter(user_id=user.id, active=True).order_by(F('created_at').desc(nulls_last=True))
@@ -71,7 +71,7 @@ def QuerySet_GetCategoryInfo(request):
 
 @transaction.atomic()
 @permission_classes([IsAuthenticated])
-def AddCategory(request):
+def addCategory(request):
     # Get data from post request
     data = request.data
     # user = request.user

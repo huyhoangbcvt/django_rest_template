@@ -20,10 +20,10 @@ class ProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ['name', 'code', 'image', 'description', 'country', 'category', 'user', 'contact']
+        fields = ['name', 'code', 'image', 'description', 'country', 'category', 'user', 'contacts']
         labels = {'name': _('Tên sản phẩm (*)'), 'code': _('Mã sản phẩm (*)'),
                   'image': _('Hình ảnh sản phẩm'), 'description': _('Mô tả sản phẩm'),
-                  'country': _('Xuất xứ'), 'category': _('Chọn Category (*)'), 'user': _('Tài khoản tạo'), 'contact': _('Gắn liên hệ')}
+                  'country': _('Xuất xứ'), 'category': _('Chọn Category (*)'), 'user': _('Tài khoản tạo'), 'contacts': _('Gắn liên hệ')}
 
 
 class ContactForm(forms.ModelForm):

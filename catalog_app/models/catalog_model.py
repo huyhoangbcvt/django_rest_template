@@ -53,8 +53,8 @@ class Product(BaseProductCategoryModel):
     description = RichTextField(max_length=1000, null=True, default=None, blank=True)  # models.TextField(max_length=1000, null=True, default=None, blank=True)
     country = models.CharField(max_length=50, null=True, default=None, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')  # Not delete Category
-    contact = models.ManyToManyField('Contact', null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')  # Not delete Product
+    contacts = models.ManyToManyField('Contact', null=True, blank=True, related_name='products')
 
     def __str__(self):
         return self.name
@@ -81,6 +81,14 @@ class Contact(models.Model):
     class Meta:
         managed = True
         ordering = ['-date_joined', 'name']
+
+
+class Comment(models.Model):
+    content = RichTextField(max_length=1000, null=True, default=None)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  # default=datetime.now
 
 
 # class Middleship(models.Model):

@@ -9,9 +9,9 @@ app_name = 'catalog'
 # determine the name from the viewset, as it does not have a `.queryset` attribute.
 from rest_framework import routers
 router = routers.DefaultRouter()
-router.register(r'categories', views_category.CategoryInfoViewSet, basename="category_list")
-router.register(r'products', views_product.ProductInfoViewSet, basename="product_list")
-router.register(r'contacts', views_category.CreateContactViewSet, basename="contact_list")
+router.register(r'categories', views_category.CategoryViewSet, basename="category")
+router.register(r'products', views_product.ProductViewSet, basename="product")
+router.register(r'contacts', views_category.ContactViewSet, basename="contact")
 
 urlpatterns = [
     # path('admin/', admin_site.urls),

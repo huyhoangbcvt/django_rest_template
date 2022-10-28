@@ -31,7 +31,7 @@ from ..util.pagination import BasePagination
 # @authentication_classes([TokenAuthentication]) # @renderer_classes([JSONRenderer])
 def GetCategoryInfo(request):
     print('Func GET: GetCategoryInfo')
-    return category_ws.GetCategoryInfo(request)
+    return category_ws.getCategoryInfo(request)
 
 
 @api_view(['POST'])
@@ -40,10 +40,10 @@ def GetCategoryInfo(request):
 @csrf_exempt
 def AddCategory(request):
     print('Func POST: AddCategory')
-    return category_ws.AddCategory(request)
+    return category_ws.addCategory(request)
 
 
-class CategoryInfoViewSet(viewsets.ModelViewSet):
+class CategoryViewSet(viewsets.ModelViewSet):
     # authentication_classes = TokenAuthentication  # Token access
     permission_classes = [IsAuthenticated]  # Basic Auth
     queryset = Category.objects.filter(active=True).order_by('created_at')
@@ -60,13 +60,13 @@ class CategoryInfoViewSet(viewsets.ModelViewSet):
 
     @action(methods=['PATCH'], detail=True, url_path='active', url_name='active')
     def active_category(self, request, pk):
-        print('Class ViewSet [PATCH]: active_category pk = ', pk)
-        return category_ws.UpdateActiveCategory(request, pk, _active=True)
+        print('Class ViewSet ['+self.action+']: active_category pk = ', pk)
+        return category_ws.updateActiveCategory(request, pk, _active=True)
 
     @action(methods=['PATCH'], detail=True, url_path='unactive', url_name='unactive')
     def un_active_category(self, request, pk):
-        print('Class ViewSet [PATCH]: un_active_category pk = ', pk)
-        return category_ws.UpdateActiveCategory(request, pk, _active=False)
+        print('Class ViewSet ['+self.action+']: un_active_category pk = ', pk)
+        return category_ws.updateActiveCategory(request, pk, _active=False)
 
     # def filter_queryset(self, queryset):
     #     # queryset = self.queryset.filter(username=request.data.username)
@@ -99,7 +99,7 @@ class CreateCategory(CreateModelMixin, GenericAPIView):
 
 
 # Neu dung ViewSet ko phai ModelViewSet thi phai tu lam GET, POST, DETAIL, PUT, PATH, DELETE
-class CreateContactViewSet(viewsets.ViewSet):
+class ContactViewSet(viewsets.ViewSet):
     # authentication_classes = TokenAuthentication  # Token access
     permission_classes = [IsAuthenticated]  # Basic Auth
     queryset = Contact.objects.all().order_by('-date_joined')

@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from django.contrib.auth import login, logout
-from rest_framework import generics, status, viewsets, status, viewsets, permissions, renderers
+from rest_framework import generics, status, viewsets, mixins, status, viewsets, permissions, renderers
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, GenericAPIView
 from rest_framework.mixins import CreateModelMixin
@@ -28,7 +28,7 @@ from ..util.pagination import BasePagination
 # @permission_classes([IsAuthenticated])
 # @authentication_classes([TokenAuthentication])
 def GetProductInfo(request):
-    return product_ws.GetProductInfo(request)
+    return product_ws.getProductInfo(request)
 
 
 @api_view(['POST'])
@@ -37,10 +37,10 @@ def GetProductInfo(request):
 @csrf_exempt
 def AddProduct(request):
     print('into AddProduct')
-    return product_ws.AddProduct(request)
+    return product_ws.addProduct(request)
 
 
-class ProductInfoViewSet(viewsets.ModelViewSet):
+class ProductViewSet(viewsets.ViewSet, generics.ListCreateAPIView, generics.RetrieveUpdateAPIView):  # viewsets.ModelViewSet
     # authentication_classes = TokenAuthentication  # Token access
     permission_classes = [IsAuthenticated]  # Basic Auth
     queryset = Product.objects.filter(active=True).order_by('created_at')
@@ -54,15 +54,25 @@ class ProductInfoViewSet(viewsets.ModelViewSet):
             return [permissions.AllowAny()]
         return [permissions.IsAuthenticated()]
 
-    @action(methods=['PATCH'], detail=True, url_path='active', url_name='active')
+    @action(methods=['post'], detail=True, url_path='active', url_name='active')
     def active_product(self, request, pk):
-        print('Class ViewSet [PATCH]: active_product pk = ', pk)
-        return product_ws.UpdateActiveProduct(request, pk, _active=True)
+        print('Product ViewSet ['+self.action+']: active_product pk = ', pk)
+        return product_ws.updateActiveProduct(request, pk, _active=True)
 
-    @action(methods=['PATCH'], detail=True, url_path='unactive', url_name='unactive')
+    @action(methods=['post'], detail=True, url_path='un-active')
     def un_active_product(self, request, pk):
-        print('Class ViewSet [PATCH]: un_active_product pk = ', pk)
-        return product_ws.UpdateActiveProduct(request, pk, _active=False)
+        print('Product ViewSet : un_active_product pk = ', pk)
+        return product_ws.updateActiveProduct(request, pk, _active=False)
+
+    @action(methods=['post'], detail=True, url_path='add-comment')
+    def add_comment(self, request, pk):
+        print('Product ViewSet [' + self.action + ']: add_comment pk = ', pk)
+        return product_ws.addCommentProduct(self, request)
+
+    @action(methods=['post'], detail=True, url_path='add-comment')
+    def add_contact(self, request, pk):
+        print('Product ViewSet [' + self.action + ']: add_contact pk = ', pk)
+        return product_ws.addContactProduct(self, request)
 
     # def filter_queryset(self, queryset):
     #     # queryset = self.queryset.filter(username=request.data.username)

@@ -14,19 +14,26 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class SignupSerializer(serializers.ModelSerializer):
-    # password = serializers.CharField(
-    #     source="user.password",
+    password = serializers.CharField(
+        required=True,
+        help_text='password',
+        style={'input_type': 'password', 'placeholder': 'password'}
+    )
+    # re_password = serializers.CharField(
     #     required=True,
     #     help_text='password',
-    #     style={'input_type': 'password', 'placeholder': 'password'}
+    #     style={'input_type': 'password', 'placeholder': 're password'}
     # )
+    email = serializers.CharField(required=True, )
+    # phone_number = serializers.CharField(source="profile.phone_number", required=False, )
+    # birthday = serializers.DateField(source="profile.phone_number", required=False, )
 
     class Meta:
         model = get_user_model()
-        fields = ['username', 'first_name', 'last_name', 'email', 'password', ]
-        extra_kwargs = {
-            'password': {'write_only': True}
-        }
+        fields = ['username', 'password', 'email', 'first_name', 'last_name', ]
+        # extra_kwargs = {
+        #     'password': {'write_only': True}
+        # }
 
     def create(self, validated_data):
         user = get_user_model()(**validated_data)

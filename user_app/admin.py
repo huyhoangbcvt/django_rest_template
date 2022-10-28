@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.utils.html import mark_safe
 from .models.account_model import Profile, Social
 from .modules import form_auth_ctrl
-from catalog_app.models.catalog_model import Category, Product, Contact
+from catalog_app.models.catalog_model import Category, Product, Contact, Comment
 from catalog_app.admin import CategoryAdmin, ProductAdmin, ContactAdmin
 from upload_app.models import UploadFile
 from django.contrib.auth.models import User, Group
@@ -84,5 +84,5 @@ admin_site.register(Social, SocialAdmin)
 admin_site.register(Category, CategoryAdmin)
 admin_site.register(Product, ProductAdmin)
 admin_site.register(Contact, ContactAdmin)
+admin_site.register(Comment)
 admin_site.register(UploadFile)
-
