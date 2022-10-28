@@ -60,12 +60,12 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
     @action(methods=['PATCH'], detail=True, url_path='active', url_name='active')
     def active_category(self, request, pk):
-        print('Class ViewSet ['+self.action+']: active_category pk = ', pk)
+        print('Category ViewSet ['+self.action+']: active_category pk = ', pk)
         return category_ws.updateActiveCategory(request, pk, _active=True)
 
     @action(methods=['PATCH'], detail=True, url_path='unactive', url_name='unactive')
     def un_active_category(self, request, pk):
-        print('Class ViewSet ['+self.action+']: un_active_category pk = ', pk)
+        print('Category ViewSet ['+self.action+']: un_active_category pk = ', pk)
         return category_ws.updateActiveCategory(request, pk, _active=False)
 
     # def filter_queryset(self, queryset):

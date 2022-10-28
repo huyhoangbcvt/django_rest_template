@@ -72,7 +72,7 @@ class LoginAPIView(views.APIView):
         return Response({"Token": token.key}, status=status.HTTP_200_OK)
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(viewsets.ViewSet, generics.CreateAPIView):
     """
     API endpoint that allows users to be viewed or edited.
     """
@@ -80,13 +80,18 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]  # Basic Auth
     serializer_class = UserSerializer
     queryset = User.objects.all().order_by('-date_joined')
-    http_method_names = ['get', 'post', 'put', 'patch', 'head', 'delete']
+    # http_method_names = ['get', 'post', 'put', 'patch', 'head', 'delete']
     # swagger_schema = None
 
     def get_permissions(self):
-        if self.action == 'list':
-            return [permissions.AllowAny()]
-        return [permissions.IsAuthenticated()]
+        if self.action == 'get_current_user':
+            return [permissions.IsAuthenticated()]
+        return [permissions.AllowAny()]
+
+    @action(methods=['get'], detail=False, url_path='current-user')
+    def get_current_user(self, request):
+        print('User ViewSet [' + self.action + ']: get_current_user')
+        return Response(self.serializer_class(request.user).data, status=status.HTTP_200_OK)
 
     # def filter_queryset(self, queryset):
     #     # queryset = self.queryset.filter(username=request.data.username)
