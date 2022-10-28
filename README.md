@@ -36,19 +36,21 @@ python manage.py runserver
 # if using port other, ex 8083
 python manage.py runserver localhost:8083
 
-# Run web on browser
+# Run web on browser for user
 http://localhost:8083/
 
-# Run api user & catalog
-http://localhost:8083/user/api/
-
-http://localhost:8083/catalog/api/
-
-# Run admin site 
+# Run web on browser for admin site 
 http://localhost:8083/admin/
 
 # Get refresh token & access token
 http://localhost:8083/user/api/refresh-token/
+
+# Implement APISs user, catalog, upload -> domain/app_name/api/
+http://localhost:8083/user/api/
+
+http://localhost:8083/catalog/api/
+
+Or 
 
 # APIs: all in api/swagger/  or  api/redoc/
 # This All display on swagger
