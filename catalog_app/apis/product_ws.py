@@ -87,7 +87,7 @@ def addProduct(request):
 
 
 @permission_classes([IsAuthenticated])
-def addCommentProduct(self, request, product):
+def addCommentProduct(self, request):
     try:
         product = self.get_object()
 
