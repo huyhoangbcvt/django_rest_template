@@ -74,20 +74,12 @@ class ProductViewSet(viewsets.ViewSet, generics.ListCreateAPIView, generics.Retr
         print('Product ViewSet [' + self.action + ']: add_contact pk = ', pk)
         return product_ws.addContactProduct(self, request)
 
-    # def filter_queryset(self, queryset):
-    #     # queryset = self.queryset.filter(username=request.data.username)
-    #     _id = self.request.user.id
-    #     if _id:
-    #         queryset = self.queryset.filter(user_id=_id)
-    #         return queryset
-    #     return self.queryset
-
-    # def get(self, request, pk, *args, **kwargs):
-    #     # queryset = Product.objects.filter(id=pk, user_id=request.user.id, active=True)
-    #     print('Class ViewSet [GET] for /catalog/product/' + pk + '/update_product/')
-    #     from pprint import pprint;
-    #     pprint(self.serializer_class)
-    #     return product_ws.GetProductInfoDetail(request, pk)
+    def filter_queryset(self, queryset):
+        # queryset = self.queryset.filter(username=request.data.username)
+        if self.request.user:
+            queryset = self.queryset.filter(user_id=self.request.user.id)
+            return queryset
+        return self.queryset
 
 
 class CreateProduct(CreateModelMixin, GenericAPIView):

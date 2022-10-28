@@ -68,17 +68,12 @@ class CategoryViewSet(viewsets.ModelViewSet):
         print('Category ViewSet ['+self.action+']: un_active_category pk = ', pk)
         return category_ws.updateActiveCategory(request, pk, _active=False)
 
-    # def filter_queryset(self, queryset):
-    #     # queryset = self.queryset.filter(username=request.data.username)
-    #     _id = self.request.user.id
-    #     if _id:
-    #         queryset = self.queryset.filter(user_id=_id)
-    #         return queryset
-    #     return self.queryset
-
-    # def get(self, request, pk, *args, **kwargs):
-    #     print('Class ViewSet [GET] for /catalog/category/'+pk+'/update_category/')
-    #     return category_ws.GetCategoryInfoDetail(request, pk)
+    def filter_queryset(self, queryset):
+        # queryset = self.queryset.filter(username=request.data.username)
+        if self.request.user:
+            queryset = self.queryset.filter(user_id=self.request.user.id)
+            return queryset
+        return self.queryset
 
 
 class CreateCategory(CreateModelMixin, GenericAPIView):
