@@ -36,7 +36,7 @@ schema_view = get_schema_view(
         default_version="V-1.0",
         description="APIs for Django",
         contact=openapi.Contact(email="it.hoanghh@gmail.com"),
-        license=openapi.License(name="Hà Huy Hoàng - HDWebsoft - 2022"),
+        license=openapi.License(name="Hà Huy Hoàng - HDWebsoft - %s" % datetime.now().year),
     ),
     public=True,
     permission_classes=[permissions.AllowAny, ],
