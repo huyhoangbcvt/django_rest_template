@@ -118,7 +118,7 @@ class UserViewSet(viewsets.ViewSet, generics.CreateAPIView):
     #     return register(request)
 
 
-class ProfileViewSet(viewsets.ModelViewSet):
+class ProfileViewSet(viewsets.ViewSet, generics.CreateAPIView):
     """
     API endpoint that allows users to be viewed or edited.
     """
@@ -126,18 +126,33 @@ class ProfileViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]  # Basic Auth
     queryset = Profile.objects.all().order_by('created_at')
     serializer_class = ProfileSerializer
-    http_method_names = ['get', 'put', 'patch', 'head']
+    # http_method_names = ['get', 'put', 'patch', 'head']
 
     def get_permissions(self):
-        if self.action == 'list':
-            return [permissions.AllowAny()]
-        return [permissions.IsAuthenticated()]
+        if self.action == 'get_current_profile':
+            return [permissions.IsAuthenticated()]
+        return [permissions.AllowAny()]
+
+    @action(methods=['get'], detail=False, url_path='current-profile')
+    def get_current_profile(self, request):
+        print('Profile ViewSet [' + self.action + ']: get_current_profile')
+        _profile = request.user.profile
+        # serializer_class = ProfileSerializer(_profile, context={'request': request})
+        return Response(self.serializer_class(_profile).data, status=status.HTTP_200_OK)
+
+    # @action(methods=['put'], detail=False, url_path='update-profile')
+    # def update_current_profile(self, request):
+    #     print('Profile ViewSet [' + self.action + ']: update_current_profile')
+    #     _profile = request.user.profile
+    #     serializer_class = ProfileSerializer(_profile, context={'request': request})
+    #     return Response(serializer_class.data, status=status.HTTP_200_OK)
 
     # def get_queryset(self):
     #     _user = self.request.user
     #     print(_user.id)
-    #     queryset = self.queryset.filter(user_id=_user.id)
-    #     # query_set = Profile.objects.filter(profile__user_id=_user)
+    #     if _user:
+    #         queryset = self.queryset.filter(user_id=_user.id)
+    #         # query_set = Profile.objects.filter(profile__user_id=_user)
     #     return queryset
 
     # def filter_queryset(self, queryset):
