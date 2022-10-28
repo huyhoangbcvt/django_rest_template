@@ -46,7 +46,8 @@ class SignUpForm(UserCreationForm):  # UserCreationForm  or forms.Form
                             widget=forms.TextInput({
                                 'class': 'form-control',
                                 'placeholder': 'Email'}))
-    birthday = forms.DateField(label="Ngày sinh", help_text='(định dạng mm/dd/yyyy)',
+    birthday = forms.DateField(label="Ngày sinh", required=False,
+                               help_text='(định dạng mm/dd/yyyy)',
                                widget=forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date', 'id': 'datepicker'}),
                                input_formats=settings.DATE_INPUT_FORMATS)
 
@@ -67,15 +68,6 @@ class SignUpForm(UserCreationForm):  # UserCreationForm  or forms.Form
                                 widget=forms.PasswordInput({
                                     'class': 'form-control',
                                     'placeholder': 'Gõ lại mật khẩu'}))
-    # role = forms.CharField(label="Quyền tài khoản", max_length=20, required=False,
-    #                         widget=forms.TextInput({
-    #                             'class': 'form-control',
-    #                             'placeholder': 'Role'}))
-
-    # role = forms.CharField(max_length=20)
-    # class Meta:
-    #     model = User
-    #     fields = ('first_name', 'last_name', 'email', 'birthday', 'phone_number', 'username', 'password1', 'password2', 'role',)
 
 
 # ======================== FORM change password to send email ===============================
@@ -119,17 +111,10 @@ class PassChangeForm(PasswordChangeForm):  # PasswordChangeForm
 
 # ============ FORM profile ================
 class UserForm(ModelForm):  # UserCreationForm
-    # class ProfileForm(forms.Form):
-    # username = forms.CharField(max_length=30)
     email = forms.CharField(label="Mail điện tử", help_text='Yandex/ Gmail/ Outlook', max_length=100, required=False,
                             widget=forms.TextInput({
                                 'class': 'form-control',
                                 'placeholder': 'Email'}))
-    #     username = forms.CharField(label="Tên đăng nhập", required=False,
-    #                                widget=forms.TextInput({
-    #                                    'disabled': 'disabled',
-    #                                    'class': 'form-control',
-    #                                    'placeholder': 'Tên đăng nhập'}))
     first_name = forms.CharField(label="Tên (*)", max_length=254,
                                  widget=forms.TextInput({
                                      'class': 'form-control',
@@ -139,22 +124,6 @@ class UserForm(ModelForm):  # UserCreationForm
                                     'class': 'form-control',
                                     'placeholder': 'Họ tên lót'}))
 
-    #     password1 = forms.CharField(label="Mật khẩu",
-    #                                widget=forms.PasswordInput({
-    #                                    'class': 'form-control',
-    #                                    'placeholder':'Mật khẩu'}))
-    #     password2 = forms.CharField(label="Re-Password",
-    #                                widget=forms.PasswordInput({
-    #                                    'class': 'form-control',
-    #                                    'placeholder':'Gõ lại mật khẩu'}))
-    #     IS_STAFF_CHOICES = (
-    #             ("0", "No Employee"),
-    #             ("1", "Employee")
-    #         )
-    #     is_staff = forms.ChoiceField(label="Tình trạng nhân viên", widget=forms.RadioSelect, choices=IS_STAFF_CHOICES)
-    #     is_staff = forms.BooleanField(label="Tình trạng nhân viên", default=False)
-    #     is_active = forms.BooleanField(label="Kích hoạt", default=False)
-
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email', )
@@ -162,14 +131,7 @@ class UserForm(ModelForm):  # UserCreationForm
 
 
 class ProfileForm(ModelForm):
-    # GOOGLE = 1
-    # FACEBOOK = 2
-    # LINKEDIN = 3
-    # SOCIAL_CHOICES = (
-    #     (GOOGLE, 'Google'),
-    #     (FACEBOOK, 'Facebook'),
-    #     (LINKEDIN, 'Linkedin'),
-    # )
+    # GOOGLE, FACEBOOK, LINKEDIN = range(3)
     # social_network = forms.ChoiceField(label="Mạng xã hội", choices=SOCIAL_CHOICES)
     # social_network = forms.TypedChoiceField(null=True, default=0, blank=True)
     phone_number = forms.CharField(label="Số điện thoại", max_length=20, required=False,
@@ -189,18 +151,14 @@ class ProfileForm(ModelForm):
                              widget=forms.TextInput({
                                  'class': 'form-control',
                                  'placeholder': 'Link cá nhân'}))
-    # birthday = forms.FileField(label="Ngày sinh", required=False,
-    #                             widget=forms.TextInput({
-    #                                 'class': 'form-control',
-    #                                 'placeholder': ''}) )
-    birthday = forms.DateField(label="Ngày sinh", help_text='(định dạng mm/dd/yyyy)',
-                               widget=forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date', 'id': 'datepicker'}),
-                               input_formats=settings.DATE_INPUT_FORMATS)
+    # widget=forms.SelectDateWidget
+    birthday = forms.DateField(label="Ngày sinh", required=False,
+                               help_text='(định dạng dd/mm/yyyy)',
+                               widget=forms.DateInput(
+                                   format='%d/%m/%Y',
+                                   attrs={'type': 'date', 'id': 'datepicker'}
+                               ), input_formats=settings.DATE_INPUT_FORMATS)
 
-    # birthday = forms.DateField(label="Ngày sinh", widget = forms.SelectDateWidget)
-    # birthday = forms.DateField(label="Ngày sinh", input_formats=['%Y-%m-%d'])
-    # images = forms.ImageField(label="Hình ảnh Avatar", help_text='Chọn một file từ thiết bị làm Avatar.', widget=forms.FileInput())
-    # logo = forms.FileField(label='Logo')
     class Meta:
         model = Profile
         fields = ('birthday', 'phone_number', 'address', 'description', 'website', 'image')
