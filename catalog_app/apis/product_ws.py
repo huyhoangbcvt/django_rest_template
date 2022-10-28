@@ -90,9 +90,9 @@ def addProduct(request):
 def addCommentProduct(self, request):
     try:
         product = self.get_object()
-
         if request.user and product:
             content = request.data.get('content')
+            print(content)
             if content:
                 cm = Comment.objects.create(
                     content=request.data.get('content'),

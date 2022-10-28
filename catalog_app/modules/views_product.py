@@ -41,7 +41,7 @@ def AddProduct(request):
     return product_ws.addProduct(request)
 
 
-class ProductViewSet(viewsets.ViewSet, generics.CreateAPIView, generics.RetrieveUpdateAPIView):  # viewsets.ModelViewSet
+class ProductViewSet(viewsets.ViewSet, generics.ListCreateAPIView, generics.RetrieveUpdateAPIView):  # viewsets.ModelViewSet
     # authentication_classes = TokenAuthentication  # Token access
     permission_classes = [IsAuthenticated]  # Basic Auth
     queryset = Product.objects.filter(active=True).order_by('created_at')
