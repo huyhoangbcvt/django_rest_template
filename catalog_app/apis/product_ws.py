@@ -65,7 +65,6 @@ def addProduct(request):
     data = request.data
     user = request.user
     # json_string = json.dumps(data)
-    # print(json_string)
     # use Serializer to deserialize data
     serializer = ProductAddSerializer(data=data)
     # Check if validation is successful

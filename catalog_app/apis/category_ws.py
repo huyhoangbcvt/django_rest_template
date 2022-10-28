@@ -74,30 +74,17 @@ def querySet_GetCategoryInfo(request):
 def addCategory(request):
     # Get data from post request
     data = request.data
-    # user = request.user
-    # print(data['product_map'])
+    # user = request.user  # print(data['product_map'])
     # use Serializer to deserialize data
-    _id = self.request.user.id
-    if _id:
-        queryset = self.queryset.filter(user_id=_id)
+    if self.request.user:
+        queryset = self.queryset.filter(user_id=self.request.user.id)
     serializer = CategoryAddSerializer(data=data)
-    # print(serializer)
     # Check if validation is successful
     if serializer.is_valid():
         # Save the data to database # serializer.save()
         try:
             category_save = serializer.save()
-            # product_id = data['product_map']
-            # category_id = category_save.id
-            # update_fields = (product_id, category_id)
-            # SaveSignalHandlingModel.save_base(update_fields=update_fields)
-            # instance = Middleship(
-            #     product_id=data['product_map'],
-            #     category_id=category_save.id
-            #     # date_joined=datetime.now
-            # )
-            # instance.save()
-            # pass
+
         except exceptions as e:
             print(e.code)
             return Response(e.code, status=status.HTTP_400_BAD_REQUEST)
