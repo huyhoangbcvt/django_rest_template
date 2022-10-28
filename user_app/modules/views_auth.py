@@ -72,7 +72,7 @@ class LoginAPIView(views.APIView):
         return Response({"Token": token.key}, status=status.HTTP_200_OK)
 
 
-class UserViewSet(viewsets.ViewSet, generics.CreateAPIView):
+class UserViewSet(viewsets.ViewSet, generics.ListAPIView, generics.RetrieveUpdateAPIView):
     """
     API endpoint that allows users to be viewed or edited.
     """
@@ -93,13 +93,11 @@ class UserViewSet(viewsets.ViewSet, generics.CreateAPIView):
         print('User ViewSet [' + self.action + ']: get_current_user')
         return Response(self.serializer_class(request.user).data, status=status.HTTP_200_OK)
 
-    # def filter_queryset(self, queryset):
-    #     # queryset = self.queryset.filter(username=request.data.username)
-    #     _id = self.request.user.id
-    #     if _id:
-    #         queryset = self.queryset.filter(id=_id)
-    #         return queryset
-    #     return self.queryset
+    def filter_queryset(self, queryset):
+        if self.request.user:
+            queryset = self.queryset.filter(username=self.request.user.username)
+            return queryset
+        return self.queryset
 
     # def get_queryset(self):
     #     # username = self.request.query_params.get('username', None)
@@ -118,7 +116,7 @@ class UserViewSet(viewsets.ViewSet, generics.CreateAPIView):
     #     return register(request)
 
 
-class ProfileViewSet(viewsets.ViewSet, generics.ListCreateAPIView):
+class ProfileViewSet(viewsets.ViewSet, generics.ListAPIView, generics.RetrieveUpdateAPIView):
     """
     API endpoint that allows users to be viewed or edited.
     """
