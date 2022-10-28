@@ -30,8 +30,8 @@
                 {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" style="display: inline-block;">{{ user.first_name }}</a>
-                    {% if user.profile.images %}
-					<img src="{{ user.profile.images.url }}" alt="" style="height:35px;width:35px;border-radius:50%;overflow:hidden;" />
+                    {% if user.profile.image %}
+					<img src="{{ user.profile.image.url }}" alt="" style="height:35px;width:35px;border-radius:50%;overflow:hidden;" />
 					<!-- <img src="{{ MEDIA_URL }}{{ profile_record.images }}" alt="{{ profile_record.images }}" /> -->
 					{% else %}
 					<img src="{% static 'images/avatar.png' %}" alt="Default" style="height:35px;width:35px;border-radius:50%;overflow:hidden;"/>
