@@ -8,6 +8,7 @@ from rest_framework import generics, status, viewsets, mixins, status, viewsets,
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, GenericAPIView
 from rest_framework.mixins import CreateModelMixin
+from rest_framework.response import Response
 from rest_framework.decorators import api_view, action, permission_classes, authentication_classes
 from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
 from rest_framework.authentication import TokenAuthentication
@@ -40,7 +41,7 @@ def AddProduct(request):
     return product_ws.addProduct(request)
 
 
-class ProductViewSet(viewsets.ViewSet, generics.ListCreateAPIView, generics.RetrieveUpdateAPIView):  # viewsets.ModelViewSet
+class ProductViewSet(viewsets.ViewSet, generics.CreateAPIView, generics.RetrieveUpdateAPIView):  # viewsets.ModelViewSet
     # authentication_classes = TokenAuthentication  # Token access
     permission_classes = [IsAuthenticated]  # Basic Auth
     queryset = Product.objects.filter(active=True).order_by('created_at')
@@ -69,9 +70,10 @@ class ProductViewSet(viewsets.ViewSet, generics.ListCreateAPIView, generics.Retr
         print('Product ViewSet [' + self.action + ']: add_comment pk = ', pk)
         return product_ws.addCommentProduct(self, request)
 
-    @action(methods=['post'], detail=True, url_path='add-comment')
+    @action(methods=['post'], detail=True, url_path='add-contact')
     def add_contact(self, request, pk):
         print('Product ViewSet [' + self.action + ']: add_contact pk = ', pk)
+        # return Response(status=status.HTTP_201_CREATED)
         return product_ws.addContactProduct(self, request)
 
     def filter_queryset(self, queryset):
