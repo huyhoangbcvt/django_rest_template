@@ -1,7 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
 from django.contrib.auth.models import User, Group
 from rest_framework.authentication import authenticate
 from ..models.account_model import Profile
@@ -45,6 +45,12 @@ class TokenUserSerializer(TokenObtainPairSerializer):
     # class Meta:
     #     model = User
     #     fields = ['username', 'password']
+
+
+class TokenRefreshUserSerializer(TokenRefreshSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        return data
 
 
 class CustomUserForeignKey(serializers.PrimaryKeyRelatedField):

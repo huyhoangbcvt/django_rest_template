@@ -32,6 +32,7 @@ router.register(r'users', views_auth.UserViewSet, basename="user_list")
 router.register(r'profiles', views_auth.ProfileViewSet, basename="profile_list")
 router.register(r'groups', views_auth.GroupViewSet, basename="user_group_list")
 router.register(r'get-token', views_auth.GetTokenViewSet, basename="get_token_obtain")
+router.register(r'refresh-token', views_auth.TokenRefreshViewSet, basename='token_refresh'),
 router.register(r'register', views_auth.SignupViewSet, basename="sign_up_vs")
 # router.register(r'login', views_auth.LoginViewSet, basename="login_api")
 
