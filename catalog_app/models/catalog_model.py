@@ -71,6 +71,8 @@ class Product(BaseProductCategoryModel):
 
 
 class Contact(models.Model):
+    class Meta:
+        unique_together = {'name', 'phone_number'}
     name = models.CharField(max_length=100, unique=True)
     phone_number = models.CharField(max_length=20, null=True, default=None, blank=True)
     date_joined = models.DateField(auto_now_add=True, null=True)

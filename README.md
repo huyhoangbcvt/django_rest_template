@@ -36,55 +36,22 @@ python manage.py runserver
 # if using port other, ex 8083
 python manage.py runserver localhost:8083
 
-# Run on browser
+# Run web on browser
 http://localhost:8083/
 
-# Run user & catalog
+# Run api user & catalog
 http://localhost:8083/user/api/
 
 http://localhost:8083/catalog/api/
 
-# Run admin site
+# Run admin site 
 http://localhost:8083/admin/
-
-# APIs
-# Groups
-http://localhost:8083/user/api/groups/
-
-# Register
-http://localhost:8083/user/api/sign-up/
-
-# List users
-http://localhost:8083/user/api/users/
-
-# Register: djoser endpoints
-http://localhost:8083/user/api/auth/users/
-
-# Get token user
-http://localhost:8083/user/api/get-token/
-
-# Login to get token user
-http://localhost:8083/user/api/login/
-
-# Get refresh token & access token: djoser endpoints
-http://localhost:8083/user/api/auth/jwt/create/
 
 # Get refresh token & access token
 http://localhost:8083/user/api/refresh-token/
 
-# Categories list
-http://localhost:8083/catalog/api/category/
-
-# Category add
-http://localhost:8083/catalog/api/category/add/?role=Guess&username=it.hoanghh
-
-# Products list
-http://localhost:8083/catalog/api/product/
-
-# Product add
-http://localhost:8083/catalog/api/product/add/?role=Guess&username=it.hoanghh
-
-# All display on swagger
+# APIs: all in api/swagger/  or  api/redoc/
+# This All display on swagger
 http://localhost:8083/api/swagger/
 
 # Or
