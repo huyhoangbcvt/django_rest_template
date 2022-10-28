@@ -118,7 +118,7 @@ class UserViewSet(viewsets.ViewSet, generics.CreateAPIView):
     #     return register(request)
 
 
-class ProfileViewSet(viewsets.ViewSet, generics.CreateAPIView):
+class ProfileViewSet(viewsets.ViewSet, generics.ListCreateAPIView):
     """
     API endpoint that allows users to be viewed or edited.
     """
@@ -132,6 +132,13 @@ class ProfileViewSet(viewsets.ViewSet, generics.CreateAPIView):
         if self.action == 'get_current_profile':
             return [permissions.IsAuthenticated()]
         return [permissions.AllowAny()]
+
+    def filter_queryset(self, queryset):
+        # queryset = self.queryset.filter(username=request.data.username)
+        if self.request.user:
+            queryset = self.queryset.filter(user_id=self.request.user.id)
+            return queryset
+        return self.queryset
 
     @action(methods=['get'], detail=False, url_path='current-profile')
     def get_current_profile(self, request):
