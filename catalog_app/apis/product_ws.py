@@ -18,6 +18,7 @@ from user_app.models.account_model import Profile
 from ..serializers.product_serializer import ProductSerializer, ProductAddSerializer
 from ..serializers.comment_serializer import CommentRelatedSerializer
 from ..models.catalog_model import (Product, Category, Contact, Comment)
+from ..util.error_code import ErrorInCode
 
 
 # Create your views here.
@@ -92,14 +93,12 @@ def addCommentProduct(self, request):
         product = self.get_object()
         if request.user and product:
             content = request.data.get('content')
-            print(content)
             if content:
-                cm = Comment.objects.create(
-                    content=request.data.get('content'),
-                    product=product,
-                    user=request.user
-                )
+                cm = Comment.objects.create(content=content, product=product, user=request.user)
+                from pprint import pprint;print(cm)
                 return Response(CommentRelatedSerializer(cm).data, status=status.HTTP_201_CREATED)
+                # return HttpResponse('GET Detail done')
+
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         else:
@@ -119,9 +118,10 @@ def addContactProduct(self, request):
             return Response(Http404, status=status.HTTP_404_NOT_FOUND)
         else:
             contacts = request.data.get('contacts')
+            # {"contacts": [{"name": "Dung", "phone_number": "0956345279"}, {"name": "Hoàng Dung", "phone_number": "0937139242"}]}
             if contacts is not None:
                 for contact in contacts:
-                    c, _ = Contact.objects.get_or_create(name=contact)
+                    c, _ = Contact.objects.get_or_create(name=contact['name'], phone_number=contact['phone_number'])
                     product.contacts.add(c)
                 product.save()
                 return Response(ProductSerializer(product).data, status=status.HTTP_201_CREATED)

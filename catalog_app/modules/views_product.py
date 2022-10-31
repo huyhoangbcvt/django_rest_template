@@ -41,18 +41,30 @@ def AddProduct(request):
     return product_ws.addProduct(request)
 
 
-class ProductViewSet(viewsets.ViewSet, generics.ListCreateAPIView, generics.RetrieveUpdateAPIView):  # viewsets.ModelViewSet
+class ProductViewSet(viewsets.ViewSet,
+                     generics.DestroyAPIView,
+                     generics.ListCreateAPIView,
+                     generics.RetrieveUpdateAPIView):  # viewsets.ModelViewSet
     # authentication_classes = TokenAuthentication  # Token access
     permission_classes = [IsAuthenticated]  # Basic Auth
-    queryset = Product.objects.filter(active=True).order_by('created_at')
+    queryset = Product.objects.filter(active=True).select_related('user').order_by('-created_at')
     serializer_class = ProductSerializer
     pagination_class = BasePagination
     # http_method_names = ['get', 'post', 'put', 'patch', 'head', 'delete']
     # swagger_schema = None
 
     def get_permissions(self):
+        print(self.action)
         if self.action == 'list':
             return [permissions.AllowAny()]
+        if self.action == 'active_product':
+            return [permissions.IsAuthenticated()]
+        if self.action == 'un_active_product':
+            return [permissions.IsAuthenticated()]
+        if self.action == 'add_comment':
+            return [permissions.IsAuthenticated()]
+        if self.action == 'add_contact':
+            return [permissions.IsAuthenticated()]
         return [permissions.IsAuthenticated()]
 
     @action(methods=['post'], detail=True, url_path='active', url_name='active')
@@ -68,19 +80,23 @@ class ProductViewSet(viewsets.ViewSet, generics.ListCreateAPIView, generics.Retr
     @action(methods=['post'], detail=True, url_path='add-comment')
     def add_comment(self, request, pk):
         print('Product ViewSet [' + self.action + ']: add_comment pk = ', pk)
+        # return HttpResponse('PUT U  pdate Detail done')
         return product_ws.addCommentProduct(self, request)
 
     @action(methods=['post'], detail=True, url_path='add-contact')
     def add_contact(self, request, pk):
+        self.queryset = self.get_object()
         print('Product ViewSet [' + self.action + ']: add_contact pk = ', pk)
         # return Response(status=status.HTTP_201_CREATED)
         return product_ws.addContactProduct(self, request)
 
     def filter_queryset(self, queryset):
+        # print('filter_queryset')
+        # self.queryset = self.get_object()
         # queryset = self.queryset.filter(username=request.data.username)
-        if self.request.user:
-            queryset = self.queryset.filter(user_id=self.request.user.id)
-            return queryset
+        # if self.request.user:
+        #     queryset = self.queryset.filter(user_id=self.request.user.id)
+        #     return queryset
         return self.queryset
 
 

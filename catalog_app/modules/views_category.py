@@ -46,7 +46,7 @@ def AddCategory(request):
 class CategoryViewSet(viewsets.ModelViewSet):
     # authentication_classes = TokenAuthentication  # Token access
     permission_classes = [IsAuthenticated]  # Basic Auth
-    queryset = Category.objects.filter(active=True).order_by('created_at')
+    queryset = Category.objects.filter(active=True).select_related('user').order_by('created_at')
     serializer_class = CategorySerializer
     pagination_class = BasePagination
     # http_method_names = ['get', 'post', 'put', 'patch', 'head', 'delete']
@@ -54,8 +54,15 @@ class CategoryViewSet(viewsets.ModelViewSet):
     charset = 'UTF-8'
 
     def get_permissions(self):
+        print(self.action)
         if self.action == 'list':
             return [permissions.AllowAny()]
+        if self.action == 'active_product':
+            return [permissions.IsAuthenticated()]
+        if self.action == 'un_active_product':
+            return [permissions.IsAuthenticated()]
+        if self.action == 'add_comment':
+            return [permissions.IsAuthenticated()]
         return [permissions.IsAuthenticated()]
 
     @action(methods=['PATCH'], detail=True, url_path='active', url_name='active')
@@ -63,7 +70,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
         print('Category ViewSet ['+self.action+']: active_category pk = ', pk)
         return category_ws.updateActiveCategory(request, pk, _active=True)
 
-    @action(methods=['PATCH'], detail=True, url_path='unactive', url_name='unactive')
+    @action(methods=['PATCH'], detail=True, url_path='un-active')
     def un_active_category(self, request, pk):
         print('Category ViewSet ['+self.action+']: un_active_category pk = ', pk)
         return category_ws.updateActiveCategory(request, pk, _active=False)
@@ -137,13 +144,6 @@ class ContactViewSet(viewsets.ViewSet):
     # def post(self, request, *args, **kwargs):
     #     print(self.request.data)
     #     return self.create(request, *args, **kwargs)
-
-
-# Get all
-# class ListAllProfile(ListAPIView):
-#     queryset = Profile.objects.all()
-#     serializer_class = User_appSerializer
-#     permission_classes = [IsAuthenticated]
 
 
 # class CreateProfile(CreateModelMixin, GenericAPIView):
