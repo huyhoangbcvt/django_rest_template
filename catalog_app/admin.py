@@ -13,7 +13,7 @@ class CategoryAdmin(admin.ModelAdmin):
         }
         js = ('/static/js/admin.js', )
 
-    list_display = ["id", "name", "code", "image", "active", "content", "product", "created_at"]
+    list_display = ["id", "name", "code", "image", "active", "content", "created_at"]
     search_fields = ["name", "code", "product__name", "created_at"]
     list_filter = ["created_at", "active"]
     ordering = ("-created_at", "name", "-id", )
@@ -42,8 +42,8 @@ class ProductAdmin(admin.ModelAdmin):
         }
         js = ('/static/js/admin.js', )
 
-    list_display = ["id", "name", "code", "image", "description", "active", "category", "country", "created_at"]  # , "contact"
-    search_fields = ["name", "code", "category__name", "created_at", "contact__name", "contact__phone_number"]
+    list_display = ["id", "name", "code", "image", "description", "active", "country", "created_at"]  # , "contact"
+    search_fields = ["name", "code", "created_at", "contact__name", "contact__phone_number"]
     list_filter = ["created_at", "active"]
     ordering = ("-created_at", "name", "-id",)
     readonly_fields = ["display_product_demo"]
@@ -71,9 +71,9 @@ class ContactAdmin(admin.ModelAdmin):
     ordering = ("-date_joined", "name", "-id",)
 
 
-class ProductInlineAdmin(admin.StackedInline):
-    model = Product
-    pk_name = 'category'
+# class ProductInlineAdmin(admin.StackedInline):
+#     model = Product
+#     pk_name = 'category'
 
 
 # class CategoryInlineAdmin(admin.ModelAdmin):

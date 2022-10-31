@@ -52,7 +52,8 @@ urlpatterns = [
     path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     # =============| APIs |============
     path('__debug__/', include(debug_toolbar.urls)),
-    path('admin/', admin_site.urls),  # path('admin/', admin.site.urls),
+    # path('admin/', admin_site.urls),
+    path('admin/', admin.site.urls),
     # path('', include(router.urls)),
     # =============| app endpoints |============
     # path('', views_auth.index_userapp, name='index'),

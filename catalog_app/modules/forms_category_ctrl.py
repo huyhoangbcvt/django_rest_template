@@ -9,6 +9,12 @@ from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from ckeditor.widgets import CKEditorWidget
 
 
+class M2MSelect(forms.SelectMultiple):
+    def render(self, name, value, attrs=None, choices=()):
+        rendered = super(M2MSelect, self).render(name, value=value, attrs=attrs, choices=choices)
+        return rendered.replace(u'multiple="multiple"', u'')
+
+
 class CatalogForm(forms.ModelForm):
     def __init__(self, *args, user=None, product=None, **kwargs):
         super(CatalogForm, self).__init__(*args, **kwargs)
@@ -29,19 +35,18 @@ class CatalogForm(forms.ModelForm):
     code = forms.CharField(required=True)
     image = forms.ImageField(required=False)
     content = forms.CharField(required=False, widget=CKEditorUploadingWidget())  # forms.CharField(required=False, widget=forms.Textarea())
+    products = forms.ModelMultipleChoiceField(queryset=Product.objects.all())
 
     class Meta:
         model = Category
         # PRODUCT_CHOICES = (fields['product_map'])
         # product_map = forms.ChoiceField(choices='product_map')
         # model['product'] = forms.ChoiceField(label="Chọn sản phẩm", choices=Product.objects.all())
-        fields = ['name', 'code', 'image', 'content', 'product', 'user']
+        fields = ['name', 'code', 'image', 'content', 'user', 'products']
         labels = {'name': _('Tên Category (*)'), 'code': _('Mã Category (*)'), 'image': _('Hình ảnh category'), 'content': _('Nội dung'),
-                  'product': _('Chọn sản phẩm (nếu có)'), 'user': _('Tài khoản tạo (*)')}
+                  'products': _('Chọn sản phẩm (nếu có)'), 'user': _('Tài khoản tạo (*)')}
         widgets = {
             # 'product': forms.ChoiceField(attrs={'required': False}),
             # 'image': forms.ImageField(attrs={'required': False}),
             # 'content': forms.Textarea()
         }
-
-

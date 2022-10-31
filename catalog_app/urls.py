@@ -12,7 +12,7 @@ router = routers.DefaultRouter()
 router.register(r'categories', views_category.CategoryViewSet, basename="category")
 router.register(r'products', views_product.ProductViewSet, basename="product")
 router.register(r'contacts', views_contact.ContactViewSet, basename="contact")
-router.register(r'comments', views_comment.CommentViewSet, basename="contact")
+router.register(r'comments', views_comment.CommentViewSet, basename="comment")
 
 urlpatterns = [
     # path('admin/', admin_site.urls),

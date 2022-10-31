@@ -1,4 +1,4 @@
-from ..models.catalog_model import Product, Contact
+from ..models.catalog_model import Product, Contact, Category
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
@@ -17,13 +17,14 @@ class ProductForm(forms.ModelForm):
     image = forms.ImageField(required=False)
     description = forms.CharField(required=False, widget=CKEditorUploadingWidget())
     # description = forms.CharField(required=False, widget=forms.Textarea())
+    categories = forms.ModelMultipleChoiceField(queryset=Category.objects.all())
 
     class Meta:
         model = Product
-        fields = ['name', 'code', 'image', 'description', 'country', 'category', 'user', 'contacts']
+        fields = ['name', 'code', 'image', 'description', 'country', 'user', 'contacts', 'categories']
         labels = {'name': _('Tên sản phẩm (*)'), 'code': _('Mã sản phẩm (*)'),
                   'image': _('Hình ảnh sản phẩm'), 'description': _('Mô tả sản phẩm'),
-                  'country': _('Xuất xứ'), 'category': _('Chọn Category (*)'), 'user': _('Tài khoản tạo'), 'contacts': _('Gắn liên hệ')}
+                  'country': _('Xuất xứ'), 'user': _('Tài khoản tạo'), 'contacts': _('Gắn liên hệ')}
 
 
 class ContactForm(forms.ModelForm):

@@ -77,9 +77,9 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
     def filter_queryset(self, queryset):
         # queryset = self.queryset.filter(username=request.data.username)
-        if self.request.user:
-            queryset = self.queryset.filter(user_id=self.request.user.id)
-            return queryset
+        # if self.request.user:
+        #     queryset = self.queryset.filter(user_id=self.request.user.id)
+        #     return queryset
         return self.queryset
 
 

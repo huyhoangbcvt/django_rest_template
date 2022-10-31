@@ -27,11 +27,12 @@ class BaseProductCategoryModel(models.Model):
 # Create your models here.
 class Category(BaseProductCategoryModel):
     class Meta:
-        unique_together = {'name', 'product'}
+        unique_together = {'name', 'products'}
     # Allow None null=True
     content = RichTextField(max_length=1000, null=True, default=None)  # models.TextField(max_length=1000, null=True, default=None)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True, blank=True, default=0, related_name='categories')
+    # product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True, blank=True, default=0, related_name='categories')
+    products = models.ManyToManyField('Product', null=True, blank=True, related_name='categories', through='Middleship')
 
     # No Meta then table will create default via appname_classmodel
     class Meta:
@@ -49,11 +50,11 @@ class Category(BaseProductCategoryModel):
 # @python_2_unicode_compatible
 class Product(BaseProductCategoryModel):
     class Meta:
-        unique_together = {'name', 'category'}
+        unique_together = {'name'}
     description = RichTextField(max_length=1000, null=True, default=None, blank=True)  # models.TextField(max_length=1000, null=True, default=None, blank=True)
     country = models.CharField(max_length=50, null=True, default=None, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')  # Not delete Product
+    # category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')  # Not delete Product
     contacts = models.ManyToManyField('Contact', null=True, blank=True, related_name='products')
 
     def __str__(self):
@@ -93,16 +94,16 @@ class Comment(models.Model):
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)  # default=datetime.now
 
 
-# class Middleship(models.Model):
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-#     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-#     date_joined = models.DateField(null=True, default=datetime.now)
-#
-#     def __str__(self):
-#         return "{}_{}".format(self.Product.__str__(), self.Category.__str__())
-#
-#     class Meta:
-#         managed = True
-#         db_table = 'catalog_product_category'
-#         verbose_name = 'catalog_product_category'
-#         verbose_name_plural = 'catalog_product_categories'
+class Middleship(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    date_joined = models.DateField(null=True, default=datetime.now)
+
+    def __str__(self):
+        return "{}_{}".format(self.Product.__str__(), self.Category.__str__())
+
+    class Meta:
+        managed = True
+        db_table = 'catalog_product_categories'
+        verbose_name = 'catalog_product_categories'
+        verbose_name_plural = 'catalog_product_categories'

@@ -72,17 +72,23 @@ class DjangoAdminSite(admin.AdminSite):
 
 
 # Register your models here
-# admin.site.register(Profile, ProfileAdmin)
-# admin.site.register(Social, SocialAdmin)
+admin.site.register(Profile, ProfileAdmin)
+admin.site.register(Social, SocialAdmin)
+
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(Product, ProductAdmin)
+admin.site.register(Contact, ContactAdmin)
+admin.site.register(Comment)
+admin.site.register(UploadFile)
 
 admin_site = DjangoAdminSite('django_rest_template')
-admin_site.register(User, UserAdmin)
-admin_site.register(Group)
-admin_site.register(Profile, ProfileAdmin)
-admin_site.register(Social, SocialAdmin)
-
-admin_site.register(Category, CategoryAdmin)
-admin_site.register(Product, ProductAdmin)
-admin_site.register(Contact, ContactAdmin)
-admin_site.register(Comment)
-admin_site.register(UploadFile)
+# admin_site.register(User, UserAdmin)
+# admin_site.register(Group)
+# admin_site.register(Profile, ProfileAdmin)
+# admin_site.register(Social, SocialAdmin)
+#
+# admin_site.register(Category, CategoryAdmin)
+# admin_site.register(Product, ProductAdmin)
+# admin_site.register(Contact, ContactAdmin)
+# admin_site.register(Comment)
+# admin_site.register(UploadFile)
