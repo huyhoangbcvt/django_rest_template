@@ -7,12 +7,12 @@
 {% block nav_sidebar %}{% include 'layout/nav-sidebar.html' %}{% endblock %}
 
 {% block content %}
-    <a href="{% url 'catalog:view-product' %}">Go Back Products</a>
+    <a href="{% url 'catalog:products' %}">Go Back Products</a>
     <hr/>
     <form method = "post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Upload</button>
+        <button type="submit">Tạo sản phẩm</button>
     </form>
     {% include 'layout/nav-bar.html' %}
 

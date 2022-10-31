@@ -1,4 +1,4 @@
-from django.shortcuts import render, resolve_url, redirect
+from django.shortcuts import render, resolve_url, redirect, get_object_or_404
 # from ..models.product_model import Product
 from django.core.paginator import Paginator
 
@@ -13,13 +13,18 @@ from django.urls import reverse_lazy
 from django.views.generic import DetailView
 from django.core.files.base import ContentFile
 from django.views.generic import TemplateView
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from ..models.catalog_model import Category, Product
+from django.views.generic import (
+    FormView, UpdateView, View
+)
+from datetime import datetime
 
 
-def list_product(request):
+def product_list(request):
     # auth cho func, using LoginRequiredMixin cho class
     if not request.user.is_authenticated:
         return redirect('user:login')
@@ -27,25 +32,25 @@ def list_product(request):
     # sort pm = Product.objects.order_by(F('created_at').desc(nulls_last=True)) #.asc()
     # filter
     user = request.user
-    print(user.username)
+    # print(user.username)
     # queryset
     pm = Product.objects.filter(user_id=user.id).order_by(F('created_at').desc(nulls_last=True))
     paginator = Paginator(pm, 2)  # Show 25 contacts per page.
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'blog/view_product.html', {'page_obj':page_obj})
+    return render(request, 'product/view_product.html', {'page_obj': page_obj})
 
 
-class UploadImage(TemplateView, LoginRequiredMixin):
+class AddProduct(TemplateView, LoginRequiredMixin):
     form = ProductForm
-    template_name = 'blog/upload_product.html'
+    template_name = 'product/upload_product.html'
 
     def post(self, request, *args, **kwargs):
         user = request.user
         # if user is not None and user.is_superuser:
         #     user = User.objects.all()
         print(user.username)
-        form = ProductForm(request.POST, request.FILES, user=request.user) #, user=request.user, product=pm
+        form = ProductForm(request.POST, request.FILES, user=request.user)  # , user=request.user, product=pm
         if form.is_valid():
             obj = form.save()
             return HttpResponseRedirect(reverse_lazy('catalog:view_upload_p_template_page', kwargs={'pk': obj.id}))
@@ -57,8 +62,55 @@ class UploadImage(TemplateView, LoginRequiredMixin):
         return self.post(request, *args, **kwargs)
 
 
-# Upload template
-class UploadImageDisplay(DetailView, LoginRequiredMixin):
+class ProductDisplay(DetailView, LoginRequiredMixin):
     model = Product
-    template_name = 'blog/upload_product_display.html'
+    template_name = 'product/upload_product_display.html'
     context_object_name = 'UF'
+
+
+class ChangeProduct(UpdateView):
+    queryset = Product.objects.all()
+    profile_form_class = ProductForm
+    success_url = reverse_lazy('catalog:products')
+    template_name = "product/product_edit.html"
+    add_home = False
+    extra_context = {
+        'title': "Thay đổi thông tin cá nhân",
+        'year': datetime.now().year
+    }
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated is None:
+            return render(request, 'registration/login.html')
+        # self.extra_context['user_form'] = UserForm(instance=request.user)  # user_form = self.user_form_class(None)
+        self.extra_context['product_form'] = ProductForm(instance=self.get_object())
+        # and then just pass them to my template
+        return render(request, self.template_name, self.extra_context)  # {'user_form': user_form, 'profile_form': profile_form}
+
+    # def get_object(self, *args, **kwargs):
+    #     product_to_edit = get_object_or_404(Product, pk=self.kwargs['pk'])
+    #     return product_to_edit
+
+    def post(self, request, *args, **kwargs):
+        # if request.POST:
+        form = ProductForm(request.POST, request.FILES, instance=self.get_object(), user=request.user)
+        if form.is_valid():
+            obj = form.save()
+            #     # user_save = user_form.save()
+            #     custom_save = product_form.save(False)
+            #     # custom_save.user = user_save
+            #     # custom_save.save()
+            #     return redirect('catalog:products')
+            return redirect('catalog:products')
+
+        context = self.get_context_data(form=form)
+        return self.render_to_response(context)
+
+        # else: # form not valid - each form will contain errors in form.errors
+        # return render(request, self.template_name, {
+        #     # 'user_form': user_form,
+        #     'product_form': ProductForm
+        # })
+
+    def get_success_url(self, *args, **kwargs):
+        return reverse_lazy("catalog:products")

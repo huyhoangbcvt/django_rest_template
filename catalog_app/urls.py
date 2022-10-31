@@ -32,14 +32,16 @@ urlpatterns = [
     # =============| Web |============
     # path('', views_catalog.index, name='index'),
     path('', views_catalog_ctrl.CatalogView.as_view(), name="catalog"),
-    path('category/', views_category_ctrl.list_category, name="view-category"),
+    path('categories/', views_category_ctrl.category_list, name="categories"),
 
-    path('category/create/', views_category_ctrl.UploadImage.as_view(), name='upload_template'),
-    path('category/view/<int:pk>/', views_category_ctrl.UploadImageDisplay.as_view(), name='view_upload_template_page'),
+    path('categories/add-category/', views_category_ctrl.AddCategory.as_view(), name='upload_template'),
+    path('categories/<int:pk>/change/', views_category_ctrl.ChangeCategory.as_view(), name='category_edit'),
+    path('categories/view/<int:pk>/', views_category_ctrl.CategoryDisplay.as_view(), name='view_upload_template_page'),
 
-    path('product/', views_product_ctrl.list_product, name="view-product"),
+    path('products/', views_product_ctrl.product_list, name="products"),
     # path('', RedirectView.as_view(url='catalog-detail/', permanent=True)),
-    path('product/create/', views_product_ctrl.UploadImage.as_view(), name='upload_p_template'),
-    path('product/view/<int:pk>/', views_product_ctrl.UploadImageDisplay.as_view(), name='view_upload_p_template_page'),
+    path('products/<int:pk>/change/', views_product_ctrl.ChangeProduct.as_view(), name='product_edit'),
+    path('products/add-product/', views_product_ctrl.AddProduct.as_view(), name='upload_p_template'),
+    path('products/view/<int:pk>/', views_product_ctrl.ProductDisplay.as_view(), name='view_upload_p_template_page'),
 
 ]

@@ -8,7 +8,7 @@
 {% block nav_sidebar %}{% include 'layout/nav-sidebar.html' %}{% endblock %}
 
 {% block content %}
-    <a href="{% url 'catalog:view-category' %}">Go Back</a>
+    <a href="{% url 'catalog:categories' %}">Go Back</a>
     <hr/>
     <h2>Tiêu đề: {{UF.name}}</h2>
     <h6>Người tạo: {{UF.user.first_name}} {{UF.user.last_name}}</h6>

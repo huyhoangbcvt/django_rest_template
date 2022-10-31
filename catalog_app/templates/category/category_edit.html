@@ -1,0 +1,29 @@
+{% extends "layout/layout.html" %}
+
+{% block title %}{{ title }} {% endblock %}
+
+{% block nav_top %}{% include 'layout/nav-bar_top.html' %}{% endblock %}
+
+{% block nav_sidebar %}{% include 'layout/nav-sidebar.html' %}{% endblock %}
+
+{% block content %}
+	<a href="{% url 'catalog:categories' %}">Go Back Category List</a>
+    <hr/>
+<div class="">
+	<form method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+	    <div class="clearfix"></div><!-- {{ profile_form.as_p }} -->
+		{% for field in category_form %}
+			<div class="form-group clearfix">
+				<label for="id_username" class="col-md-2 control-label">{{ field.label }}</label>
+				<div class="col-md-8" style="display: inline-block;">{{ field }}</div>
+			</div>
+	    {% endfor %}
+
+	    <div class="form-group clearfix">
+			<input type="hidden" name="next" value="{{ next }}" />
+			<div class="col-md-12" style="text-align: center;"><input type="submit" value="Lưu lại" class="btn-info"/></div>
+		</div>
+	</form>
+</div>
+{% endblock %}

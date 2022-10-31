@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, resolve_url, redirect, get_object_or_404
 from django.core.paginator import Paginator
 
 from django.db.models import Count, F, Value, Func
@@ -18,11 +18,15 @@ from django.contrib.auth.models import User
 # from ..models.product_model import Product
 # from ..models.category_model import Category
 from ..models.catalog_model import Category, Product
+from django.views.generic import (
+    FormView, UpdateView, View
+)
+from datetime import datetime
 
 
 # auth cho func, using LoginRequiredMixin cho class
 @login_required()
-def list_category(request):
+def category_list(request):
     # pm = Category.objects.all()
     # sort pm = Category.objects.order_by(F('created_at').desc(nulls_last=True)) #.asc()
     # filter
@@ -33,10 +37,10 @@ def list_category(request):
     paginator = Paginator(pm, 2)  # Show 25 contacts per page.
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'blog/view_category.html', {'page_obj': page_obj})
+    return render(request, 'category/view_category.html', {'page_obj': page_obj})
 
 
-class UploadImage(TemplateView, LoginRequiredMixin):
+class AddCategory(TemplateView, LoginRequiredMixin):
     # form = CatalogForm
     # template_name = 'blog/upload_category.html'
 
@@ -59,12 +63,53 @@ class UploadImage(TemplateView, LoginRequiredMixin):
         pm = Product.objects.filter(user_id=user.id).order_by(F('created_at').desc(nulls_last=True))
         # from pprint import pprint;pprint(pm)
         form = CatalogForm(request.POST, request.FILES, user=user, product=pm)  # , user=request.user, product=pm
-        return render(request, 'blog/upload_category.html', {'form': form})
+        return render(request, 'category/upload_category.html', {'form': form})
         # return self.post(request, *args, **kwargs)
 
 
 # Upload template
-class UploadImageDisplay(DetailView, LoginRequiredMixin):
+class CategoryDisplay(DetailView, LoginRequiredMixin):
     model = Category
-    template_name = 'blog/upload_category_display.html'
+    template_name = 'category/upload_category_display.html'
     context_object_name = 'UF'
+
+
+class ChangeCategory(UpdateView):
+    queryset = Category.objects.all()
+    profile_form_class = CatalogForm
+    success_url = reverse_lazy('catalog:categories')
+    template_name = "category/category_edit.html"
+    add_home = False
+    extra_context = {
+        'title': "Thay đổi Category",
+        'year': datetime.now().year
+    }
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated is None:
+            return render(request, 'registration/login.html')
+        self.extra_context['category_form'] = CatalogForm(instance=self.get_object())
+        return render(request, self.template_name, self.extra_context)  # {'user_form': user_form, 'profile_form': profile_form}
+
+    # def get_object(self, *args, **kwargs):
+    #     category_to_edit = get_object_or_404(Category, pk=self.kwargs['pk'])
+    #     return category_to_edit
+
+    def post(self, request, *args, **kwargs):
+        # if request.POST:
+        form = CatalogForm(request.POST, request.FILES, instance=self.get_object(), user=request.user)
+        if form.is_valid():
+            obj = form.save()
+            return redirect('catalog:categories')
+
+        context = self.get_context_data(form=form)
+        return self.render_to_response(context)
+
+        # else: # form not valid - each form will contain errors in form.errors
+        # return render(request, self.template_name, {
+        #     # 'user_form': user_form,
+        #     'product_form': ProductForm
+        # })
+
+    def get_success_url(self, *args, **kwargs):
+        return reverse_lazy("catalog:categories")

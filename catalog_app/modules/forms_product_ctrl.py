@@ -17,7 +17,7 @@ class ProductForm(forms.ModelForm):
     image = forms.ImageField(required=False)
     description = forms.CharField(required=False, widget=CKEditorUploadingWidget())
     # description = forms.CharField(required=False, widget=forms.Textarea())
-    categories = forms.ModelMultipleChoiceField(queryset=Category.objects.all())
+    categories = forms.ModelMultipleChoiceField(required=False, queryset=Category.objects.all())
 
     class Meta:
         model = Product

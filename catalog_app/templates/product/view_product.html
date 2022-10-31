@@ -22,40 +22,27 @@
 <body>-->
     <div class="form-group clearfix">
 		<ul>
-			<li style="text-align: center;list-style: none;"><a href="{% url 'catalog:upload_template' %}">Thêm vào CATEGORY</a></li>
+			<li style="text-align: center;list-style: none;"><a href="{% url 'catalog:upload_p_template' %}">Thêm vào PRODUCT</a></li>
 		</ul>
 	</div>
 
     <a href="{% url 'catalog:catalog' %}">Go Back Catalog</a>
     <hr/>
-
-<h3 class="text-center">Categories</h3>
-<table class="table table-bordered mt60">
-    <thead class="bg-darkgray text-bold td">
-        <td>Id</td>
-        <td>Tên Category</td>
-        <td>Mã Category</td>
-        <td>Hình ảnh</td>
-        <td>Nội dung</td>
-    </thead>
-    <tbody>
-        {% for item in page_obj %}
-        <tr>
-            <td>{{item.id}}</td>
-            <td>{{item.name}}</td>
-            <td>{{item.code}}</td>
-            <td>
-                {% if item.image %}
-                <img src="{{item.image.url}}" alt="Hình ảnh Category" width="100" height="100">
-                {% else %}
-                <img src="{{item.image.name}}" alt="Đường dẫn hình ảnh Category đã không còn {{item.image.name}}" width="100" height="100">
-                {% endif %}
-            </td>
-            <td>{{item.content}}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    {% for item in page_obj %}
+        <h6>Tên sản phẩm: <a href="{% url 'catalog:products' %}{{item.id}}/change/">{{item.name}}</a></h6>
+        <h5>Mã sản phẩm: {{item.code}}</h5>
+        <h6>Xuất xứ: {{item.country}}</h6>
+        <h6>Người tạo: {{item.user.last_name}} {{item.user.first_name}}</h6>
+        <p>
+            {% if item.image %}
+                <img src="{{item.image.url}}" alt="Hình ảnh sản phẩm" width="100" height="100">
+            {% else %}
+                <img src="{{item.image.name}}" alt="Đường dẫn hình ảnh sản phẩm đã không còn {{item.image.name}}" width="100" height="100">
+            {% endif %}
+        </p>
+        <h6>Mô tả: {{item.description}}</h6>
+        <hr/>
+    {% endfor %}
 
     <div class="pagination">
         <span class="step-links">
