@@ -2,7 +2,7 @@ from rest_framework import serializers
 from ..models.catalog_model import (Product, Category)
 from django import forms
 from user_app.serializers.user_serializer import UserSerializer
-from .product_serializer import ProductCategorySerializer
+# from .product_serializer import ProductCategorySerializer
 from django.contrib.auth.models import User
 
 
@@ -10,8 +10,8 @@ from django.contrib.auth.models import User
 class CategorySerializer(serializers.ModelSerializer):
     # user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     user = UserSerializer(required=True)
-    products = ProductCategorySerializer(many=True)
-    # products = forms.ModelMultipleChoiceField(queryset=Product.objects.all())
+    # products = ProductCategorySerializer(many=True)
+    products = forms.ModelMultipleChoiceField(queryset=Product.objects.all())
 
     class Meta:
         model = Category

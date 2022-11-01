@@ -7,12 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from django.db.models.utils import create_namedtuple_class
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from ckeditor.widgets import CKEditorWidget
-
-
-class M2MSelect(forms.SelectMultiple):
-    def render(self, name, value, attrs=None, choices=()):
-        rendered = super(M2MSelect, self).render(name, value=value, attrs=attrs, choices=choices)
-        return rendered.replace(u'multiple="multiple"', u'')
+from django.utils.datastructures import MultiValueDict, MultiValueDictKeyError
 
 
 class CatalogForm(forms.ModelForm):
@@ -35,7 +30,8 @@ class CatalogForm(forms.ModelForm):
     code = forms.CharField(required=True)
     image = forms.ImageField(required=False)
     content = forms.CharField(required=False, widget=CKEditorUploadingWidget())  # forms.CharField(required=False, widget=forms.Textarea())
-    products = forms.ModelMultipleChoiceField(queryset=Product.objects.all())
+    products = forms.ModelMultipleChoiceField(required=False, queryset=Product.objects.all())
+    # products = forms.ModelMultipleChoiceField(widget=M2MSelect, required=True, queryset=Product.objects.all())
 
     class Meta:
         model = Category
@@ -44,9 +40,26 @@ class CatalogForm(forms.ModelForm):
         # model['product'] = forms.ChoiceField(label="Chọn sản phẩm", choices=Product.objects.all())
         fields = ['name', 'code', 'image', 'content', 'user', 'products']
         labels = {'name': _('Tên Category (*)'), 'code': _('Mã Category (*)'), 'image': _('Hình ảnh category'), 'content': _('Nội dung'),
-                  'products': _('Chọn sản phẩm (nếu có)'), 'user': _('Tài khoản tạo (*)')}
+                  'user': _('Tài khoản tạo (*)')}
         widgets = {
             # 'product': forms.ChoiceField(attrs={'required': False}),
             # 'image': forms.ImageField(attrs={'required': False}),
             # 'content': forms.Textarea()
         }
+
+
+class M2MSelect(forms.SelectMultiple):
+    allow_multiple_selected = False
+
+
+# class M2MSelect(forms.Select):
+#     def value_from_datadict(self, data, files, name):
+#         if isinstance(data, (MultiValueDict, MultiValueDictKeyError)):
+#             return data.getlist(name)
+#         return data.get(name, None)
+
+
+# class M2MSelect(forms.SelectMultiple):
+#     def render(self, name, value, attrs=None, choices=()):
+#         rendered = super(M2MSelect, self).render(name, value=value, attrs=attrs, choices=choices)
+#         return rendered.replace(u'multiple="multiple"', u'')

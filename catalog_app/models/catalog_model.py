@@ -32,7 +32,7 @@ class Category(BaseProductCategoryModel):
     content = RichTextField(max_length=1000, null=True, default=None)  # models.TextField(max_length=1000, null=True, default=None)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True, blank=True, default=0, related_name='categories')
-    products = models.ManyToManyField('Product', null=True, blank=True, related_name='categories', through='Middleship')
+    # products = models.ManyToManyField('Product', null=True, blank=True, related_name='categories', through='Middleship')
 
     # No Meta then table will create default via appname_classmodel
     class Meta:
@@ -55,7 +55,8 @@ class Product(BaseProductCategoryModel):
     country = models.CharField(max_length=50, null=True, default=None, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')  # Not delete Product
-    contacts = models.ManyToManyField('Contact', null=True, blank=True, related_name='products')
+    # contacts = models.ManyToManyField('Contact', null=True, blank=True, related_name='products')
+    categories = models.ManyToManyField(Category, null=True, blank=True, related_name='products', through='Middleship')
 
     def __str__(self):
         return self.name
@@ -71,19 +72,19 @@ class Product(BaseProductCategoryModel):
         # verbose_name_plural = 'catalog_products'
 
 
-class Contact(models.Model):
-    class Meta:
-        unique_together = {'name', 'phone_number'}
-    name = models.CharField(max_length=100, unique=True)
-    phone_number = models.CharField(max_length=20, null=True, default=None, blank=True)
-    date_joined = models.DateField(auto_now_add=True, null=True)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        managed = True
-        ordering = ['-date_joined', 'name']
+# class Contact(models.Model):
+#     class Meta:
+#         unique_together = {'name', 'phone_number'}
+#     name = models.CharField(max_length=100, unique=True)
+#     phone_number = models.CharField(max_length=20, null=True, default=None, blank=True)
+#     date_joined = models.DateField(auto_now_add=True, null=True)
+#
+#     def __str__(self):
+#         return self.name
+#
+#     class Meta:
+#         managed = True
+#         ordering = ['-date_joined', 'name']
 
 
 class Comment(models.Model):

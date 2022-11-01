@@ -17,7 +17,7 @@ from rest_framework.permissions import IsAuthenticated
 from user_app.models.account_model import Profile
 from ..serializers.product_serializer import ProductSerializer, ProductAddSerializer
 from ..serializers.comment_serializer import CommentRelatedSerializer
-from ..models.catalog_model import (Product, Category, Contact, Comment)
+from ..models.catalog_model import (Product, Category, Comment)
 from ..util.error_code import ErrorInCode
 
 
@@ -108,25 +108,25 @@ def addCommentProduct(self, request):
         return Response(ErrorInCode, status=status.HTTP_400_BAD_REQUEST)
 
 
-@permission_classes([IsAuthenticated])
-def addContactProduct(self, request):
-    if request.user:
-        try:
-            product = self.get_object()
-
-        except Http404:
-            return Response(Http404, status=status.HTTP_404_NOT_FOUND)
-        else:
-            contacts = request.data.get('contacts')
-            # {"contacts": [{"name": "Dung", "phone_number": "0956345279"}, {"name": "Hoàng Dung", "phone_number": "0937139242"}]}
-            if contacts is not None:
-                for contact in contacts:
-                    c, _ = Contact.objects.get_or_create(name=contact['name'], phone_number=contact['phone_number'])
-                    product.contacts.add(c)
-                product.save()
-                return Response(ProductSerializer(product).data, status=status.HTTP_201_CREATED)
-
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-    else:
-        return Response(status=status.HTTP_226_IM_USED)
+# @permission_classes([IsAuthenticated])
+# def addContactProduct(self, request):
+#     if request.user:
+#         try:
+#             product = self.get_object()
+#
+#         except Http404:
+#             return Response(Http404, status=status.HTTP_404_NOT_FOUND)
+#         else:
+#             contacts = request.data.get('contacts')
+#             # {"contacts": [{"name": "Dung", "phone_number": "0956345279"}, {"name": "Hoàng Dung", "phone_number": "0937139242"}]}
+#             if contacts is not None:
+#                 for contact in contacts:
+#                     c, _ = Contact.objects.get_or_create(name=contact['name'], phone_number=contact['phone_number'])
+#                     product.contacts.add(c)
+#                 product.save()
+#                 return Response(ProductSerializer(product).data, status=status.HTTP_201_CREATED)
+#
+#             return Response(status=status.HTTP_404_NOT_FOUND)
+#
+#     else:
+#         return Response(status=status.HTTP_226_IM_USED)

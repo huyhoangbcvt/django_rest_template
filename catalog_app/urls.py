@@ -11,7 +11,7 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 router.register(r'categories', views_category.CategoryViewSet, basename="category")
 router.register(r'products', views_product.ProductViewSet, basename="product")
-router.register(r'contacts', views_contact.ContactViewSet, basename="contact")
+# router.register(r'contacts', views_contact.ContactViewSet, basename="contact")
 router.register(r'comments', views_comment.CommentViewSet, basename="comment")
 
 urlpatterns = [
@@ -32,16 +32,16 @@ urlpatterns = [
     # =============| Web |============
     # path('', views_catalog.index, name='index'),
     path('', views_catalog_ctrl.CatalogView.as_view(), name="catalog"),
-    path('categories/', views_category_ctrl.category_list, name="categories"),
 
-    path('categories/add-category/', views_category_ctrl.AddCategory.as_view(), name='upload_template'),
-    path('categories/<int:pk>/change/', views_category_ctrl.ChangeCategory.as_view(), name='category_edit'),
-    path('categories/view/<int:pk>/', views_category_ctrl.CategoryDisplay.as_view(), name='view_upload_template_page'),
+    path('categories/', views_category_ctrl.category_list, name="categories"),
+    path('categories/add-category/', views_category_ctrl.AddCategory.as_view(), name='category_form'),
+    path('categories/<int:pk>/change/', views_category_ctrl.ChangeCategory.as_view(), name='category_change'),
+    path('categories/<int:pk>/view/', views_category_ctrl.CategoryDisplay.as_view(), name='category_detail'),
 
     path('products/', views_product_ctrl.product_list, name="products"),
     # path('', RedirectView.as_view(url='catalog-detail/', permanent=True)),
-    path('products/<int:pk>/change/', views_product_ctrl.ChangeProduct.as_view(), name='product_edit'),
-    path('products/add-product/', views_product_ctrl.AddProduct.as_view(), name='upload_p_template'),
-    path('products/view/<int:pk>/', views_product_ctrl.ProductDisplay.as_view(), name='view_upload_p_template_page'),
+    path('products/<int:pk>/change/', views_product_ctrl.ChangeProduct.as_view(), name='product_change'),
+    path('products/add-product/', views_product_ctrl.AddProduct.as_view(), name='product_form'),
+    path('products/<int:pk>/view/', views_product_ctrl.ProductDisplay.as_view(), name='product_detail'),
 
 ]

@@ -37,7 +37,7 @@ def category_list(request):
     paginator = Paginator(pm, 2)  # Show 25 contacts per page.
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'category/view_category.html', {'page_obj': page_obj})
+    return render(request, 'category/category_list.html', {'page_obj': page_obj})
 
 
 class AddCategory(TemplateView, LoginRequiredMixin):
@@ -52,7 +52,7 @@ class AddCategory(TemplateView, LoginRequiredMixin):
         form = CatalogForm(request.POST, request.FILES, user=user, product=pm) #, user=request.user, product=pm
         if form.is_valid():
             obj = form.save()
-            return HttpResponseRedirect(reverse_lazy('catalog:view_upload_template_page', kwargs={'pk': obj.id}))
+            return HttpResponseRedirect(reverse_lazy('catalog:category_detail', kwargs={'pk': obj.id}))
 
         context = self.get_context_data(form=form)
         return self.render_to_response(context)
@@ -63,14 +63,14 @@ class AddCategory(TemplateView, LoginRequiredMixin):
         pm = Product.objects.filter(user_id=user.id).order_by(F('created_at').desc(nulls_last=True))
         # from pprint import pprint;pprint(pm)
         form = CatalogForm(request.POST, request.FILES, user=user, product=pm)  # , user=request.user, product=pm
-        return render(request, 'category/upload_category.html', {'form': form})
+        return render(request, 'category/category_form.html', {'form': form})
         # return self.post(request, *args, **kwargs)
 
 
 # Upload template
 class CategoryDisplay(DetailView, LoginRequiredMixin):
     model = Category
-    template_name = 'category/upload_category_display.html'
+    template_name = 'category/category_detail.html'
     context_object_name = 'UF'
 
 
@@ -78,7 +78,7 @@ class ChangeCategory(UpdateView):
     queryset = Category.objects.all()
     profile_form_class = CatalogForm
     success_url = reverse_lazy('catalog:categories')
-    template_name = "category/category_edit.html"
+    template_name = "category/category_change.html"
     add_home = False
     extra_context = {
         'title': "Thay đổi Category",
@@ -99,7 +99,14 @@ class ChangeCategory(UpdateView):
         # if request.POST:
         form = CatalogForm(request.POST, request.FILES, instance=self.get_object(), user=request.user)
         if form.is_valid():
-            obj = form.save()
+            # obj = form.save()
+            data = form.save(commit=False)
+            data.save()
+            products = request.POST.getlist('products')
+            for product in products:
+                if Product.objects.filter(id=product).exists():
+                    product = Product.objects.get(id=product)
+                    data.products.add(product)
             return redirect('catalog:categories')
 
         context = self.get_context_data(form=form)

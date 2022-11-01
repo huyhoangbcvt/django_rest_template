@@ -38,22 +38,21 @@ def product_list(request):
     paginator = Paginator(pm, 2)  # Show 25 contacts per page.
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'product/view_product.html', {'page_obj': page_obj})
+    return render(request, 'product/product_list.html', {'page_obj': page_obj})
 
 
 class AddProduct(TemplateView, LoginRequiredMixin):
     form = ProductForm
-    template_name = 'product/upload_product.html'
+    template_name = 'product/product_form.html'
 
     def post(self, request, *args, **kwargs):
         user = request.user
         # if user is not None and user.is_superuser:
         #     user = User.objects.all()
-        print(user.username)
         form = ProductForm(request.POST, request.FILES, user=request.user)  # , user=request.user, product=pm
         if form.is_valid():
             obj = form.save()
-            return HttpResponseRedirect(reverse_lazy('catalog:view_upload_p_template_page', kwargs={'pk': obj.id}))
+            return HttpResponseRedirect(reverse_lazy('catalog:product_detail', kwargs={'pk': obj.id}))
 
         context = self.get_context_data(form=form)
         return self.render_to_response(context)
@@ -64,7 +63,7 @@ class AddProduct(TemplateView, LoginRequiredMixin):
 
 class ProductDisplay(DetailView, LoginRequiredMixin):
     model = Product
-    template_name = 'product/upload_product_display.html'
+    template_name = 'product/product_detail.html'
     context_object_name = 'UF'
 
 
@@ -72,7 +71,7 @@ class ChangeProduct(UpdateView):
     queryset = Product.objects.all()
     profile_form_class = ProductForm
     success_url = reverse_lazy('catalog:products')
-    template_name = "product/product_edit.html"
+    template_name = "product/product_change.html"
     add_home = False
     extra_context = {
         'title': "Thay đổi thông tin cá nhân",
@@ -95,12 +94,7 @@ class ChangeProduct(UpdateView):
         # if request.POST:
         form = ProductForm(request.POST, request.FILES, instance=self.get_object(), user=request.user)
         if form.is_valid():
-            obj = form.save()
-            #     # user_save = user_form.save()
-            #     custom_save = product_form.save(False)
-            #     # custom_save.user = user_save
-            #     # custom_save.save()
-            #     return redirect('catalog:products')
+            form.save()
             return redirect('catalog:products')
 
         context = self.get_context_data(form=form)

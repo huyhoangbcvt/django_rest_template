@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import mark_safe
-from .models.catalog_model import (Product, Category, Contact)
+from .models.catalog_model import (Product, Category)
 from .modules import forms_category_ctrl, forms_product_ctrl
 
 
@@ -43,7 +43,7 @@ class ProductAdmin(admin.ModelAdmin):
         js = ('/static/js/admin.js', )
 
     list_display = ["id", "name", "code", "image", "description", "active", "country", "created_at"]  # , "contact"
-    search_fields = ["name", "code", "created_at", "contact__name", "contact__phone_number"]
+    search_fields = ["name", "code", "created_at"]  # , "contact__name", "contact__phone_number"
     list_filter = ["created_at", "active"]
     ordering = ("-created_at", "name", "-id",)
     readonly_fields = ["display_product_demo"]
@@ -62,13 +62,13 @@ class ProductAdmin(admin.ModelAdmin):
         return qs.filter(author=request.user)
 
 
-class ContactAdmin(admin.ModelAdmin):
-    form = forms_product_ctrl.ContactForm
-
-    list_display = ["name", "phone_number", "date_joined"]  # , "contact"
-    search_fields = ["name", "phone_number"]
-    list_filter = ["date_joined", "name"]
-    ordering = ("-date_joined", "name", "-id",)
+# class ContactAdmin(admin.ModelAdmin):
+#     form = forms_product_ctrl.ContactForm
+#
+#     list_display = ["name", "phone_number", "date_joined"]  # , "contact"
+#     search_fields = ["name", "phone_number"]
+#     list_filter = ["date_joined", "name"]
+#     ordering = ("-date_joined", "name", "-id",)
 
 
 # class ProductInlineAdmin(admin.StackedInline):
