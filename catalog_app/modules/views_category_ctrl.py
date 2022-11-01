@@ -85,10 +85,20 @@ class ChangeCategory(UpdateView):
         'year': datetime.now().year
     }
 
+    def get_form_kwargs(self):
+        print('vao')
+        kwargs = super().get_form_kwargs()
+        kwargs['product_id'] = self.request.products.pk
+        return kwargs
+
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated is None:
             return render(request, 'registration/login.html')
-        self.extra_context['category_form'] = CatalogForm(instance=self.get_object())
+        self.extra_context['category_form'] = CatalogForm(
+                                                instance=self.get_object(),
+                                                user=request.user,
+                                                product=Product.objects.all()
+                                            )
         return render(request, self.template_name, self.extra_context)  # {'user_form': user_form, 'profile_form': profile_form}
 
     # def get_object(self, *args, **kwargs):
@@ -99,14 +109,15 @@ class ChangeCategory(UpdateView):
         # if request.POST:
         form = CatalogForm(request.POST, request.FILES, instance=self.get_object(), user=request.user)
         if form.is_valid():
-            # obj = form.save()
-            data = form.save(commit=False)
-            data.save()
-            products = request.POST.getlist('products')
-            for product in products:
-                if Product.objects.filter(id=product).exists():
-                    product = Product.objects.get(id=product)
-                    data.products.add(product)
+            obj = form.save()
+            # print(form)
+            # data = form.save(commit=False)
+            # data.save()
+            # products = request.POST.getlist('products')
+            # for product in products:
+            #     if Product.objects.filter(id=product).exists():
+            #         product = Product.objects.get(id=product)
+            #         data.products.add(product)
             return redirect('catalog:categories')
 
         context = self.get_context_data(form=form)

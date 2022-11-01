@@ -94,6 +94,7 @@ class ChangeProduct(UpdateView):
         # if request.POST:
         form = ProductForm(request.POST, request.FILES, instance=self.get_object(), user=request.user)
         if form.is_valid():
+            # print(form)
             form.save()
             return redirect('catalog:products')
 

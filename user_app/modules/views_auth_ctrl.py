@@ -426,25 +426,26 @@ class RegistrationUser(FormView):  # via template
 
     @transaction.atomic
     def form_valid(self, form):
-        data = form.cleaned_data  # form.save()  # form data will be saved
-        auth_user = User.objects.filter(username=data['username'])
-        from pprint import pprint;
-        pprint(auth_user)
-
+        data = form.cleaned_data
+        auth_user = User.objects.filter(username=form.cleaned_data.get('username'))
+        # from pprint import pprint; pprint(auth_user)
         if auth_user is not None:
-            auth_user = User.objects.create_user(
-                username=data['username'],
-                password=data['password1'],
-                email=data['email'],
-                first_name=data['first_name'],
-                last_name=data['last_name']
+            # user = form.save()
+            user = User.objects.create_user(
+                username=form.cleaned_data.get('username'),
+                password=form.cleaned_data.get('password1'),
+                email=form.cleaned_data.get('email'),
+                first_name=form.cleaned_data.get('first_name'),
+                last_name=form.cleaned_data.get('last_name')
             )
-        # instance = Profile(
-        #     birthday=data['birthday'],
-        #     phone_number=data['phone_number'],
-        #     user_id=auth_user.id
-        # )
-        # instance.save()
+            # user = User(username=form.cleaned_data.get('username'), password=form.cleaned_data.get('password1'), email=form.cleaned_data.get('email'), first_name=form.cleaned_data.get('first_name'), last_name=form.cleaned_data.get('last_name'))
+            # user.set_password(data['password1'])
+            # user = user.save()
+            user.refresh_from_db()
+            user.profile.birthday = form.cleaned_data.get('birthday')
+            user.profile.phone_number = form.cleaned_data.get('phone_number')
+            user.profile.save()
+            # p = Profile(user=u, birthday=data['birthday'], phone_number=data['phone_number'])
         return super(RegistrationUser, self).form_valid(form)
 
     # Phần redirect giữa url & process data
@@ -841,9 +842,6 @@ class EditUserProfileView(UpdateView):  # Note that we are using UpdateView and 
     def post(self, request, *args, **kwargs):
         if request.POST and 'price_lte' in request.GET:
             price_lte = request.GET['price_lte']
-            print(price_lte)
-        # Here I also make instances of my form classes but this time I fill
-        # them up with data from POST request
         # user_form = self.user_form_class(request.POST)
         # profile_form = self.profile_form_class(request.POST)
         user_form = UserForm(request.POST, instance=request.user)

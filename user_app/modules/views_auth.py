@@ -5,16 +5,7 @@ from django.contrib.auth.models import User, Group
 from django.views.generic import FormView
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout
-
 from rest_framework import status, views, viewsets, mixins, serializers, generics, permissions, renderers
-# from rest_framework.views import View, APIView
-# from rest_framework.generics import (GenericAPIView,
-#     CreateAPIView, ListAPIView, RetrieveAPIView,
-#     DestroyAPIView, UpdateAPIView, ListCreateAPIView,
-#     RetrieveUpdateAPIView, RetrieveDestroyAPIView, RetrieveUpdateDestroyAPIView
-# )
-# from rest_framework.viewsets import ModelViewSet
-
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -22,7 +13,7 @@ from rest_framework.decorators import api_view, action, permission_classes
 from rest_framework.parsers import MultiPartParser
 
 from ..serializers.user_serializer import UserSerializer, GroupSerializer, LoginSerializer, TokenUserSerializer, TokenRefreshUserSerializer
-from ..serializers.profile_serializer import ProfileSerializer, SignupSerializer
+from ..serializers.profile_serializer import ProfileSerializer, SignupSerializer, SignupUserSerializer
 from .form_auth import RegistrationUserForm, LoginForm
 from ..models.account_model import Profile
 from ..util import utilities
@@ -40,6 +31,7 @@ def register(request):
         user.refresh_from_db()
         # Set role for created user
         user.profile.role = form.cleaned_data.get('role')
+        u.profile.save()
         # Get token for user
         token = utilities.generate_tokens(user)
         # return token to user
@@ -93,11 +85,11 @@ class UserViewSet(viewsets.ViewSet, generics.ListAPIView, generics.RetrieveUpdat
         print('User ViewSet [' + self.action + ']: get_current_user')
         return Response(self.serializer_class(request.user).data, status=status.HTTP_200_OK)
 
-    def filter_queryset(self, queryset):
-        if self.request.user:
-            queryset = self.queryset.filter(username=self.request.user.username)
-            return queryset
-        return self.queryset
+    # def filter_queryset(self, queryset):
+    #     if self.request.user:
+    #         queryset = self.queryset.filter(username=self.request.user.username)
+    #         return queryset
+    #     return self.queryset
 
     # def get_queryset(self):
     #     # username = self.request.query_params.get('username', None)
@@ -263,7 +255,7 @@ class TokenRefreshViewSet(viewsets.ModelViewSet, mixins.CreateModelMixin):
 class SignupViewSet(viewsets.ViewSet, generics.CreateAPIView, ):
     queryset = User.objects.all()
     parser_classes = [MultiPartParser, ]
-    serializer_class = SignupSerializer
+    serializer_class = SignupUserSerializer
     # http_method_names = ['get', 'post', 'put', 'patch', 'head', 'delete']
 
     def get_permissions(self):
@@ -271,6 +263,18 @@ class SignupViewSet(viewsets.ViewSet, generics.CreateAPIView, ):
         if self.action == 'create' or self.action == 'retrieve':
             return [permissions.AllowAny()]
         return [permissions.IsAuthenticated()]
+
+    # def create(self, request, *args, **kwargs):
+    #
+    #     print('vao day')
+    #     return HttpResponse('Create successfully')
+    #     # serializer = self.get_serializer(data=request.data)
+    #     # try:
+    #     #     serializer.is_valid(raise_exception=True)
+    #     # except TokenError as e:
+    #     #     raise InvalidToken(e.args[0])
+    #     #
+    #     # return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 
 class LoginViewSet(viewsets.ViewSet, generics.CreateAPIView):

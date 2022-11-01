@@ -11,27 +11,26 @@ from django.utils.datastructures import MultiValueDict, MultiValueDictKeyError
 
 
 class CatalogForm(forms.ModelForm):
+    name = forms.CharField(required=True)
+    code = forms.CharField(required=True)
+    image = forms.ImageField(required=False)
+    content = forms.CharField(required=False,
+                              widget=CKEditorUploadingWidget())  # forms.CharField(required=False, widget=forms.Textarea())
+    # products = forms.ModelMultipleChoiceField(widget=M2MSelect, required=True, queryset=Product.objects.all())
+    products = forms.ModelMultipleChoiceField(required=False, widget=forms.SelectMultiple, queryset=Product.objects.all())
+
     def __init__(self, *args, user=None, product=None, **kwargs):
         super(CatalogForm, self).__init__(*args, **kwargs)
         if user is not None and not user.is_superuser:
             self.fields['user'].queryset = User.objects.filter(username=user.username)
         # if product is not None and not user.is_superuser:
-
-    # def get_form_class(self):
-    #     # interrogate the DB to get a list of categories, or categories and labels.
-    #     choices = list(enumerate(product))  # [ (0,'cat0'), (1,'cat1'), ...]
-    #     choicefield = forms.ChoiceField(choices=choices)
-    #     return type('My_runtime_form',
-    #                 (Category,),
-    #                 {'product_map': choicefield}
-    #                 )
-    #
-    name = forms.CharField(required=True)
-    code = forms.CharField(required=True)
-    image = forms.ImageField(required=False)
-    content = forms.CharField(required=False, widget=CKEditorUploadingWidget())  # forms.CharField(required=False, widget=forms.Textarea())
-    products = forms.ModelMultipleChoiceField(required=False, queryset=Product.objects.all())
-    # products = forms.ModelMultipleChoiceField(widget=M2MSelect, required=True, queryset=Product.objects.all())
+        # selected_products = kwargs.pop('selected_products', None)  # queryset returned from function
+        # self.fields['products'].queryset = selected_products
+        # self.fields['orders'].queryset = OrderModal.objects.filter(pk=2)
+        # print(product)
+        # if product is not None:
+        #     # self.fields['products'].queryset = product
+        #     self.fields['products'] = forms.ModelMultipleChoiceField(required=False, queryset=product)
 
     class Meta:
         model = Category
@@ -41,11 +40,14 @@ class CatalogForm(forms.ModelForm):
         fields = ['name', 'code', 'image', 'content', 'user', 'products']
         labels = {'name': _('Tên Category (*)'), 'code': _('Mã Category (*)'), 'image': _('Hình ảnh category'), 'content': _('Nội dung'),
                   'user': _('Tài khoản tạo (*)')}
-        widgets = {
-            # 'product': forms.ChoiceField(attrs={'required': False}),
-            # 'image': forms.ImageField(attrs={'required': False}),
-            # 'content': forms.Textarea()
-        }
+        # widgets = {
+        #     'products': forms.SelectMultiple(attrs={'required': False})
+        # }
+        # widgets = {
+        #     'product': forms.ChoiceField(attrs={'required': False}),
+        #     'image': forms.ImageField(attrs={'required': False}),
+        #     'content': forms.Textarea()
+        # }
 
 
 class M2MSelect(forms.SelectMultiple):

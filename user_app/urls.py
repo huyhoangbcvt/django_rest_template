@@ -33,7 +33,7 @@ router.register(r'profiles', views_auth.ProfileViewSet, basename="profile_list")
 router.register(r'groups', views_auth.GroupViewSet, basename="user_group_list")
 router.register(r'token', views_auth.GetTokenViewSet, basename="get_token_obtain")
 router.register(r'refresh-token', views_auth.TokenRefreshViewSet, basename='token_refresh'),
-router.register(r'register', views_auth.SignupViewSet, basename="sign_up_vs")
+router.register(r'sign-up', views_auth.SignupViewSet, basename="sign_up")
 # router.register(r'login', views_auth.LoginViewSet, basename="login_api")
 
 # If not register ViewSet, it only to see urls detail

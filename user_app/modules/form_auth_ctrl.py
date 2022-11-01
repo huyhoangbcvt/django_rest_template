@@ -48,7 +48,7 @@ class SignUpForm(UserCreationForm):  # UserCreationForm  or forms.Form
                                 'placeholder': 'Email'}))
     birthday = forms.DateField(label="Ngày sinh", required=False,
                                help_text='(định dạng mm/dd/yyyy)',
-                               widget=forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date', 'id': 'datepicker'}),
+                               widget=forms.DateInput(format='%m/%d/%Y', attrs={'type': 'date', 'id': 'datepicker'}),
                                input_formats=settings.DATE_INPUT_FORMATS)
 
     phone_number = forms.CharField(label="Số điện thoại", max_length=20, required=False,

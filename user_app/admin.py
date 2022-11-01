@@ -18,10 +18,6 @@ class UserAdmin(admin.ModelAdmin):
     ordering = ("-date_joined", "-id",)
 
 
-# class GroupAdmin(admin.ModelAdmin):
-#     # form = UserCreationForm
-
-
 class ProfileAdmin(admin.ModelAdmin):
     form = form_auth_ctrl.ProfileForm
 
@@ -68,7 +64,6 @@ class SocialAdmin(admin.ModelAdmin):
 
 class DjangoAdminSite(admin.AdminSite):
     site_header = 'HDWEBSOFT QUẢN TRỊ HỆ THỐNG TRAINING DJANGO REST - TEMPLATE'
-    # site_title = 'Danh sách Categories'
 
 
 # Register your models here

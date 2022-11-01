@@ -13,35 +13,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
         fields = ['image', 'birthday', 'social_type']
 
 
-class SignupSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(
-        required=True,
-        help_text='password',
-        style={'input_type': 'password', 'placeholder': 'password'}
-    )
-    # re_password = serializers.CharField(
-    #     required=True,
-    #     help_text='password',
-    #     style={'input_type': 'password', 'placeholder': 're password'}
-    # )
-    email = serializers.CharField(required=True, )
-    # phone_number = serializers.CharField(source="profile.phone_number", required=False, )
-    # birthday = serializers.DateField(source="profile.phone_number", required=False, )
-
-    class Meta:
-        model = get_user_model()
-        fields = ['username', 'password', 'email', 'first_name', 'last_name', ]
-        # extra_kwargs = {
-        #     'password': {'write_only': True}
-        # }
-
-    def create(self, validated_data):
-        user = get_user_model()(**validated_data)
-        user.set_password(validated_data['password'])
-        user.save()
-        return user
-
-
 class ProfileSerializer(serializers.ModelSerializer):
     # user = serializers.PrimaryKeyRelatedField(many=True, queryset=Profile.objects.select_related('user'))
     # user = UserSerializer(required=True)   # Note required=True
@@ -55,10 +26,9 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ['image', 'birthday', 'social_type', 'phone_number', 'address', 'role', 'description', 'user']
 
     # def get_queryset(self):
-    #     _id = self.request.user.id
-    #     print(_id)
-    #     user = UserSerializer(required=True,  queryset=Profile.objects.filter(id=_id))
-    #     return user
+    # if self.request.user:
+    #   user = UserSerializer(required=True,  queryset=Profile.objects.filter(id=_id))
+    #   return user
 
     # Override
     # def create(self, validated_data):  # override
@@ -77,3 +47,46 @@ class ProfileSerializer(serializers.ModelSerializer):
     #     user = UserSerializer.create(UserSerializer(), validated_data=user_data)
     #     profile, created = Profile.objects.update_or_create(user=user, phone_number=validated_data.pop('phone_number'))
     #     return profile
+
+
+class SignupUserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(
+        required=True,
+        write_only=True,
+        help_text='password',
+        style={'input_type': 'password', 'placeholder': 'password'}
+    )
+
+    class Meta:
+        model = get_user_model()
+        fields = ['username', 'password', 'email', 'first_name', 'last_name', ]
+
+    def create(self, validated_data):
+        return User.objects.create_user(**validated_data)
+        # user = get_user_model()(**validated_data)
+        # user.save()
+        # return user
+
+
+class SignupSerializer(SignupUserSerializer):
+    # user = SignupUserSerializer(required=True, )
+    # profile = ProfileSerializer
+    phone_number = serializers.CharField(source="profile.phone_number", required=False, )
+    birthday = serializers.DateField(source="profile.phone_number", required=False, )
+
+    class Meta:
+        model = SignupUserSerializer.Meta.model
+        fields = SignupUserSerializer.Meta.fields + ['birthday', 'phone_number', ]
+        # extra_kwargs = {
+        #     'password': {'write_only': True}
+        # }
+
+    def create(self, validated_data):
+        print('create(self, validated_data)')
+        user = get_user_model()(**validated_data)
+        profile = Profile(**validated_data)
+        user.set_password(validated_data['password'])
+        user.profile = profile
+        # user.profile.phone_number = validated_data['phone_number']
+        user.save()
+        return user
