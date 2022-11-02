@@ -3,8 +3,13 @@ from ..models.account_model import Profile
 from django.contrib.auth.models import User
 from .user_serializer import UserSerializer, UserRegisterSerializer, CustomUserForeignKey
 from ..modules.form_auth import RegistrationUserForm
+from ..util import utilities
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
+from django.db import transaction
+from django.utils.translation import gettext_lazy as _
+from django.conf import settings
+from rest_framework.authtoken.serializers import AuthTokenSerializer
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -56,23 +61,54 @@ class SignupUserSerializer(serializers.ModelSerializer):
         help_text='password',
         style={'input_type': 'password', 'placeholder': 'password'}
     )
+    re_password = serializers.CharField(
+        required=True,
+        write_only=True,
+        help_text='re password',
+        style={'input_type': 'password', 'placeholder': 'Confirm password'}
+    )
+    phone_number = serializers.CharField(source="profile.phone_number", required=False, )
+    birthday = serializers.DateField(source="profile.birthday", required=False, )
 
     class Meta:
         model = get_user_model()
-        fields = ['username', 'password', 'email', 'first_name', 'last_name', ]
+        fields = ['username', 'password', 're_password', 'email', 'first_name', 'last_name', 'birthday', 'phone_number', ]
+        # extra_kwargs = {'password': {'write_only': True}, 're_password': {'write_only': True}}
 
-    def create(self, validated_data):
-        return User.objects.create_user(**validated_data)
-        # user = get_user_model()(**validated_data)
-        # user.save()
-        # return user
+    @transaction.atomic
+    def save(self):
+        # print(self.validated_data.get('first_name'))
+        user = User(username=self.validated_data.get('username'),
+                    email=self.validated_data.get('email'),
+                    first_name=self.validated_data.get('first_name'),
+                    last_name=self.validated_data.get('last_name')
+                    )
+        password = self.validated_data.get('password')
+        re_password = self.validated_data.get('re_password')
+        if password != re_password:
+            raise serializers.ValidationError({'password': ['Passwords must match.']})
+        user.set_password(password)
+        # user = user.save()
+        user = User.objects.create_user(user)
+        user.refresh_from_db()
+        user.profile.birthday = self.validated_data.get('profile')['birthday']
+        user.profile.phone_number = self.validated_data.get('profile')['phone_number']
+        user.profile.save()
+        token = utilities.generate_tokens(user)
+        return token
+
+    # def create(self, validated_data):
+    #     return User.objects.create_user(**validated_data)
+    #     # user = get_user_model()(**validated_data)
+    #     # user.save()
+    #     # return user
 
 
 class SignupSerializer(SignupUserSerializer):
     # user = SignupUserSerializer(required=True, )
     # profile = ProfileSerializer
     phone_number = serializers.CharField(source="profile.phone_number", required=False, )
-    birthday = serializers.DateField(source="profile.phone_number", required=False, )
+    birthday = serializers.DateField(source="profile.birthday", required=False, )
 
     class Meta:
         model = SignupUserSerializer.Meta.model

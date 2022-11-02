@@ -11,6 +11,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, action, permission_classes
 from rest_framework.parsers import MultiPartParser
+from rest_framework.authtoken.serializers import AuthTokenSerializer
 
 from ..serializers.user_serializer import UserSerializer, GroupSerializer, LoginSerializer, TokenUserSerializer, TokenRefreshUserSerializer
 from ..serializers.profile_serializer import ProfileSerializer, SignupSerializer, SignupUserSerializer
@@ -26,12 +27,12 @@ from ..util.exceptions import InvalidToken, TokenError
 def register(request):
     form = RegistrationUserForm(request.data)
     if form.is_valid():
-        user = form.save()
+        user = form.save(commit=False)
         # Refresh the database
         user.refresh_from_db()
         # Set role for created user
         user.profile.role = form.cleaned_data.get('role')
-        u.profile.save()
+        user.profile.save()
         # Get token for user
         token = utilities.generate_tokens(user)
         # return token to user
@@ -48,7 +49,7 @@ class CustomAuthToken(ObtainAuthToken):
         token, created = Token.objects.get_or_create(user=user)
         return Response({
             'token': token.key,
-            'user_id': user.pk,
+            # 'user_id': user.pk,
             'email': user.email
         }, status=status.HTTP_200_OK)
 
@@ -190,7 +191,8 @@ class GroupViewSet(viewsets.ModelViewSet):
     #     return None
 
 
-class GetTokenViewSet(viewsets.ModelViewSet, mixins.CreateModelMixin):
+# class GetTokenViewSet(viewsets.ModelViewSet, mixins.CreateModelMixin):
+class GetTokenViewSet(viewsets.ViewSet, generics.CreateAPIView):
     """
     API endpoint that allows groups to be viewed or edited.
     """
@@ -221,7 +223,8 @@ class GetTokenViewSet(viewsets.ModelViewSet, mixins.CreateModelMixin):
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 
-class TokenRefreshViewSet(viewsets.ModelViewSet, mixins.CreateModelMixin):
+# class TokenRefreshViewSet(viewsets.ModelViewSet, mixins.CreateModelMixin):
+class TokenRefreshViewSet(viewsets.ViewSet, generics.CreateAPIView):
     """
     API endpoint that allows groups to be viewed or edited.
     """
@@ -264,44 +267,42 @@ class SignupViewSet(viewsets.ViewSet, generics.CreateAPIView, ):
             return [permissions.AllowAny()]
         return [permissions.IsAuthenticated()]
 
-    # def create(self, request, *args, **kwargs):
-    #
-    #     print('vao day')
-    #     return HttpResponse('Create successfully')
-    #     # serializer = self.get_serializer(data=request.data)
-    #     # try:
-    #     #     serializer.is_valid(raise_exception=True)
-    #     # except TokenError as e:
-    #     #     raise InvalidToken(e.args[0])
-    #     #
-    #     # return Response(serializer.validated_data, status=status.HTTP_200_OK)
+    def create(self, request, *args, **kwargs):
+        # serializer = self.get_serializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
+        try:
+            # serializer.is_valid(raise_exception=True)
+            if serializer.is_valid():
+                response = serializer.save()
+                return Response(response, status=status.HTTP_200_OK)
+                # return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                data = serializer.errors
+                return Response(data, status=status.HTTP_400_BAD_REQUEST)
+
+        except TokenError as e:
+            raise InvalidToken(e.args[0])
+
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 
 class LoginViewSet(viewsets.ViewSet, generics.CreateAPIView):
-    serializer_class = LoginSerializer
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = AuthTokenSerializer  # LoginSerializer
 
-    def get_permissions(self):
-        if self.action == 'create':
-            return [permissions.AllowAny()]
-        return [permissions.IsAuthenticated()]
-
-    # def filter_queryset(self, queryset):
-    #     # return queryset.filter(**self.request.data)
-    #     if self.request.user:
-    #         return queryset.filter(id=self.request.user.id)
-    #     return None
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data, context={'request': request})
+    def create(self, request, format=None):
+        # serializer = self.serializer_class(data=request.data, context={'request': request})
+        serializer = AuthTokenSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
-        login(request, user)
+        auth_login(request, user)
         token, created = Token.objects.get_or_create(user=user)
         return Response({
             'token': token.key,
             'user_id': user.pk,
             'email': user.email
         }, status=status.HTTP_200_OK)
+        # return super(LoginViewSet, self).post(request, format=None)
 
 
 def index_userapp(request):

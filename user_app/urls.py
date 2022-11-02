@@ -18,36 +18,27 @@ from django.contrib.auth import views as auth_views
 from datetime import datetime, date
 app_name = 'user'
 
-user_list = views_auth.UserViewSet.as_view({
-    'get': 'list',
-})
-token_user = TokenObtainPairView.as_view()
-token_refresh = TokenRefreshView.as_view()
-
 # If using routers to register ViewSet, it will see Binding ViewSets to urls explicitly
 from rest_framework import routers
 # router = routers.DefaultRouter(trailing_slash=False)
 router = routers.DefaultRouter()
-router.register(r'users', views_auth.UserViewSet, basename="user_list")
-router.register(r'profiles', views_auth.ProfileViewSet, basename="profile_list")
-router.register(r'groups', views_auth.GroupViewSet, basename="user_group_list")
-router.register(r'token', views_auth.GetTokenViewSet, basename="get_token_obtain")
+router.register(r'users', views_auth.UserViewSet, basename="users")
+router.register(r'profiles', views_auth.ProfileViewSet, basename="profiles")
+router.register(r'groups', views_auth.GroupViewSet, basename="user_groups")
+router.register(r'token', views_auth.GetTokenViewSet, basename="token_access_obtaiwn")
 router.register(r'refresh-token', views_auth.TokenRefreshViewSet, basename='token_refresh'),
 router.register(r'sign-up', views_auth.SignupViewSet, basename="sign_up")
-# router.register(r'login', views_auth.LoginViewSet, basename="login_api")
+router.register(r'login', views_auth.LoginViewSet, basename="login_api")
 
 # If not register ViewSet, it only to see urls detail
 urlpatterns = [
     # =============| APIs |============
-    path(r'api/', include(router.urls)),
-
+    path(r'api/', include(router.urls)),  # path('api/', include((router.urls, 'user_app'))),
     # path(r'api/token/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # Để cấp mới access token với refresh token, ta thực hiện POST request
     # path(r'api/token/refresh-token/', TokenRefreshView.as_view(), name='token_refresh'),
     # path(r'api/sign-up/', views_auth.register, name='sign_up'),
-    path(r"api/login/", views_auth.CustomAuthToken.as_view(), name="login_api"),
-
-    # path('api/', include((router.urls, 'user_app'))),
+    # path(r"api/login/", views_auth.CustomAuthToken.as_view(), name="login_api"),
     # =============| Web |============
     path('', views_auth_ctrl.index, name='index'),
     path('home/', views_auth_ctrl.Homepage.as_view(), name='home'),

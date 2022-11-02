@@ -46,6 +46,9 @@ class Category(BaseProductCategoryModel):
         return self.name
         # return f"{self.name}, {self.image}, {self.body}, {self.user}"
 
+    def __unicode__(self):
+        return u"%s" % self.name
+
 
 # @python_2_unicode_compatible
 class Product(BaseProductCategoryModel):
@@ -61,8 +64,8 @@ class Product(BaseProductCategoryModel):
     def __str__(self):
         return self.name
 
-    # def __unicode__(self):
-    #     return u"%s" % self.user
+    def __unicode__(self):
+        return u"%s" % self.name
 
     class Meta:
         managed = True

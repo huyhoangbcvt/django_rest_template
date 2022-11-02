@@ -16,7 +16,7 @@ class UserSerializer(serializers.ModelSerializer):  # serializers.HyperlinkedMod
     class Meta:
         model = User
         # fields = '__all__'
-        fields = ['username', 'first_name', 'last_name', 'email', 'last_login', 'date_joined', 'is_active', 'groups', 'user_permissions']
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'last_login', 'date_joined', 'is_active', 'groups', 'user_permissions']
         # labels = {'last_login': _('Lần đăng nhập cuối'), 'date_joined': _('Ngày tham gia')}
 
 
@@ -76,20 +76,25 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    password = serializers.CharField()
+    # email = serializers.CharField(max_length=255)
+    password = serializers.CharField(
+        label=_("Password"),
+        style={'input_type': 'password'},
+        trim_whitespace=False,
+        max_length=128,
+        write_only=True
+    )
+    username = serializers.CharField(max_length=255)
+    # password = serializers.CharField()
 
-    def validators(self, data):
-        username = data.get("username", "")
-        password = data.get("password", "")
-        print(username)
+    def validate(self, data):
+        username = data.get('username')
+        password = data.get('password')
 
         if username and password:
-            user = authenticate(username=username, password=password)
-            if user:
-                if user.is_active:
-                    data["user"] = user
-            else:
+            user = authenticate(request=self.context.get('request'),
+                                username=username, password=password)
+            if not user:
                 msg = _('Unable to log in with provided credentials.')
                 raise serializers.ValidationError(msg, code='authorization')
         else:
@@ -99,8 +104,9 @@ class LoginSerializer(serializers.Serializer):
         data['user'] = user
         return data
 
-
-
+    # class Meta:
+    #     model = User
+    #     fields = ['username', 'password', ]
 
 
 # Custom Serializer for custom jwt
