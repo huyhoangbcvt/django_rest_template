@@ -37,10 +37,10 @@ class CommentViewSet(viewsets.ViewSet,
     # http_method_names = ['get', 'post', 'put', 'patch', 'head', 'delete']
     # swagger_schema = None
 
-    # def get_permissions(self):
-    #     if self.action == 'list':
-    #         return [permissions.AllowAny()]
-    #     return [permissions.IsAuthenticated()]
+    def get_permissions(self):
+        if self.action == 'list':
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
 
     def list(self, request):  # GET
         print('GET list')
@@ -54,22 +54,24 @@ class CommentViewSet(viewsets.ViewSet,
 
     def retrieve(self, request, pk=None):  # Detail  GET co param id
         print('GET Detail')
-        return HttpResponse('GET Detail done')
+        return HttpResponse('GET Detail done', pk)
 
-    def update(self, request, pk=None):  # PUT
+    def update(self, request, *args, **kwargs):
         print('PUT')
-        return HttpResponse('PUT U  pdate Detail done')
-
-    def partial_update(self, request, *args, **kwargs):  # PATCH update 1 phan
-        print('PATCH')
         if request.user == self.get_object().user:
-            super.partial_update(request, *args, **kwargs)
+            return super().update(request, *args, **kwargs)
         return Response(status=status.HTTP_403_FORBIDDEN)
 
-    def destroy(self, request, *args, **kwargs):  # Delete
+    def partial_update(self, request, *args, **kwargs):
+        print('PATCH')
+        if request.user == self.get_object().user:
+            return super().partial_update(request, *args, **kwargs)
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    def destroy(self, request, *args, **kwargs):
         print('DELETE')
         if request.user == self.get_object().user:
-            super.destroy(request, *args, **kwargs)
+            return super().destroy(request, *args, **kwargs)
         return Response(status=status.HTTP_403_FORBIDDEN)
 
     # def post(self, request, *args, **kwargs):

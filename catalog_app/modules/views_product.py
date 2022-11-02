@@ -20,6 +20,7 @@ from rest_framework.filters import OrderingFilter, SearchFilter
 from ..models.catalog_model import (Product, Category)
 from ..apis import product_ws
 from ..serializers.product_serializer import ProductSerializer
+from ..serializers.category_serializer import CategorySerializer
 import json
 from django.views.decorators.csrf import csrf_exempt
 from ..util.pagination import BasePagination
@@ -44,7 +45,8 @@ def AddProduct(request):
 class ProductViewSet(viewsets.ViewSet,
                      generics.DestroyAPIView,
                      generics.ListCreateAPIView,
-                     generics.RetrieveUpdateAPIView):  # viewsets.ModelViewSet
+                     generics.RetrieveUpdateAPIView,
+                     generics.UpdateAPIView):  # viewsets.ModelViewSet
     # authentication_classes = TokenAuthentication  # Token access
     permission_classes = [IsAuthenticated]  # Basic Auth
     queryset = Product.objects.filter(active=True).select_related('user').order_by('-created_at')
@@ -67,6 +69,21 @@ class ProductViewSet(viewsets.ViewSet,
             return [permissions.IsAuthenticated()]
         return [permissions.IsAuthenticated()]
 
+    def destroy(self, request, *args, **kwargs):
+        if request.user == self.get_object().user:
+            return super().destroy(request, *args, **kwargs)
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    def update(self, request, *args, **kwargs):
+        if request.user == self.get_object().user:
+            return super().update(request, *args, **kwargs)
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
+    def partial_update(self, request, *args, **kwargs):
+        if request.user == self.get_object().user:
+            return super().partial_update(request, *args, **kwargs)
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
     @action(methods=['post'], detail=True, url_path='active', url_name='active')
     def active_product(self, request, pk):
         print('Product ViewSet ['+self.action+']: active_product pk = ', pk)
@@ -83,21 +100,46 @@ class ProductViewSet(viewsets.ViewSet,
         # return HttpResponse('PUT U  pdate Detail done')
         return product_ws.addCommentProduct(self, request)
 
-    @action(methods=['post'], detail=True, url_path='add-contact')
-    def add_contact(self, request, pk):
-        self.queryset = self.get_object()
-        print('Product ViewSet [' + self.action + ']: add_contact pk = ', pk)
-        # return Response(status=status.HTTP_201_CREATED)
-        return product_ws.addContactProduct(self, request)
+    @action(methods=['get'], detail=True, url_path='categories')
+    def get_categories(self, request, pk):
+        print('Product ViewSet : get_categories pk = ', pk)
+        # categories = Category.objects.filter(active=True)
+        # products = Product.objects.get(pk=pk, active=True)
+        category_related = Category.objects.prefetch_related('products')
+        categories = []
+        for category in category_related:
+            # categories.append(category)
+            products = [product.name for product in category.products.filter(id=pk)]
+            if products:
+                categories.append({'id': category.id, 'name': category.name, 'products': products})
+        return Response(categories, status=status.HTTP_200_OK)
+        # return Response(CategorySerializer(categories, many=True).data, status=status.HTTP_200_OK)
 
-    def filter_queryset(self, queryset):
-        # print('filter_queryset')
-        # self.queryset = self.get_object()
-        # queryset = self.queryset.filter(username=request.data.username)
-        # if self.request.user:
-        #     queryset = self.queryset.filter(user_id=self.request.user.id)
-        #     return queryset
-        return self.queryset
+    def get_queryset(self):
+        products = self.queryset
+        p_name = self.request.query_params.get('p_name')
+        if p_name is not None:
+            products = products.filter(name__icontains=p_name)
+
+        # ca_id = self.request.query_params.get('category_id')
+        # if ca_id is not None:
+        #     products = products.filter(category_id=ca_id)
+        return products
+
+    # def filter_queryset(self, queryset):
+    #     self.queryset = self.get_object()
+    #     queryset = self.queryset.filter(username=request.data.username)
+    #     if self.request.user:
+    #         queryset = self.queryset.filter(user_id=self.request.user.id)
+    #         return queryset
+    #     return self.queryset
+
+    # @action(methods=['post'], detail=True, url_path='add-contact')
+    # def add_contact(self, request, pk):
+    #     self.queryset = self.get_object()
+    #     print('Product ViewSet [' + self.action + ']: add_contact pk = ', pk)
+    #     # return Response(status=status.HTTP_201_CREATED)
+    #     return product_ws.addContactProduct(self, request)
 
 
 class CreateProduct(CreateModelMixin, GenericAPIView):
@@ -118,13 +160,6 @@ class CreateProduct(CreateModelMixin, GenericAPIView):
 
     # def get(self, request, *args, **kwargs):
     #     return HttpResponse('ok GET')
-
-
-# Get all
-# class ListAllProfile(ListAPIView):
-#     queryset = Profile.objects.all()
-#     serializer_class = User_appSerializer
-#     permission_classes = [IsAuthenticated]
 
 
 # class CreateProfile(CreateModelMixin, GenericAPIView):
@@ -153,5 +188,4 @@ def index(request):
                       'content': "Example app page for Django.",
                       'year': datetime.now().year,
                       'design': "Hà Huy Hoàng"
-                  }
-                  )
+                  })

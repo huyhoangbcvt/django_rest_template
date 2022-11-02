@@ -19,6 +19,7 @@ from rest_framework.response import Response
 # from django_filter import FilterSet
 from ..apis import category_ws
 from ..serializers.category_serializer import CategorySerializer
+from ..serializers.product_serializer import ProductSerializer
 # from ..serializers.contact_serializer import ContactSerializer
 # from ..models.category_model import Category
 from ..models.catalog_model import (Product, Category)
@@ -46,7 +47,7 @@ def AddCategory(request):
 class CategoryViewSet(viewsets.ModelViewSet):
     # authentication_classes = TokenAuthentication  # Token access
     permission_classes = [IsAuthenticated]  # Basic Auth
-    queryset = Category.objects.filter(active=True).select_related('user').order_by('created_at')
+    queryset = Category.objects.filter(active=True).select_related('user').order_by('-created_at')
     serializer_class = CategorySerializer
     pagination_class = BasePagination
     # http_method_names = ['get', 'post', 'put', 'patch', 'head', 'delete']
@@ -65,6 +66,11 @@ class CategoryViewSet(viewsets.ModelViewSet):
             return [permissions.IsAuthenticated()]
         return [permissions.IsAuthenticated()]
 
+    def destroy(self, request, *args, **kwargs):
+        if request.user == self.get_object().user:
+            return super().destroy(request, *args, **kwargs)
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
     @action(methods=['PATCH'], detail=True, url_path='active', url_name='active')
     def active_category(self, request, pk):
         print('Category ViewSet ['+self.action+']: active_category pk = ', pk)
@@ -75,12 +81,34 @@ class CategoryViewSet(viewsets.ModelViewSet):
         print('Category ViewSet ['+self.action+']: un_active_category pk = ', pk)
         return category_ws.updateActiveCategory(request, pk, _active=False)
 
-    def filter_queryset(self, queryset):
-        # queryset = self.queryset.filter(username=request.data.username)
-        # if self.request.user:
-        #     queryset = self.queryset.filter(user_id=self.request.user.id)
-        #     return queryset
-        return self.queryset
+    @action(methods=['get'], detail=True, url_path='products')
+    def get_products(self, request, pk):
+        print('Category ViewSet : get_products pk = ', pk)
+        # categories = Category.objects.get(pk=pk)
+        products = self.get_object().products.filter(active=True)
+        kw_param = self.request.query_params.get('p_name')
+        if kw_param is not None:
+            products = products.filter(name__icontains=kw_param)
+        return Response(ProductSerializer(products, many=True).data, status=status.HTTP_200_OK)
+
+    def get_queryset(self):
+        categories = self.queryset
+        ca_name = self.request.query_params.get('ca_name')
+        if ca_name is not None:
+            categories = categories.filter(name__icontains=ca_name)
+
+        # p_id = self.request.query_params.get('product_id')
+        # if p_id is not None:
+        #     categories = categories.filter(product_id=p_id)
+        return categories
+
+    # def filter_queryset(self, queryset):
+    #     self.queryset = self.get_object()
+    #     queryset = self.queryset.filter(username=request.data.username)
+    #     if self.request.user:
+    #         queryset = self.queryset.filter(user_id=self.request.user.id)
+    #         return queryset
+    #     return self.queryset
 
 
 class CreateCategory(CreateModelMixin, GenericAPIView):

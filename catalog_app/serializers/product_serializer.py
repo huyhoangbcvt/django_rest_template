@@ -6,9 +6,18 @@ from user_app.serializers.user_serializer import UserSerializer
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    user = UserSerializer(required=True)
+    # user = UserSerializer(required=True)
     categories = CategorySerializer
     # contacts = ContactSerializer(many=True)
+
+    def get_queryset(self):
+        print('vao')
+        now = timezone.now()
+        parents = Category.objects.all().prefetch_related(
+            Prefetch('Product', queryset=Child.objects.exclude(valid_from__gt=now, valid_from__isnull=False).exclude(
+                valid_to__lt=now, valid_to__isnull=False).distinct())
+        )
+        return parents
 
     class Meta:
         model = Product
