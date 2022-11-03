@@ -22,6 +22,7 @@ from django.views.generic import (
     FormView, UpdateView, View
 )
 from datetime import datetime
+from ..util.pagination import BasePagination
 
 
 def product_list(request):
@@ -35,10 +36,15 @@ def product_list(request):
     # print(user.username)
     # queryset
     pm = Product.objects.filter(user_id=user.id).order_by(F('created_at').desc(nulls_last=True))
-    paginator = Paginator(pm, 2)  # Show 25 contacts per page.
+
+    product_count_categories = pm.annotate(categories_count=Count('categories')) \
+        .values("id", "name", "categories_count")
+    print(product_count_categories)
+
+    paginator = Paginator(pm, BasePagination.page_size)  # Show number page.
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'product/product_list.html', {'page_obj': page_obj})
+    return render(request, 'product/product_list.html', {'page_obj': page_obj, 'stats_count': product_count_categories})
 
 
 class AddProduct(TemplateView, LoginRequiredMixin):

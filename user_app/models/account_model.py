@@ -48,8 +48,6 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
 
 
 class Social(models.Model):
-    # id = models.AutoField(primary_key=True, serialize=False)  # phiên bản python 3.9 bắt buộc phải đ/n khóa chính
-    # id = models.AutoField(auto_create=True, serialize=False)
     username_social = models.CharField(
         _("username_social"),
         max_length=150,

@@ -22,6 +22,7 @@ from django.views.generic import (
     FormView, UpdateView, View
 )
 from datetime import datetime
+from ..util.pagination import BasePagination
 
 
 # auth cho func, using LoginRequiredMixin cho class
@@ -33,8 +34,11 @@ def category_list(request):
     user = request.user
     # print(user.username)
     pm = Category.objects.filter(user_id=user.id).order_by(F('created_at').desc(nulls_last=True))
+    # category_count_products = pm.annotate(products_count=Count('products'))\
+    #     .values("id", "name", "products_count")
+    # print(category_count_products)
     # queryset
-    paginator = Paginator(pm, 2)  # Show 25 contacts per page.
+    paginator = Paginator(pm, BasePagination.page_size)  # Show 25 contacts per page.
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, 'category/category_list.html', {'page_obj': page_obj})
@@ -49,10 +53,18 @@ class AddCategory(TemplateView, LoginRequiredMixin):
         # print(user.username)
         pm = Product.objects.filter(user_id=user.id).order_by(F('created_at').desc(nulls_last=True))
         # from pprint import pprint;pprint(pm)
-        form = CatalogForm(request.POST, request.FILES, user=user, product=pm) #, user=request.user, product=pm
+        form = CatalogForm(request.POST, request.FILES, user=user, product=pm)  #, user=request.user, product=pm
         if form.is_valid():
-            obj = form.save()
-            return HttpResponseRedirect(reverse_lazy('catalog:category_detail', kwargs={'pk': obj.id}))
+            # with transaction.atomic():
+            form_category = form.save()
+            products_selected = request.POST.getlist('products')
+            product_set = []
+            for product in products_selected:
+                product_set.append(product)
+                # product = Product.objects.get(id=product)
+                # data.products.add(product)
+            form_category.products.set(product_set)
+            return HttpResponseRedirect(reverse_lazy('catalog:category_detail', kwargs={'pk': form_category.id}))
 
         context = self.get_context_data(form=form)
         return self.render_to_response(context)
@@ -109,15 +121,18 @@ class ChangeCategory(UpdateView):
         # if request.POST:
         form = CatalogForm(request.POST, request.FILES, instance=self.get_object(), user=request.user)
         if form.is_valid():
-            obj = form.save()
-            # print(form)
-            # data = form.save(commit=False)
+            # obj = form.save()
+            # with transaction.atomic():
+            form_category = form.save(commit=False)
+            products = request.POST.getlist('products')
+            product_set = []
+            for product in products:
+                if Product.objects.filter(id=product).exists():
+                    product_set.append(product)
+                    # product = Product.objects.get(id=product)
+                    # data.products.add(product)
+            form_category.products.set(product_set)
             # data.save()
-            # products = request.POST.getlist('products')
-            # for product in products:
-            #     if Product.objects.filter(id=product).exists():
-            #         product = Product.objects.get(id=product)
-            #         data.products.add(product)
             return redirect('catalog:categories')
 
         context = self.get_context_data(form=form)

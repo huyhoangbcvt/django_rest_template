@@ -3,21 +3,13 @@ from ..models.catalog_model import (Product, Category)
 from ..serializers.category_serializer import CategorySerializer
 # from ..serializers.contact_serializer import ContactSerializer
 from user_app.serializers.user_serializer import UserSerializer
+from django.db import transaction
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    # user = UserSerializer(required=True)
+    image = serializers.ImageField(required=False)
+    user = UserSerializer(required=True)
     categories = CategorySerializer
-    # contacts = ContactSerializer(many=True)
-
-    def get_queryset(self):
-        print('vao')
-        now = timezone.now()
-        parents = Category.objects.all().prefetch_related(
-            Prefetch('Product', queryset=Child.objects.exclude(valid_from__gt=now, valid_from__isnull=False).exclude(
-                valid_to__lt=now, valid_to__isnull=False).distinct())
-        )
-        return parents
 
     class Meta:
         model = Product
@@ -26,14 +18,37 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class ProductAddSerializer(serializers.ModelSerializer):
-    # categories = serializers.PrimaryKeyRelatedField(queryset=Product.objects.prefetch_related('catalog_products'))
-    user = UserSerializer(required=True)
-    categories = CategorySerializer
+    # user = UserSerializer(required=True)
+    # categories = serializers.PrimaryKeyRelatedField(required=False, queryset=Category.objects.prefetch_related('products'))
+    # categories = serializers.PrimaryKeyRelatedField(required=False, queryset=Category.objects.all())
+    # categories = CategorySerializer(many=True)
+    # categories = serializers.MultipleChoiceField(required=False, choices=Category.objects.all())
+    # categories = serializers.SerializerMethodField('get_categories')
 
     class Meta:
         model = Product
         # fields = '__all__'
         fields = ['name', 'code', 'image', 'description', 'country', 'user', 'categories']
+
+    # def get_categories(self, obj):
+    #     return obj.categories.all().values("name")
+
+    @transaction.atomic
+    def save(self, request):
+        _product = Product(**self.validated_data)
+        # print(product)
+        # product = Product.objects.create(product)
+        _product = _product.save()  # product.refresh_from_db()
+        # print(_product)
+        # print(self.validated_data)
+        categories = request.data.get('categories')
+        if categories:
+            category_set = []
+            for category in categories:
+                category_set.append(category)
+            Category.products.set(category_set)
+            # _product.products.save()
+        return _product
 
 
 class ProductCategorySerializer(serializers.ModelSerializer):

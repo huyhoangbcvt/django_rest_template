@@ -1,6 +1,9 @@
 from datetime import datetime
 from django.shortcuts import render, resolve_url, redirect
 from django.http import HttpResponse
+from django.db.models import Count, F, Value, Func
+import json
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import csrf_exempt
 
 from django.contrib.auth import login, logout
@@ -19,11 +22,10 @@ from rest_framework.filters import OrderingFilter, SearchFilter
 # from ..models.product_model import Product
 from ..models.catalog_model import (Product, Category)
 from ..apis import product_ws
-from ..serializers.product_serializer import ProductSerializer
+from ..serializers.product_serializer import ProductSerializer, ProductAddSerializer
 from ..serializers.category_serializer import CategorySerializer
-import json
-from django.views.decorators.csrf import csrf_exempt
 from ..util.pagination import BasePagination
+from ..util.error_code import ErrorInCode
 
 
 @api_view(['GET'])
@@ -43,8 +45,9 @@ def AddProduct(request):
 
 
 class ProductViewSet(viewsets.ViewSet,
+                     generics.CreateAPIView,
                      generics.DestroyAPIView,
-                     generics.ListCreateAPIView,
+                     generics.ListAPIView,
                      generics.RetrieveUpdateAPIView,
                      generics.UpdateAPIView):  # viewsets.ModelViewSet
     # authentication_classes = TokenAuthentication  # Token access
@@ -56,9 +59,12 @@ class ProductViewSet(viewsets.ViewSet,
     # swagger_schema = None
 
     def get_permissions(self):
-        print(self.action)
+        # print(self.action)
         if self.action == 'list':
             return [permissions.AllowAny()]
+        if self.action == 'create':
+            self.serializer_class = ProductAddSerializer
+            return [permissions.IsAuthenticated()]
         if self.action == 'active_product':
             return [permissions.IsAuthenticated()]
         if self.action == 'un_active_product':
@@ -68,6 +74,29 @@ class ProductViewSet(viewsets.ViewSet,
         if self.action == 'add_contact':
             return [permissions.IsAuthenticated()]
         return [permissions.IsAuthenticated()]
+
+    def create(self, request, *args, **kwargs):  # POST
+        if request.user:
+            serializer = self.serializer_class(data=request.data)
+            try:
+                # serializer.is_valid(raise_exception=True)
+                if serializer.is_valid():
+                    # categories = request.data.get('categories')
+                    # print(categories)
+                    response = serializer.save(request)
+                    return Response(serializer.data, status=status.HTTP_200_OK)
+                else:
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+            except ErrorInCode as e:
+                return Response(e, status=status.HTTP_400_BAD_REQUEST)
+
+            return Response(serializer.validated_data, status=status.HTTP_200_OK)
+
+        return Response(status=status.HTTP_403_FORBIDDEN)
+        # if request.user:
+        #     return super().create(request, *args, **kwargs)
+        # return Response(status=status.HTTP_403_FORBIDDEN)
 
     def destroy(self, request, *args, **kwargs):
         if request.user == self.get_object().user:
@@ -104,14 +133,19 @@ class ProductViewSet(viewsets.ViewSet,
     def get_categories(self, request, pk):
         print('Product ViewSet : get_categories pk = ', pk)
         # categories = Category.objects.filter(active=True)
-        # products = Product.objects.get(pk=pk, active=True)
+        # product = Product.objects.get(pk=pk, active=True)
+        _product = Product.objects.filter(id=pk, active=True)
+        # ds = self.get_object().categories.through
+        # print(ds)
+        product_count_categories = _product.annotate(categories_count=Count('categories')).values("id", "name", "categories_count")
+        print(product_count_categories[0]['categories_count'])
         category_related = Category.objects.prefetch_related('products')
         categories = []
         for category in category_related:
             # categories.append(category)
             products = [product.name for product in category.products.filter(id=pk)]
             if products:
-                categories.append({'id': category.id, 'name': category.name, 'products': products})
+                categories.append({'id': category.id, 'name': category.name, 'products': products, 'categories_count': product_count_categories[0]['categories_count']})
         return Response(categories, status=status.HTTP_200_OK)
         # return Response(CategorySerializer(categories, many=True).data, status=status.HTTP_200_OK)
 

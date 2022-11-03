@@ -2,6 +2,7 @@ from datetime import datetime
 from django.shortcuts import render, resolve_url, redirect
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Count, F, Value, Func
 
 from django.contrib.auth import login, logout
 from rest_framework import generics, status, viewsets, status, viewsets, permissions, renderers
@@ -18,13 +19,13 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 # from django_filter import FilterSet
 from ..apis import category_ws
-from ..serializers.category_serializer import CategorySerializer
+from ..serializers.category_serializer import CategorySerializer, CategoryAddSerializer
 from ..serializers.product_serializer import ProductSerializer
 # from ..serializers.contact_serializer import ContactSerializer
 # from ..models.category_model import Category
 from ..models.catalog_model import (Product, Category)
-from django.views.decorators.csrf import csrf_exempt
 from ..util.pagination import BasePagination
+from ..util.error_code import ErrorInCode
 
 
 @api_view(['GET'])
@@ -47,7 +48,7 @@ def AddCategory(request):
 class CategoryViewSet(viewsets.ModelViewSet):
     # authentication_classes = TokenAuthentication  # Token access
     permission_classes = [IsAuthenticated]  # Basic Auth
-    queryset = Category.objects.filter(active=True).select_related('user').order_by('-created_at')
+    queryset = Category.objects.filter(active=True).select_related("user").order_by('-created_at')
     serializer_class = CategorySerializer
     pagination_class = BasePagination
     # http_method_names = ['get', 'post', 'put', 'patch', 'head', 'delete']
@@ -58,6 +59,9 @@ class CategoryViewSet(viewsets.ModelViewSet):
         print(self.action)
         if self.action == 'list':
             return [permissions.AllowAny()]
+        if self.action == 'create':
+            self.serializer_class = CategoryAddSerializer
+            return [permissions.IsAuthenticated()]
         if self.action == 'active_product':
             return [permissions.IsAuthenticated()]
         if self.action == 'un_active_product':
@@ -65,6 +69,25 @@ class CategoryViewSet(viewsets.ModelViewSet):
         if self.action == 'add_comment':
             return [permissions.IsAuthenticated()]
         return [permissions.IsAuthenticated()]
+
+    def create(self, request, *args, **kwargs):  # POST
+        if request.user:
+            # return category_ws.addCategory(request)
+            serializer = self.serializer_class(data=request.data)
+            try:
+                # serializer.is_valid(raise_exception=True)
+                if serializer.is_valid():
+                    response = serializer.save(request)
+                    return Response(serializer.data, status=status.HTTP_200_OK)
+                else:
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+            except ErrorInCode as e:
+                return Response(e, status=status.HTTP_400_BAD_REQUEST)
+
+            return Response(serializer.validated_data, status=status.HTTP_200_OK)
+
+        return Response(status=status.HTTP_403_FORBIDDEN)
 
     def destroy(self, request, *args, **kwargs):
         if request.user == self.get_object().user:
@@ -84,11 +107,15 @@ class CategoryViewSet(viewsets.ModelViewSet):
     @action(methods=['get'], detail=True, url_path='products')
     def get_products(self, request, pk):
         print('Category ViewSet : get_products pk = ', pk)
-        # categories = Category.objects.get(pk=pk)
+        # category = Category.objects.get(pk=pk)
+        # products = category.products.filter(active=True)
         products = self.get_object().products.filter(active=True)
         kw_param = self.request.query_params.get('p_name')
         if kw_param is not None:
             products = products.filter(name__icontains=kw_param)
+        # category_count_products = products.annotate(products_count=Count('products'))\
+        #     .values("id", "name", "products_count")
+        # print(category_count_products[0]['products_count'])
         return Response(ProductSerializer(products, many=True).data, status=status.HTTP_200_OK)
 
     def get_queryset(self):
