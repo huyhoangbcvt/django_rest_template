@@ -32,7 +32,7 @@ class CategoryAddSerializer(serializers.ModelSerializer):
         category = Category(**self.validated_data)
         # category = Category.objects.create(category)
         category = category.save()  # category.refresh_from_db()
-        products = request.get('products')
+        products = request.data.get('products')
         if products:
             product_set = []
             for product in products:
