@@ -42,12 +42,12 @@ class ProductAddSerializer(serializers.ModelSerializer):
         # print(_product)
         # print(self.validated_data)
         categories = request.data.get('categories')
-        if categories:
-            category_set = []
-            for category in categories:
-                category_set.append(category)
-            Category.products.set(category_set)
-            # _product.products.save()
+        # if categories:
+        #    category_set = []
+        #    for category in categories:
+        #        category_set.append(category)
+        #    Category.products.set(category_set)
+        #    # _product.products.save()
         return _product
 
 
