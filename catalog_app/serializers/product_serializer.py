@@ -17,13 +17,25 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'code', 'image', 'description', 'country', 'active', 'user', 'categories']
 
 
+class CustomPKRelatedField(serializers.PrimaryKeyRelatedField):
+    """A PrimaryKeyRelatedField derivative that uses named field for the display value."""
+    def __init__(self, **kwargs):
+        self.display_field = kwargs.pop("display_field", "name")
+        super(CustomPKRelatedField, self).__init__(**kwargs)
+
+    def display_value(self, instance):
+        # Use a specific field rather than model stringification
+        return getattr(instance, self.display_field)
+
+
 class ProductAddSerializer(serializers.ModelSerializer):
-    def get_field_choices():
-        return sorted([
-            (p.id, p.name) for p in Category.objects.all()
-        ])
-    categories = serializers.MultipleChoiceField(choices=get_field_choices(), required=False, )
-    # categories = serializers.MultipleChoiceField(required=False, choices=Category.objects.all())
+    # def get_field_choices():
+    #     return sorted([
+    #         (p.id, p.name) for p in Category.objects.all()
+    #     ])
+    # categories = serializers.MultipleChoiceField(choices=get_field_choices(), required=False, )
+    # categories = CustomPKRelatedField(queryset=Category.objects.all(), many=True)
+    categories = serializers.PrimaryKeyRelatedField(required=False, many=True, queryset=Category.objects.all())
 
     class Meta:
         model = Product

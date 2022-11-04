@@ -83,7 +83,7 @@ class ProductViewSet(viewsets.ViewSet,
                     # categories = request.data.get('categories')
                     # print(categories)
                     response = serializer.save(request)
-                    return Response(status=status.HTTP_200_OK)
+                    return Response(serializer.data, status=status.HTTP_200_OK)
                 else:
                     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
