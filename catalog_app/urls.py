@@ -20,7 +20,6 @@ urlpatterns = [
     path(r'api/', include(router.urls)),  # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     # =============| Web |============
     path('', views_catalog_ctrl.CatalogView.as_view(), name="catalog"),
-
     path('categories/', views_category_ctrl.category_list, name="categories"),
     path('categories/add-category/', views_category_ctrl.AddCategory.as_view(), name='category_form'),
     path('categories/<int:pk>/change/', views_category_ctrl.ChangeCategory.as_view(), name='category_change'),
