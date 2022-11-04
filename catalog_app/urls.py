@@ -18,19 +18,7 @@ urlpatterns = [
     # path('admin/', admin_site.urls),
     # =============| APIs |============
     path(r'api/', include(router.urls)),  # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    # Category
-    # path(r"api/categories/", views_category.GetCategoryInfo, name="category_list"),
-    # path(r"api/category/add/", views_category.AddCategory, name="category_add"),
-    # path(r"api/category/create/", views_category.CreateCategory.as_view(), name="create_category"),
-    # path(r'/api/category/view/<int:pk>/', None, name='category_detail'),
-    # Product
-    # path(r"/api/products/", views_product.GetProductInfo, name="product_list"),
-    # path(r"api/product/add/", views_product.AddProduct, name="product_add"),
-    # path(r"api/category/create/", views_product.CreateProduct.as_view(), name="create_product"),
-    # path(r'api/category/view/<int:pk>/', None, name='product_detail'),
-
     # =============| Web |============
-    # path('', views_catalog.index, name='index'),
     path('', views_catalog_ctrl.CatalogView.as_view(), name="catalog"),
 
     path('categories/', views_category_ctrl.category_list, name="categories"),
