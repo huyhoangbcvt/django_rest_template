@@ -29,12 +29,6 @@ class CustomPKRelatedField(serializers.PrimaryKeyRelatedField):
 
 
 class ProductAddSerializer(serializers.ModelSerializer):
-    # def get_field_choices():
-    #     return sorted([
-    #         (p.id, p.name) for p in Category.objects.all()
-    #     ])
-    # categories = serializers.MultipleChoiceField(choices=get_field_choices(), required=False, )
-    # categories = CustomPKRelatedField(queryset=Category.objects.all(), many=True)
     categories = serializers.PrimaryKeyRelatedField(required=False, many=True, queryset=Category.objects.all())
 
     class Meta:

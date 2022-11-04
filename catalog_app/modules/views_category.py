@@ -72,11 +72,9 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):  # POST
         if request.user:
-            # return category_ws.addCategory(request)
             serializer = self.serializer_class(data=request.data)
             try:
-                # serializer.is_valid(raise_exception=True)
-                if serializer.is_valid():
+                if serializer.is_valid():   # serializer.is_valid(raise_exception=True)
                     response = serializer.save(request)
                     return Response(serializer.data, status=status.HTTP_200_OK)
                 else:

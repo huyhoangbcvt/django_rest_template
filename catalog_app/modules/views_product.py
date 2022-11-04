@@ -78,10 +78,8 @@ class ProductViewSet(viewsets.ViewSet,
         if request.user:
             serializer = self.serializer_class(data=request.data)
             try:
-                # serializer.is_valid(raise_exception=True)
-                if serializer.is_valid():
-                    # categories = request.data.get('categories')
-                    # print(categories)
+                if serializer.is_valid():  # serializer.is_valid(raise_exception=True)
+                    # categories = request.data.getlist('categories')  # print(categories)
                     response = serializer.save(request)
                     return Response(serializer.data, status=status.HTTP_200_OK)
                 else:
