@@ -37,8 +37,8 @@ class CategoryAddSerializer(serializers.ModelSerializer):
     #         (p.id, p.name) for p in Product.objects.all()
     #     ])
     # products = serializers.MultipleChoiceField(choices=get_field_choices(), required=False,)
-    products = CustomPKRelatedField(queryset=Product.objects.all(), many=True)
-    # products = serializers.PrimaryKeyRelatedField(required=False, many=True, queryset=Product.objects.all())
+    # products = CustomPKRelatedField(queryset=Product.objects.all(), many=True)
+    products = serializers.PrimaryKeyRelatedField(required=False, many=True, queryset=Product.objects.all())
 
     class Meta:
         model = Category
@@ -55,7 +55,7 @@ class CategoryAddSerializer(serializers.ModelSerializer):
                             content=self.validated_data.get('content'),
                             user=self.validated_data.get('user'),)
         # _category = category.save()  # category.refresh_from_db()
-        _products = request.data.get('products')
+        _products = request.data.getlist('products')
         print(_products)
         if _products:
             product_set = []
