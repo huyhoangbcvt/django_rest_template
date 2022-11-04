@@ -4,7 +4,6 @@ from django.http import HttpResponse
 from django.db.models import Count, F, Value, Func
 import json
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.csrf import csrf_exempt
 
 from django.contrib.auth import login, logout
 from rest_framework import generics, status, viewsets, mixins, status, viewsets, permissions, renderers
@@ -84,7 +83,7 @@ class ProductViewSet(viewsets.ViewSet,
                     # categories = request.data.get('categories')
                     # print(categories)
                     response = serializer.save(request)
-                    return Response(serializer.data, status=status.HTTP_200_OK)
+                    return Response(status=status.HTTP_200_OK)
                 else:
                     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

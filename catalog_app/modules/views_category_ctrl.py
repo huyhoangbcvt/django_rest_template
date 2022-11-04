@@ -125,6 +125,7 @@ class ChangeCategory(UpdateView):
             # with transaction.atomic():
             form_category = form.save(commit=False)
             products = request.POST.getlist('products')
+            print(products)
             product_set = []
             for product in products:
                 if Product.objects.filter(id=product).exists():

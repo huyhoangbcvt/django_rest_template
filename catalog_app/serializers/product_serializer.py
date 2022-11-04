@@ -9,7 +9,7 @@ from django.db import transaction
 class ProductSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(required=False)
     user = UserSerializer(required=True)
-    categories = CategorySerializer
+    categories = CategorySerializer(many=True)
 
     class Meta:
         model = Product
@@ -18,12 +18,12 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class ProductAddSerializer(serializers.ModelSerializer):
-    # user = UserSerializer(required=True)
-    # categories = serializers.PrimaryKeyRelatedField(required=False, queryset=Category.objects.prefetch_related('products'))
-    # categories = serializers.PrimaryKeyRelatedField(required=False, queryset=Category.objects.all())
-    # categories = CategorySerializer(many=True)
+    def get_field_choices():
+        return sorted([
+            (p.id, p.name) for p in Category.objects.all()
+        ])
+    categories = serializers.MultipleChoiceField(choices=get_field_choices(), required=False, )
     # categories = serializers.MultipleChoiceField(required=False, choices=Category.objects.all())
-    # categories = serializers.SerializerMethodField('get_categories')
 
     class Meta:
         model = Product
@@ -35,19 +35,21 @@ class ProductAddSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def save(self, request):
-        _product = Product(**self.validated_data)
-        # print(product)
-        # product = Product.objects.create(product)
-        _product = _product.save()  # product.refresh_from_db()
-        # print(_product)
-        # print(self.validated_data)
-        categories = request.data.get('categories')
-        # if categories:
-        #    category_set = []
-        #    for category in categories:
-        #        category_set.append(category)
-        #    Category.products.set(category_set)
-        #    # _product.products.save()
+        _product = Product.objects.create(
+                            name=self.validated_data.get('name'),
+                            code=self.validated_data.get('code'),
+                            image=self.validated_data.get('image'),
+                            description=self.validated_data.get('description'),
+                            user=self.validated_data.get('user'),)
+        # _product = product.save()  # product.refresh_from_db()
+        _categories = request.data.getlist('categories')
+        print(_categories)
+        if _categories:
+            category_set = []
+            for category in _categories:
+                # _product.categories.add(category)
+                category_set.append(category)
+            _product.categories.set(category_set)  # _product.categories.save()
         return _product
 
 
