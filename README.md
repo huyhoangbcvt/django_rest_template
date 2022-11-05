@@ -1,25 +1,40 @@
 # django_rest
 Init Django Rest Framework 
 
-# Create project
-django-admin startproject django_rest
+## Prerequisites
+- Python 3.8 +
+- Virtualenv
+- Postgres 9.6 +
+
+# Create project (Ignore if clone source code)
+django-admin startproject django_rest_template
 
 # path to project folder
-cd django_rest
+cd django_rest_template
 
-# Create apps
+# Create apps (Ignore if clone source code)
 django-admin startapp user_app
 
 django-admin startapp catalog_app
 
 django-admin startapp upload_app
 
+# install pip
+pip install pip
+
+# Create and activate virtualenv
+virtualenv venv
+.\venv\Scripts\activate
+
 pip install -r requirements.txt
 
-# Create db_name django_rest_template in PostreSQL & config DATABASES in settings.py file
+# Create db_name django_rest_template in postgreSQL & config DATABASES in settings.py file
+## Installation
+### Setup django_rest_template/settings.py
 
 # Create migrations standard
 python manage.py makemigrations
+
 # if migrations a app detail, example user_app
 python manage.py makemigrations user_app
 
