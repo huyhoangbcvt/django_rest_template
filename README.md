@@ -2,7 +2,7 @@
 Init Django Rest Framework 
 
 ## Prerequisites
-- Python 3.8 +
+- Python 3.10 +
 - Virtualenv
 - Postgres 9.6 +
 
