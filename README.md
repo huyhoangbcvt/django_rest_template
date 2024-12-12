@@ -121,11 +121,11 @@ Make sure to keep the `jwt_api_key` file secure and do not expose it publicly.
    In here including:
    [data, data2] using to train internal TensorFlow. Downloaded from the experimental training model website:
          https://drive.google.com/file/d/1k6H9kQWfzLJB-ajuT6j4U0H0vyx7n_uL/view?usp=drive_link
+   [internal_model.h5] using the internal TensorFlow library to train and generate this file when running the API:
+         /recognitionsapi/train-tensorflow-internal/
    [emnist_external_model.h5] using the external TensorFlow EMNIST library to train and generate this file when running the API:
          /recognitionsapi/train-tensorflow-emnist-external/
-   [handwriting_internal_model.h5] using the internal TensorFlow library to train and generate this file when running the API:
-         /recognitionsapi/train-tensorflow-internal/
-   [loss_graph_emnist_external.png, loss_graph_internal.png] Plot the loss graph after training is complete.
+   [loss_graph_internal.png, loss_graph_emnist_external.png] Plot the loss graph after training is complete.
    ```
 
 3. **In config/settings/common.py to add 'apps.recognitions.apps.RecognitionsConfig' inside LOCAL_APPS**:
@@ -151,6 +151,13 @@ Make sure to keep the `jwt_api_key` file secure and do not expose it publicly.
 
 5. **In requirements/dev.txt to add Handwriting Recognition with Open-Source Tools**:
    ```bash
+   1. Tesseract OCR
+   2. PaddleOCR
+   3. OpenCV
+   4. TensorFlow and PyTorch
+   6. EasyOCR
+   7. SimpleHTR
+   8. Google vision API
    ```
 
 6. **And then running tep 2, 3, 6. **Run migrations** & 7. **Run the development server** as above**:
