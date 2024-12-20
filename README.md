@@ -190,6 +190,7 @@ Make sure to keep the `jwt_api_key` file secure and do not expose it publicly.
          /recognitions/api/train-tensorflow-internal/
       API: External emnist libraries
          /recognitions/api/train-tensorflow-emnist-external/
+   
    ## Handwriting Recognition from API:
       API: Internal libraries
          /recognitions/api/tensorflow-internal/
@@ -202,6 +203,7 @@ Make sure to keep the `jwt_api_key` file secure and do not expose it publicly.
    ## Internal libraries
       /recognitions/api/train-tensorflow-internal/
       /recognitions/api/tensorflow-internal/
+   
    ## External emnist libraries
       /recognitions/api/train-tensorflow-emnist-external/
       /recognitions/api/tensorflow-emnist-external/
@@ -213,53 +215,53 @@ Make sure to keep the `jwt_api_key` file secure and do not expose it publicly.
 1. **Create or copy a dictionary app (recognitions, ...apps) just like creating other regular apps.**:
    ```bash
    Copy an dictionary app from one app to another in the new project.
-   or
+   ## Or
    django-admin startapp dictionary
    ```
 
 2. **CLI: Run the import datas3 (or data) dictionary from Shell Command and have the option to input data from the import (e.g., .csv, .json, .pkl files).**:
    ```bash
-   ### If using British English, en-us,...then run Shell Command (where oxford_5000.csv, oxford_5000.json, oxford_5000.pkl & "{MEDIA_ROOT_OF_BUCKET_S3 or settings.MEDIA_URL}/data-dictionary/tusharlock10-dictionary" are files that you already have)
+   ## If using British English, en-us,...then run Shell Command (where oxford_5000.csv, oxford_5000.json, oxford_5000.pkl & "{MEDIA_ROOT_OF_BUCKET_S3 or settings.MEDIA_URL}/data-dictionary/tusharlock10-dictionary" are files that you already have)
       [
          This prefix name must have: python manage.py import_datas3_dictionary,
          File path: {MEDIA_ROOT_OF_BUCKET_S3}/data-dictionary/data/en/oxford_5000.csv
          File format needed to import: --format csv,
          Language to import data into: en
       ]
-   #### CLI: import_datas3_dictionary (If using the file on Amazon S3): On Linux/ Or on Windows use (import 'en', 'en-us', etc... languages)
+   ## CLI: import_datas3_dictionary (If using the file on Amazon S3): On Linux/ Or on Windows use (import 'en', 'en-us', etc... languages)
       python manage.py import_datas3_dictionary {MEDIA_ROOT_OF_BUCKET_S3}/data-dictionary/data/en/oxford_5000.csv --format csv en
 	   python manage.py import_datas3_dictionary dictionary/data-dictionary/data/en/oxford_5000.csv --format csv en
    
-   #### CLI: import_data_dictionary (If using media files on the server): On Linux/ Or on Windows use
+   ## CLI: import_data_dictionary (If using media files on the server): On Linux/ Or on Windows use
       python manage.py import_data_dictionary {settings.MEDIA_URL}/data-dictionary/data/en/oxford_5000.csv --format csv en
 	   python manage.py import_data_dictionary /media/data-dictionary/data/en/oxford_5000.csv --format csv en
    ```
 
 3. **CLI: Run the import data term content dictionary from Shell Command.**:
    ```bash
-   ### If using British English, en-us,...then run Shell Command (where oxford_5000.csv, oxford_5000.json, oxford_5000.pkl & "{settings.MEDIA_URL}/data-dictionary/tusharlock10-dictionary" are files that you already have):
+   ## If using British English, en-us,...then run Shell Command (where oxford_5000.csv, oxford_5000.json, oxford_5000.pkl & "{settings.MEDIA_URL}/data-dictionary/tusharlock10-dictionary" are files that you already have):
       [
          This prefix name must have: python manage.py import_term_content_dictionary,
          File format needed to import: --format csv,
          File media type needed to import: --media_type audio,
          Language to import data into: en
       ]
-   #### CLI: import_term_content_dictionary: On Linux/ Or on Windows use
+   ## CLI: import_term_content_dictionary: On Linux/ Or on Windows use
       python manage.py import_term_content_dictionary --format mp3 --media_type audio en
    ```
 
 4. **CLI: Run the download audio dictionary from Shell Command and have the input data from the import (df.pkl file).**:
    ```bash
-   ### If using British English, en-us,...then run Shell Command (where df.pkl are files that you already have):
+   ## If using British English, en-us,...then run Shell Command (where df.pkl are files that you already have):
       [
          This prefix name must have: python manage.py download_audio_dictionary,
          File path: {MEDIA_ROOT_OF_BUCKET_S3 or settings.MEDIA_URL}/data-dictionary/data/en/df.pkl
          File format needed to import: --format pkl,
          Language to import data into: en
       ]
-   #### CLI: download_audio_dictionary (If using the file on Amazon S3): On Linux/ Or on Windows use
+   ## CLI: download_audio_dictionary (If using the file on Amazon S3): On Linux/ Or on Windows use
       python manage.py download_audio_dictionary dictionary/data-dictionary/data/en/df.pkl --format pkl en
    
-   #### CLI: download_audio_dictionary (If using media files on the server): On Linux/ Or on Windows use
+   ## CLI: download_audio_dictionary (If using media files on the server): On Linux/ Or on Windows use
       python manage.py download_audio_dictionary /media/data-dictionary/data/en-us/df.pkl --format pkl en-us
    ```
