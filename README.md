@@ -119,60 +119,66 @@ Make sure to keep the `jwt_api_key` file secure and do not expose it publicly.
 2. **Copy training-data folder/ or create new folder with name is training-data**:
    ```bash
    ## In here including:
-   [data, data2] using to train internal TensorFlow. Downloaded from the experimental training model website:
-         https://drive.google.com/file/d/1k6H9kQWfzLJB-ajuT6j4U0H0vyx7n_uL/view?usp=drive_link
-   [internal_model.h5] using the internal TensorFlow library to train and generate this file when running the API:
-         /recognitionsapi/train-tensorflow-internal/
-   [emnist_external_model.h5] using the external TensorFlow EMNIST library to train and generate this file when running the API:
-         /recognitionsapi/train-tensorflow-emnist-external/
-   [loss_graph_internal.png, loss_graph_emnist_external.png] Plot the loss graph after training is complete.
+      [data, data2] using to train internal TensorFlow. Downloaded from the experimental training model website:
+            https://drive.google.com/file/d/1k6H9kQWfzLJB-ajuT6j4U0H0vyx7n_uL/view?usp=drive_link
+      [internal_model.h5] using the internal TensorFlow library to train and generate this file when running the API:
+            /recognitionsapi/train-tensorflow-internal/
+      [emnist_external_model.h5] using the external TensorFlow EMNIST library to train and generate this file when running the API:
+            /recognitionsapi/train-tensorflow-emnist-external/
+      [loss_graph_internal.png, loss_graph_emnist_external.png] Plot the loss graph after training is complete.
    ```
 
 3. **In config/settings/common.py to add 'apps.recognitions.apps.RecognitionsConfig' inside LOCAL_APPS**:
    ```bash
-   LOCAL_APPS = (
-      ...
-      'apps.recognitions.apps.RecognitionsConfig',
-   )
-   CORS_ALLOWED_ORIGINS = [
-      ...
-      "http://localhost:8000",  # Allow from localhost 
-      "http://127.0.0.1:8000",  # Or from the localhost IP address
-   ]
+      LOCAL_APPS = (
+         ...
+         'apps.recognitions.apps.RecognitionsConfig',
+      )
+      CORS_ALLOWED_ORIGINS = [
+         ...
+         "http://localhost:8000",  # Allow from localhost 
+         "http://127.0.0.1:8000",  # Or from the localhost IP address
+      ]
    ```
 
 4. **In config/api.py to add path("recognitions/", include("apps.recognitions.api.recognition_url"))**:
    ```bash
-   urlpatterns = [
-      ...
-      path("recognitions/", include("apps.recognitions.api.recognition_url")),
-   ]
+      urlpatterns = [
+         ...
+         path("recognitions/", include("apps.recognitions.api.recognition_url")),
+      ]
    ```
 
 5. **In requirements/dev.txt to add Handwriting Recognition with Open-Source Tools**:
    ```bash
-   1. Tesseract OCR
-   2. PaddleOCR
-   3. OpenCV
-   4. TensorFlow
-   5. PyTorch
-   6. EasyOCR
-   7. SimpleHTR
-   8. Google vision API
+      1. Tesseract OCR
+      2. PaddleOCR
+      3. OpenCV
+      4. TensorFlow
+      5. PyTorch
+      6. EasyOCR
+      7. SimpleHTR
+      8. Google vision API
    ```
 
 6. **And then running tep 2, 3, 6. **Run migrations** & 7. **Run the development server** as above**:
    ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows use `.\venv\Scripts\activate` & python.exe -m pip install --upgrade pip
-   pip install -r requirements/dev.txt
-   ------------------------
-   pip install paddlepaddle  # Note 1: PaddlePaddle needs to be reinstalled, because the paddlepaddle depends on protobuf <=3.20.2 while the tensorflow depends on protobuf >=3.20.3 
-   ------------------------
-   python manage.py makemigrations
-   python manage.py migrate
-   ------------------------
-   python manage.py runserver 0.0.0.0:8000  # On localhost: python manage.py runserver localhost:8000
+   ## Run to install env
+      python -m venv venv
+      source venv/bin/activate  # On Windows use `.\venv\Scripts\activate` & python.exe -m pip install --upgrade pip
+      
+   ## Run to install packages
+      pip install -r requirements/dev.txt
+  
+   ## Run to install paddlepaddle if using paddle API
+      pip install paddlepaddle  # Note 1: PaddlePaddle needs to be reinstalled, because the paddlepaddle depends on protobuf <=3.20.2 while the tensorflow depends on protobuf >=3.20.3 
+   
+   ## Migrations & migrate
+      python manage.py makemigrations
+      python manage.py migrate
+   
+   ## Run the app server
+      python manage.py runserver 0.0.0.0:8000  # On localhost: python manage.py runserver localhost:8000
    
    ## Django Admin
    - URL: http://localhost/admin
@@ -181,33 +187,24 @@ Make sure to keep the `jwt_api_key` file secure and do not expose it publicly.
    - URL: http://localhost/docs
 
    ## With UI Document
-   http://localhost:8000/redocs/
+   - URL: http://localhost:8000/redocs/
    ```
 
 7. **How to modify training data? Just copy the new images containing the letter characters into the correct folder and run the training API again (use Internal libraries)**:
    ```bash
-   ## Train data from API:
-      API: Internal libraries
-         /recognitions/api/train-tensorflow-internal/
-      API: External emnist libraries
-         /recognitions/api/train-tensorflow-emnist-external/
-   
-   ## Handwriting Recognition from API:
-      API: Internal libraries
-         /recognitions/api/tensorflow-internal/
-      API: External emnist libraries
-         /recognitions/api/tensorflow-emnist-external/
+   ## Training TensorFlow internally:
+   - Train tensorflow: /recognitions/api/train-tensorflow-internal/
+
+   ## Training TensorFlow externally:
+   - Train tensorflow: /recognitions/api/train-tensorflow-emnist-external/
    ```
 
 8. **Some APIs operate in sequence from the training API to the handwriting recognition API**:
    ```bash
-   ## Internal libraries
-      /recognitions/api/train-tensorflow-internal/
-      /recognitions/api/tensorflow-internal/
-   
-   ## External emnist libraries
-      /recognitions/api/train-tensorflow-emnist-external/
-      /recognitions/api/tensorflow-emnist-external/
+   ## Handwriting Recognition from API:
+   - API Internal libraries: /recognitions/api/tensorflow-internal/
+
+   - API External emnist libraries: /recognitions/api/tensorflow-emnist-external/
    ```
 
 
