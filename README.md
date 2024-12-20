@@ -112,13 +112,13 @@ Make sure to keep the `jwt_api_key` file secure and do not expose it publicly.
 1. **Create/or copy a recognitions app**:
    ```bash
    Copy an recognitions app from one app to another in the new project.
-   or
+   ## Or
    django-admin startapp recognitions
    ```
 
 2. **Copy training-data folder/ or create new folder with name is training-data**:
    ```bash
-   In here including:
+   ## In here including:
    [data, data2] using to train internal TensorFlow. Downloaded from the experimental training model website:
          https://drive.google.com/file/d/1k6H9kQWfzLJB-ajuT6j4U0H0vyx7n_uL/view?usp=drive_link
    [internal_model.h5] using the internal TensorFlow library to train and generate this file when running the API:
@@ -141,7 +141,7 @@ Make sure to keep the `jwt_api_key` file secure and do not expose it publicly.
    ]
    ```
 
-4. **In config/api.py to add path("recognitions/", include("apps.recognitions.api.recognition_url")),**:
+4. **In config/api.py to add path("recognitions/", include("apps.recognitions.api.recognition_url"))**:
    ```bash
    urlpatterns = [
       ...
@@ -154,7 +154,8 @@ Make sure to keep the `jwt_api_key` file secure and do not expose it publicly.
    1. Tesseract OCR
    2. PaddleOCR
    3. OpenCV
-   4. TensorFlow and PyTorch
+   4. TensorFlow
+   5. PyTorch
    6. EasyOCR
    7. SimpleHTR
    8. Google vision API
@@ -198,7 +199,7 @@ Make sure to keep the `jwt_api_key` file secure and do not expose it publicly.
          /recognitions/api/tensorflow-emnist-external/
    ```
 
-8. **Some APIs operate in sequence from the training API to the handwriting recognition API.**:
+8. **Some APIs operate in sequence from the training API to the handwriting recognition API**:
    ```bash
    ## Internal libraries
       /recognitions/api/train-tensorflow-internal/
@@ -212,14 +213,14 @@ Make sure to keep the `jwt_api_key` file secure and do not expose it publicly.
 
 ## Dictionary
 
-1. **Create or copy a dictionary app (recognitions, ...apps) just like creating other regular apps.**:
+1. **Create or copy a dictionary app (recognitions, ...apps) just like creating other regular apps**:
    ```bash
    Copy an dictionary app from one app to another in the new project.
    ## Or
    django-admin startapp dictionary
    ```
 
-2. **CLI: Run the import datas3 (or data) dictionary from Shell Command and have the option to input data from the import (e.g., .csv, .json, .pkl files).**:
+2. **CLI: Run the import datas3 (or data) dictionary from Shell Command and have the option to input data from the import (e.g., .csv, .json, .pkl files)**:
    ```bash
    ## If using British English, en-us,...then run Shell Command (where oxford_5000.csv, oxford_5000.json, oxford_5000.pkl & "{MEDIA_ROOT_OF_BUCKET_S3 or settings.MEDIA_URL}/data-dictionary/tusharlock10-dictionary" are files that you already have)
       [
@@ -237,7 +238,7 @@ Make sure to keep the `jwt_api_key` file secure and do not expose it publicly.
 	   python manage.py import_data_dictionary /media/data-dictionary/data/en/oxford_5000.csv --format csv en
    ```
 
-3. **CLI: Run the import data term content dictionary from Shell Command.**:
+3. **CLI: Run the import data term content dictionary from Shell Command**:
    ```bash
    ## If using British English, en-us,...then run Shell Command (where oxford_5000.csv, oxford_5000.json, oxford_5000.pkl & "{settings.MEDIA_URL}/data-dictionary/tusharlock10-dictionary" are files that you already have):
       [
@@ -250,7 +251,7 @@ Make sure to keep the `jwt_api_key` file secure and do not expose it publicly.
       python manage.py import_term_content_dictionary --format mp3 --media_type audio en
    ```
 
-4. **CLI: Run the download audio dictionary from Shell Command and have the input data from the import (df.pkl file).**:
+4. **CLI: Run the download audio dictionary from Shell Command and have the input data from the import (df.pkl file)**:
    ```bash
    ## If using British English, en-us,...then run Shell Command (where df.pkl are files that you already have):
       [
@@ -263,5 +264,5 @@ Make sure to keep the `jwt_api_key` file secure and do not expose it publicly.
       python manage.py download_audio_dictionary dictionary/data-dictionary/data/en/df.pkl --format pkl en
    
    ## CLI: download_audio_dictionary (If using media files on the server): On Linux/ Or on Windows use
-      python manage.py download_audio_dictionary /media/data-dictionary/data/en-us/df.pkl --format pkl en-us
+      python manage.py download_audio_dictionary /media/data-dictionary/data/en-us/df.pkl --format pkl en
    ```
